@@ -1,0 +1,23 @@
+Package: gendercorrectrouting
+Title: Gender-Correct Routing Along Streets Named After Women Rather Than Men
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Mark", "Padgham", email="mark.padgham@email.com", role=c("aut", "cre")),
+    person("Jörg", "Michael", role = "cph",
+        comment="Original author of included gender code"))
+Description: Gender-correct routing along streets named after women rather than
+    men.
+License: GPL-3
+Imports:
+    Rcpp (>= 0.12.6)
+LinkingTo:
+    Rcpp
+NeedsCompilation: yes
+SystemRequirements:
+    C++11
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
