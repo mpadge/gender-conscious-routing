@@ -4,6 +4,4 @@
 #'
 #' @name gendercorrectrouting
 #' @docType package
-#' @importFrom Rcpp evalCpp
-#' @useDynLib gendercorrectrouting, .registration = TRUE
 NULL
