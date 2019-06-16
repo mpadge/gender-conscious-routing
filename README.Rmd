@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# gender correct routing
+# gender conscious routing
 
 Routing along streets named after women rather than men.
 
