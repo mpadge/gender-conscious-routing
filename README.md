@@ -1,6 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# gender correct routing
+# gender conscious routing
 
 Routing along streets named after women rather than men.
 
