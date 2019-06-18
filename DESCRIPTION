@@ -10,8 +10,6 @@ Description: Gender-conscious routing along streets named after women rather tha
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports:
-    Rcpp
 Suggests: 
     testthat
 NeedsCompilation: yes
