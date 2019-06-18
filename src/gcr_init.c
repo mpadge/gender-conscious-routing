@@ -8,10 +8,10 @@
 */
 
 /* .Call calls */
-extern SEXP R_gender(SEXP);
+extern SEXP R_gender(SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"R_gender", (DL_FUNC) &R_gender, 1},
+    {"R_gender", (DL_FUNC) &R_gender, 2},
     {NULL, NULL, 0}
 };
 

@@ -2,11 +2,20 @@
 #' 
 #' Get the gender of a character vector
 #' @param text The character vector to encode
+#' @param country Country for which gender is to be determined, either as
+#' ISO3166 two-letter abbreviation, or full text. See \link{list_countries} for
+#' list of recognized countries.
 #' @return Vector of name length with gender codes
 #' @export
-get_gender <- function (text)
+get_gender <- function (text, country = NULL)
 {
-    .Call ("R_gender", as.character (text))
+    if (is.null (country))
+        country <- 0
+    else
+        country <- get_country (country)
+
+    message ("passing country  [", as.integer (country), "]")
+    .Call ("R_gender", as.character (text), as.integer (country))
 }
 
 get_country <- function (country)

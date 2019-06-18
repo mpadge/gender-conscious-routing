@@ -5712,7 +5712,7 @@ int main (int argc, char *argv[])
 //' R_gender
 //' @param x_ Single character vector of text tokens
 //' @noRd
-SEXP R_gender (SEXP x_)
+SEXP R_gender (SEXP x_, SEXP country_)
 {
     size_t len = length (x_);
     SEXP out = PROTECT (allocVector (INTSXP, len));
@@ -5720,11 +5720,8 @@ SEXP R_gender (SEXP x_)
     int *rout;
     rout = INTEGER (out);
 
-    int  i,k,n;
-    int  charset;
-    int  country = GENDER_DEFAULT_COUNTRY;
-    char *input_file, *output_file;
-    char text[201];
+    int country = asInteger (country_);
+    printf ("---country = [%d]\n", country);
 
   /* Macros in gen_ext.h:
     IS_FEMALE              'F' // = 70
