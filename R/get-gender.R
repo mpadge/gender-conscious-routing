@@ -14,7 +14,6 @@ get_gender <- function (text, country = NULL)
     else
         country <- get_country (country)
 
-    message ("passing country  [", as.integer (country), "]")
     .Call ("R_gender", as.character (text), as.integer (country))
 }
 

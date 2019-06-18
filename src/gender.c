@@ -5396,8 +5396,6 @@ void print_statistics (int get_full_statistics)
 
 
 
-/*
-
 int main (int argc, char *argv[])
 {
   int  i,k,n;
@@ -5660,42 +5658,6 @@ int main (int argc, char *argv[])
   return (0);
 }
 
-*/
-int main (int argc, char *argv[])
-{
-  int  i,k,n;
-  int  charset;
-  int  country = GENDER_DEFAULT_COUNTRY;
-  char *input_file, *output_file;
-  char text[201];
-
-  printf ("IS_FEMALE = %d\n", IS_FEMALE);
-  printf ("IS_MOSTLY_FEMALE = %d\n", IS_MOSTLY_FEMALE);
-  printf ("IS_MALE = %d\n", IS_MALE);
-  printf ("IS_MOSTLY_MALE = %d\n", IS_MOSTLY_FEMALE);
-  printf ("IS_UNISEX_NAME = %d\n", IS_UNISEX_NAME);
-  printf ("IS_A_COUPLE = %d\n", IS_A_COUPLE);
-  printf ("NAME_NOT_FOUND = %d\n", NAME_NOT_FOUND);
-  printf ("ERROR_IN_NAME = %d\n", ERROR_IN_NAME);
-  printf ("INTERNAL_ERROR_GENDER = %d\n", INTERNAL_ERROR_GENDER);
-
-      i = initialize_gender();
-
-      i = get_gender (argv[1], GENDER_COMPARE_EXPANDED_UMLAUTS, country);
-
-      printf ("i = %d\n", i);
-      trace_info ("final result for", argv[1], NULL,i, NULL);
-
-  char *test[1];
-  test [0] = "stephan";
-      i = get_gender (test[0], GENDER_COMPARE_EXPANDED_UMLAUTS, country);
-
-      printf ("i = %d\n", i);
-      trace_info ("final result for", test[0], NULL,i, NULL);
-
-  cleanup_gender();
-  return (0);
-}
 
 
 #endif
@@ -5721,7 +5683,6 @@ SEXP R_gender (SEXP x_, SEXP country_)
     rout = INTEGER (out);
 
     int country = asInteger (country_);
-    printf ("---country = [%d]\n", country);
 
   /* Macros in gen_ext.h:
     IS_FEMALE              'F' // = 70
@@ -5737,11 +5698,6 @@ SEXP R_gender (SEXP x_, SEXP country_)
 
     int ig = initialize_gender();
 
-    char *test[1];
-    test [0] = "stephan";
-    ig = get_gender (test[0], GENDER_COMPARE_EXPANDED_UMLAUTS, country);
-    printf ("i for stephan = %d\n", ig);
-    
     for (int i = 0; i < len; i++)
     {
         const char * xi = CHAR (STRING_ELT (x_, i));
