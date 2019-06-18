@@ -5743,7 +5743,6 @@ SEXP R_gender (SEXP x_)
     test [0] = "stephan";
     ig = get_gender (test[0], GENDER_COMPARE_EXPANDED_UMLAUTS, country);
     printf ("i for stephan = %d\n", ig);
-    //trace_info ("final result for", test[0], NULL,i, NULL);
     
     for (int i = 0; i < len; i++)
     {
