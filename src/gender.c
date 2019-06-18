@@ -1078,7 +1078,8 @@ static int strcmp_search (char text[], char text_2[],
 static void read_line (FILE *fr, char text[], int len)
 {
   text[0] = '\0';
-  fgets (text,len-2,fr);
+  // MP: text = necessary at start to avoid warn_unused_result on R CMD check
+  text = fgets (text,len-2,fr);
   text[len-1] = '\0';
 }
 
