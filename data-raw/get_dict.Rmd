@@ -1,0 +1,34 @@
+
+Download file from https://www.heise.de/ct/ftp/07/17/182/
+```{r}
+u <- "ftp://ftp.heise.de/pub/ct/listings/0717-182.zip"
+zipname <- file.path (here::here (), "data-raw", "gendernames.zip")
+chk <- download.file (u, zipname)
+f <- list.files (file.path (here::here (), "data-raw"), pattern = "*.zip",
+                full.names = TRUE)
+lf <- unzip (f, list = TRUE)
+lf <- lf$Name [grep ("dict", lf$Name)]
+chk <- unzip (f, files = lf, overwrite = TRUE, junkpaths = TRUE)
+
+unlink (zipname, recursive = TRUE)
+```
+
+convert the encoding to UTF-8. see:
+https://kevinushey.github.io/blog/2018/02/21/string-encoding-and-r/
+---> check that `sessionInfo` confirms UTF-8 encoding!
+```{r}
+f <- list.files (file.path (here::here (), "data-raw"), pattern = "^nam",
+                full.names = TRUE)
+dict <- readLines (f, encoding = "ISO-8859-1")
+fi <- file.path (here::here (), "inst", "dict", basename (f))
+con <- file (fi, open = "w+", encoding = "native.enc")
+writeLines (dict, con)
+close (con)
+chk <- file.remove (f)
+```
+
+```{r}
+system2 ("dos2unix", fi)
+```
+
+
