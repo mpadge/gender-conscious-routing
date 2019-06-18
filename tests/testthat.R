@@ -1,4 +1,4 @@
 library(testthat)
-library(gendercorrectrouting)
+library(genderconsciousrouting)
 
-test_check("gendercorrectrouting")
+test_check("genderconsciousrouting")
