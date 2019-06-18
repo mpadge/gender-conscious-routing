@@ -10,6 +10,7 @@
 ^vignettes/makefile$
 docs/
 data-raw/
+dict/
 ^.*[.]png$
 ^_pkgdown\.yml$
 ^appveyor\.yml$

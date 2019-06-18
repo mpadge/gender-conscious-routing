@@ -4,10 +4,14 @@
 \alias{get_gender}
 \title{get_gender}
 \usage{
-get_gender(text)
+get_gender(text, country = NULL)
 }
 \arguments{
 \item{text}{The character vector to encode}
+
+\item{country}{Country for which gender is to be determined, either as
+ISO3166 two-letter abbreviation, or full text. See \link{list_countries} for
+list of recognized countries.}
 }
 \value{
 Vector of name length with gender codes

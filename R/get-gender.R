@@ -14,8 +14,26 @@ get_gender <- function (text, country = NULL)
     else
         country <- get_country (country)
 
-    .Call ("R_gender", as.character (text), as.integer (country))
+    res <- .Call ("R_gender", as.character (text), as.integer (country))
+    map_gender_results (text, res)
 }
+
+map_gender_results <- function (text, res)
+{
+    map <- data.frame (res = c (70, 102, 77, 109, 63, 67, 32, 69, 73),
+                       category = c ("IS_FEMALE", "IS_MOSTLY_FEMALE",
+                                     "IS_MALE", "IS_MOSTLY_MALE",
+                                     "IS_UNISEX_NAME", "IS_A_COUPLE",
+                                     "NAME_NOT_FOUND", "ERROR_IN_NAME",
+                                     "INTERNAL_ERROR_GENDER"),
+                       stringsAsFactors = FALSE)
+
+    data.frame (text = text,
+                category = map$category [match (res, map$res)],
+                stringsAsFactors = FALSE)
+}
+
+
 
 get_country <- function (country)
 {

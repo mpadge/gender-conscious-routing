@@ -5395,7 +5395,6 @@ void print_statistics (int get_full_statistics)
 }
 
 
-
 int main (int argc, char *argv[])
 {
   int  i,k,n;
@@ -5688,7 +5687,7 @@ SEXP R_gender (SEXP x_, SEXP country_)
     IS_FEMALE              'F' // = 70
     IS_MOSTLY_FEMALE       'f' // = 102
     IS_MALE                'M' // = 77
-    IS_MOSTLY_MALE         'm' // = 102
+    IS_MOSTLY_MALE         'm' // = 109
     IS_UNISEX_NAME         '?' // = 63
     IS_A_COUPLE            'C' // = 67
     NAME_NOT_FOUND         ' ' // = 32
@@ -5702,7 +5701,7 @@ SEXP R_gender (SEXP x_, SEXP country_)
     {
         const char * xi = CHAR (STRING_ELT (x_, i));
         char * xi_c = (char*) (xi);
-        rout [i] = get_gender (xi_c, 0, 0);
+        rout [i] = get_gender (xi_c, 0, country);
     }
 
     cleanup_gender();
