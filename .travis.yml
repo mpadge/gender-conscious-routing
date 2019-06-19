@@ -14,7 +14,8 @@ matrix:
         - os: linux
           r: release
           after_success:
-              - Rscript -e "covr::codecov(line_exclusions = list('src/gender.c'))"
+              - Rscript -e "covr::codecov(line_exclusions = list('src/gender.c'," \
+                            "'src/gen_ext.h', 'src/umlaut_g.h'))"
         - os: linux
           r: devel
         - os: linux
