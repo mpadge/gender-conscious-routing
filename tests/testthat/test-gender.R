@@ -6,17 +6,17 @@ test_that("gender", {
               expect_equal (ncol (g), 2)
               expect_equal (nrow (g), 3)
               expect_identical (names (g), c ("text", "category"))
-              #expect_identical (g$category,
-              #                  c ("IS_MALE", "NAME_NOT_FOUND", "IS_MALE"))
+              expect_identical (g$category,
+                                c ("IS_MALE", "NAME_NOT_FOUND", "IS_MALE"))
 
               g <- get_gender (c ("Stephanie", "Smith", "julie")) # 70 32 70
-              #expect_identical (g$category,
-              #                  c ("IS_FEMALE", "NAME_NOT_FOUND", "IS_FEMALE"))
+              expect_identical (g$category,
+                                c ("IS_FEMALE", "NAME_NOT_FOUND", "IS_FEMALE"))
 
               g <- get_gender (c ("Stephanie Smith", "julie", "andrea"), "it") # 70 70 63
-              #expect_identical (g$category,
-              #                  c ("IS_FEMALE", "IS_FEMALE", "IS_UNISEX_NAME"))
+              expect_identical (g$category,
+                                c ("IS_FEMALE", "IS_FEMALE", "IS_UNISEX_NAME"))
               g <- get_gender (c ("Stephanie Smith", "julie", "andrea"), "de")
-              #expect_identical (g$category,
-              #                  c ("IS_FEMALE", "IS_FEMALE", "IS_FEMALE"))
+              expect_identical (g$category,
+                                c ("IS_FEMALE", "IS_FEMALE", "IS_FEMALE"))
 })

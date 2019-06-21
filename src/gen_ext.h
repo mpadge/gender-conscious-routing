@@ -84,9 +84,10 @@
 // MP: Critical: R runs the compiled object from the package **ROOT** directory,
 // so this file name is "./inst". If compiled as GENDER_EXECUTABLE, it is
 // "../"!!
-char *first_file_name = "./dict/nam_dict.txt";
-#define FIRST_NAME_FILE  first_file_name
+//char *first_file_name = "./dict/nam_dict.txt";
+//#define FIRST_NAME_FILE  first_file_name
 //#define FIRST_NAME_FILE  "./dict/nam_dict.txt"
+#define FIRST_NAME_FILE getDictPath()
 
 /****  If you need a configurable filename, do it this way:  ****/
 /****     char *first_file_name = "<your_file_name>";    ****/
@@ -188,7 +189,6 @@ char *first_file_name = "./dict/nam_dict.txt";
 #define GC_JAPAN        52
 #define GC_KOREA        53
 #define GC_VIETNAM      54
-
 
 
 /************************************************************/

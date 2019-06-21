@@ -607,6 +607,12 @@ static char *russian_names[] =
 
 
 
+char * getDictPath ()
+{
+     char * ret = getenv ("GCR_DICT_DIR");
+     return ret;
+}
+
 
 /************************************************************/
 /****  common string functions  *****************************/
