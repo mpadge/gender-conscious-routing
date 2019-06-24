@@ -49,9 +49,9 @@ knitr::kable (table (n$sex))
 ```
 
 Categorising `r format (nrow (n), big.mark = ",")` names took only `r st [3]`
-seconds. The following code compares the accuracy, noting that many names are
-of course unisex, whereas the "baby-names" data are direct records of
-individual names and sex. 
+seconds, or around 100,000 names per second. The following code compares the
+accuracy, noting that many names are of course unisex, whereas the "baby-names"
+data are direct records of individual names and sex. 
 
 ```{r babyname-output}
 x$category [x$category == "IS_MALE"] <- "boy"
@@ -126,6 +126,13 @@ before calculating final statistics.
 n2 <- n2 [which (!n2$gender == "NAME_NOT_FOUND"), ]
 knitr::kable (with (n2, table (category, gender)))
 ```
+The accuracy in that case is
+```{r contingency2}
+ct <- with (n2, table (category, gender))
+sum (diag (ct)) / sum (ct)
+```
+
+
 
 
 

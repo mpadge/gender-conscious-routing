@@ -34,7 +34,7 @@ format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
 #>    user  system elapsed 
-#>   1.211   1.405   2.618
+#>   1.155   1.463   2.619
 knitr::kable (table (x$category))
 ```
 
@@ -56,10 +56,10 @@ knitr::kable (table (n$sex))
 | boy  | 129000 |
 | girl | 129000 |
 
-Categorising 258,000 names took only 2.618 seconds. The following code
-compares the accuracy, noting that many names are of course unisex,
-whereas the “baby-names” data are direct records of individual names and
-sex.
+Categorising 258,000 names took only 2.619 seconds, or around 100,000
+names per second. The following code compares the accuracy, noting that
+many names are of course unisex, whereas the “baby-names” data are
+direct records of individual names and sex.
 
 ``` r
 x$category [x$category == "IS_MALE"] <- "boy"
@@ -156,10 +156,17 @@ n2 <- n2 [which (!n2$gender == "NAME_NOT_FOUND"), ]
 knitr::kable (with (n2, table (category, gender)))
 ```
 
-|             |  boy | girl | mostly boy | mostly girl | unisex |
-| ----------- | ---: | ---: | ---------: | ----------: | -----: |
-| boy         | 1643 |   19 |         92 |          15 |     61 |
-| girl        |   19 | 2221 |         15 |          89 |     66 |
-| mostly boy  |   90 |    3 |         36 |           4 |      8 |
-| mostly girl |    0 |  173 |          3 |          30 |      7 |
-| unisex      |   27 |   44 |         65 |          79 |     66 |
+|                |    boy |    girl | mostly boy | mostly girl | unisex |
+| -------------- | -----: | ------: | ---------: | ----------: | -----: |
+| boy            |   1643 |      19 |         92 |          15 |     61 |
+| girl           |     19 |    2221 |         15 |          89 |     66 |
+| mostly boy     |     90 |       3 |         36 |           4 |      8 |
+| mostly girl    |      0 |     173 |          3 |          30 |      7 |
+| unisex         |     27 |      44 |         65 |          79 |     66 |
+| The accuracy i | n that | case is |            |             |        |
+
+``` r
+ct <- with (n2, table (category, gender))
+sum (diag (ct)) / sum (ct)
+#> [1] 0.8196923
+```
