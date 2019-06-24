@@ -5,7 +5,7 @@
 #' @param country Country for which gender is to be determined, either as
 #' ISO3166 two-letter abbreviation, or full text. See \link{list_countries} for
 #' list of recognized countries.
-#' @return Vector of name length with gender codes
+#' @return `data.frame` of text with gender attached
 #' @export
 get_gender <- function (text, country = NULL)
 {
@@ -29,7 +29,7 @@ map_gender_results <- function (text, res)
                        stringsAsFactors = FALSE)
 
     data.frame (text = text,
-                category = map$category [match (res, map$res)],
+                gender = map$category [match (res, map$res)],
                 stringsAsFactors = FALSE)
 }
 

@@ -14,7 +14,7 @@ ISO3166 two-letter abbreviation, or full text. See \link{list_countries} for
 list of recognized countries.}
 }
 \value{
-Vector of name length with gender codes
+\code{data.frame} of text with gender attached
 }
 \description{
 Get the gender of a character vector
