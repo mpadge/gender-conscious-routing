@@ -68,7 +68,7 @@
 #define IS_FEMALE              'F' // = 70
 #define IS_MOSTLY_FEMALE       'f' // = 102
 #define IS_MALE                'M' // = 77
-#define IS_MOSTLY_MALE         'm' // = 102
+#define IS_MOSTLY_MALE         'm' // = 109
 #define IS_UNISEX_NAME         '?' // = 63
 #define IS_A_COUPLE            'C' // = 67
 
@@ -77,6 +77,8 @@
 #define NAME_NOT_FOUND         ' ' // = 32
 #define ERROR_IN_NAME          'E' // = 69
 #define INTERNAL_ERROR_GENDER  'I' // = 73
+
+#define REL_FREQ_MULTIPLIER 1
 
 
 /****  File with list of first names and gender.  ****/

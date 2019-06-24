@@ -3311,9 +3311,18 @@ static int internal_search
           freq_2 = freq_x[x];
         }
     }
+          
+  /* At this point, `res` gives the identified gender, `count` the frequency of
+   * occurrence of that gender, and `count2` the frequency of the opposite
+   * gender. This allows relative frequencies or probabilities to calculated at
+   * this point.
+   */
+  int rel_freq = 1000;
 
   if (freq_2 > 0)
     {
+      // MP: Inserted relative frequency calculation here:
+      rel_freq = round (1000.0 * count / (count + count_2));
       /****  calculate the (truncated) binary logarithm of (count/count_2)  ****/
       x = 5;
       if (count > 0L  &&  count < count_2)
@@ -3359,6 +3368,10 @@ static int internal_search
         }
     }
 
+  // set rel_freq \in [0, 1000] as the latter 4 digits, so
+  // res -> res * 10000 + rel_freq. The 2 can then be extracted as
+  // gender = floor (res / 10000)
+  // rel_freq = res - gender * 10000
   if ((n & (1|2|16))  &&  (n & (4|8|16)))
     {
       return (IS_UNISEX_NAME);
@@ -3457,6 +3470,8 @@ static int get_gender_internal
     {
      /****  search whole name  ****/
      gender = internal_search (temp, compare_mode, country);
+     //int res = floor (gender / REL_FREQ_MULTIPLIER);
+     //int rel_freq = gender - res * REL_FREQ_MULTIPLIER;
 
      if (gender != NAME_NOT_FOUND)
        {
@@ -3509,6 +3524,9 @@ static int get_gender_internal
             }
 
           gender = internal_search (temp+n, compare_mode, country);
+          //int res = floor (gender / REL_FREQ_MULTIPLIER);
+          //int rel_freq = gender - res * REL_FREQ_MULTIPLIER;
+
           if (internal_mode & TRACE_GENDER)
             {
               trace_info ("result for", temp+n, NULL, gender, NULL);
@@ -3672,12 +3690,18 @@ static int check_nickname_internal (char first_name_1[],
     {
       sprintf (a_temp+n, " %s", a2_temp);
       i = internal_search (a_temp, compare_mode, country);
+      //int res = internal_search (a_temp, compare_mode, country);
+      //i = floor (res / REL_FREQ_MULTIPLIER);
+      //int rel_freq = res - gender * REL_FREQ_MULTIPLIER;
       a_temp[n] = '\0';
     }
   if (k <= n  &&  i == NAME_NOT_FOUND)
     {
       sprintf (a2_temp+k, " %s", a_temp);
       i = internal_search (a2_temp, compare_mode, country);
+      //int res = internal_search (a2_temp, compare_mode, country);
+      //i = floor (res / REL_FREQ_MULTIPLIER);
+      //int rel_freq = res - gender * REL_FREQ_MULTIPLIER;
       a2_temp[k] = '\0';
     }
 
