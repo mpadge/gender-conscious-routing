@@ -101,10 +101,10 @@ categorise_sex <-  function (sex, size) {
     else
         return ("unisex")
     }
-n2 <- n %>%
-    group_by (name, sex) %>%
-    summarise (size = n ()) %>%
-    group_by (name) %>%
+n2 <- n |>
+    group_by (name, sex) |>
+    summarise (size = n ()) |>
+    group_by (name) |>
     summarise (category = categorise_sex (sex, size))
 knitr::kable (table (n2$category))
 ```

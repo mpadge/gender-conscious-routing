@@ -32,7 +32,7 @@ format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
 #>    user  system elapsed 
-#>   2.025   1.092   3.117
+#>   1.250   1.833   3.086
 knitr::kable (table (x$gender))
 ```
 
@@ -54,7 +54,7 @@ knitr::kable (table (n$sex))
 | boy  | 129000 |
 | girl | 129000 |
 
-Categorising 258,000 names took only 3.117 seconds, or around 100,000
+Categorising 258,000 names took only 3.086 seconds, or around 100,000
 names per second. The following code compares the accuracy, noting that
 many names are of course unisex, whereas the “baby-names” data are
 direct records of individual names and sex.
@@ -116,10 +116,10 @@ categorise_sex <-  function (sex, size) {
     else
         return ("unisex")
     }
-n2 <- n %>%
-    group_by (name, sex) %>%
-    summarise (size = n ()) %>%
-    group_by (name) %>%
+n2 <- n |>
+    group_by (name, sex) |>
+    summarise (size = n ()) |>
+    group_by (name) |>
     summarise (category = categorise_sex (sex, size))
 #> `summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
 knitr::kable (table (n2$category))
