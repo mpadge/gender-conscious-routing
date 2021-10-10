@@ -45,7 +45,7 @@ n <- read.csv ("baby-names.csv", stringsAsFactors = FALSE)
 format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
-knitr::kable (table (x$category))
+knitr::kable (table (x$gender))
 knitr::kable (table (n$sex))
 ```
 
@@ -55,12 +55,12 @@ accuracy, noting that many names are of course unisex, whereas the "baby-names"
 data are direct records of individual names and sex. 
 
 ```{r babyname-output}
-x$category [x$category == "IS_MALE"] <- "boy"
-x$category [x$category == "IS_MOSTLY_MALE"] <- "boy"
-x$category [x$category == "IS_FEMALE"] <- "girl"
-x$category [x$category == "IS_MOSTLY_FEMALE"] <- "girl"
+x$gender [x$gender == "IS_MALE"] <- "boy"
+x$gender [x$gender == "IS_MOSTLY_MALE"] <- "boy"
+x$gender [x$gender == "IS_FEMALE"] <- "girl"
+x$gender [x$gender == "IS_MOSTLY_FEMALE"] <- "girl"
 
-index_right <- which (x$category == n$sex)
+index_right <- which (x$gender == n$sex)
 message (format (length (index_right), big.mark = ","), " / ",
          format (nrow (x), big.mark = ","),
          " of names correctly classified = ",
@@ -114,7 +114,7 @@ with the observed overall distribution of categories as determined by the
 internal library. These two more refined data sets can then be compared:
 
 ```{r}
-n2$gender <- get_gender (n2$name)$category
+n2$gender <- get_gender (n2$name)$gender
 n2$gender [n2$gender == "IS_FEMALE"] <- "girl"
 n2$gender [n2$gender == "IS_MALE"] <- "boy"
 n2$gender [n2$gender == "IS_MOSTLY_FEMALE"] <- "mostly girl"
@@ -132,8 +132,3 @@ The accuracy in that case is
 ct <- with (n2, table (category, gender))
 sum (diag (ct)) / sum (ct)
 ```
-
-
-
-
-

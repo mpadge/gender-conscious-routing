@@ -6,7 +6,8 @@ Routing along streets named after women rather than men.
 
 <!-- badges: start -->
 
-[![R build status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check)
+[![R build
+status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check)
 [![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/master/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)
 [![Project Status:
 Concept](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
@@ -31,40 +32,40 @@ format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
 #>    user  system elapsed 
-#>   1.155   1.463   2.619
-knitr::kable (table (x$category))
+#>   2.025   1.092   3.117
+knitr::kable (table (x$gender))
 ```
 
-| Var1               |   Freq |
-| :----------------- | -----: |
-| IS\_FEMALE         | 103059 |
-| IS\_MALE           |  95751 |
-| IS\_MOSTLY\_FEMALE |  15919 |
-| IS\_MOSTLY\_MALE   |  17290 |
-| IS\_UNISEX\_NAME   |  11296 |
-| NAME\_NOT\_FOUND   |  14685 |
+| Var1             |   Freq |
+|:-----------------|-------:|
+| IS_FEMALE        | 103059 |
+| IS_MALE          |  95751 |
+| IS_MOSTLY_FEMALE |  15919 |
+| IS_MOSTLY_MALE   |  17290 |
+| IS_UNISEX_NAME   |  11296 |
+| NAME_NOT_FOUND   |  14685 |
 
 ``` r
 knitr::kable (table (n$sex))
 ```
 
 | Var1 |   Freq |
-| :--- | -----: |
+|:-----|-------:|
 | boy  | 129000 |
 | girl | 129000 |
 
-Categorising 258,000 names took only 2.619 seconds, or around 100,000
+Categorising 258,000 names took only 3.117 seconds, or around 100,000
 names per second. The following code compares the accuracy, noting that
 many names are of course unisex, whereas the “baby-names” data are
 direct records of individual names and sex.
 
 ``` r
-x$category [x$category == "IS_MALE"] <- "boy"
-x$category [x$category == "IS_MOSTLY_MALE"] <- "boy"
-x$category [x$category == "IS_FEMALE"] <- "girl"
-x$category [x$category == "IS_MOSTLY_FEMALE"] <- "girl"
+x$gender [x$gender == "IS_MALE"] <- "boy"
+x$gender [x$gender == "IS_MOSTLY_MALE"] <- "boy"
+x$gender [x$gender == "IS_FEMALE"] <- "girl"
+x$gender [x$gender == "IS_MOSTLY_FEMALE"] <- "girl"
 
-index_right <- which (x$category == n$sex)
+index_right <- which (x$gender == n$sex)
 message (format (length (index_right), big.mark = ","), " / ",
          format (nrow (x), big.mark = ","),
          " of names correctly classified = ",
@@ -120,11 +121,12 @@ n2 <- n %>%
     summarise (size = n ()) %>%
     group_by (name) %>%
     summarise (category = categorise_sex (sex, size))
+#> `summarise()` has grouped output by 'name'. You can override using the `.groups` argument.
 knitr::kable (table (n2$category))
 ```
 
 | Var1        | Freq |
-| :---------- | ---: |
+|:------------|-----:|
 | boy         | 2764 |
 | girl        | 3345 |
 | mostly boy  |  147 |
@@ -137,7 +139,7 @@ determined by the internal library. These two more refined data sets can
 then be compared:
 
 ``` r
-n2$gender <- get_gender (n2$name)$category
+n2$gender <- get_gender (n2$name)$gender
 n2$gender [n2$gender == "IS_FEMALE"] <- "girl"
 n2$gender [n2$gender == "IS_MALE"] <- "boy"
 n2$gender [n2$gender == "IS_MOSTLY_FEMALE"] <- "mostly girl"
@@ -153,14 +155,15 @@ n2 <- n2 [which (!n2$gender == "NAME_NOT_FOUND"), ]
 knitr::kable (with (n2, table (category, gender)))
 ```
 
-|                |    boy |    girl | mostly boy | mostly girl | unisex |
-| -------------- | -----: | ------: | ---------: | ----------: | -----: |
-| boy            |   1643 |      19 |         92 |          15 |     61 |
-| girl           |     19 |    2221 |         15 |          89 |     66 |
-| mostly boy     |     90 |       3 |         36 |           4 |      8 |
-| mostly girl    |      0 |     173 |          3 |          30 |      7 |
-| unisex         |     27 |      44 |         65 |          79 |     66 |
-| The accuracy i | n that | case is |            |             |        |
+|             |  boy | girl | mostly boy | mostly girl | unisex |
+|:------------|-----:|-----:|-----------:|------------:|-------:|
+| boy         | 1643 |   19 |         92 |          15 |     61 |
+| girl        |   19 | 2221 |         15 |          89 |     66 |
+| mostly boy  |   90 |    3 |         36 |           4 |      8 |
+| mostly girl |    0 |  173 |          3 |          30 |      7 |
+| unisex      |   27 |   44 |         65 |          79 |     66 |
+
+The accuracy in that case is
 
 ``` r
 ct <- with (n2, table (category, gender))
