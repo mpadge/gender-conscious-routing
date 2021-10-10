@@ -8,7 +8,7 @@
   "description": "Gender-conscious routing along streets named after women\n    rather than men.",
   "name": "genderconsciousrouting: Gender-Conscious Routing Along Streets Named After Women Rather\n    Than Men",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.1.1",
+  "version": "0.0.1.002",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -59,6 +59,7 @@
       "@type": "SoftwareApplication",
       "identifier": "dodgr",
       "name": "dodgr",
+      "version": ">= 0.2.11",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -95,6 +96,10 @@
   "codeRepository": "https://github.com/mpadge/gender-conscious-routing",
   "readme": "https://github.com/mpadge/gender-conscious-routing/blob/master/README.md",
   "fileSize": "0KB",
-  "contIntegration": ["https://travis-ci.org/mpadge/gender-conscious-routing", "https://ci.appveyor.com/project/mpadge/gender-conscious-routing", "https://codecov.io/gh/mpadge/gender-conscious-routing"],
+  "contIntegration": [
+    "https://travis-ci.org/mpadge/gender-conscious-routing",
+    "https://ci.appveyor.com/project/mpadge/gender-conscious-routing",
+    "https://codecov.io/gh/mpadge/gender-conscious-routing"
+  ],
   "developmentStatus": "http://www.repostatus.org/#concept"
 }
