@@ -15,3 +15,5 @@ data-raw/
 ^appveyor\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.pre-commit-config\.yaml$
+^codemeta\.json$
