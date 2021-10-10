@@ -14,7 +14,6 @@ URL: https://github.com/mpadge/gender-conscious-routing
 BugReports: https://github.com/mpadge/gender-conscious-routing/issues
 Imports:
     dodgr (>= 0.2.11),
-    magrittr,
     sf
 Suggests: 
     testthat

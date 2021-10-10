@@ -30,14 +30,16 @@ conscious_route <- function (net, start, stop) {
     p_stats <- data.frame (rbind (p0_stats, pf_stats))
     rownames (p_stats) <- c ("default", "female")
 
-    p0 <- as.matrix (pmat [, c ("x", "y")]) %>%
-        sf::st_linestring () %>%
-        sf::st_sfc (crs = 4326) %>%
-        sf::st_sf (geometry = .)
-    pf <- as.matrix (pmat_f [, c ("x", "y")]) %>%
-        sf::st_linestring () %>%
-        sf::st_sfc (crs = 4326) %>%
-        sf::st_sf (geometry = .)
+    p0 <- as.matrix (pmat [, c ("x", "y")])
+    p0 <- sf::st_linestring (p0)
+    p0 <- sf::st_sfc (p0, crs = 4326)
+    p0 <- sf::st_sf (geometry = p0)
+
+    pf <- as.matrix (pmat_f [, c ("x", "y")])
+    pf <- sf::st_linestring (pf)
+    pf <- sf::st_sfc (pf, crs = 4326)
+    pf <- sf::st_sf (geometry = pf)
+
     psf <- rbind (p0, pf)
     psf <- data.frame (type = c ("default", "female"),
                        psf,

@@ -6,13 +6,3 @@
 #' @docType package
 #' @useDynLib genderconsciousrouting, .registration = TRUE
 NULL
-
-#' Pipe operator
-#'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
-#' @export
-#' @importFrom magrittr %>%
-#' @usage lhs \%>\% rhs
-NULL
