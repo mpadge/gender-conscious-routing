@@ -8,7 +8,7 @@
   "description": "Gender-conscious routing along streets named after women\n    rather than men.",
   "name": "genderconsciousrouting: Gender-Conscious Routing Along Streets Named After Women Rather\n    Than Men",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.1.19",
+  "version": "0.0.1.020",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -84,7 +84,10 @@
   "codeRepository": "https://github.com/mpadge/gender-conscious-routing",
   "readme": "https://github.com/mpadge/gender-conscious-routing/blob/main/README.md",
   "fileSize": "0KB",
-  "contIntegration": ["https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check", "https://codecov.io/gh/mpadge/gender-conscious-routing"],
+  "contIntegration": [
+    "https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check",
+    "https://codecov.io/gh/mpadge/gender-conscious-routing"
+  ],
   "developmentStatus": "http://www.repostatus.org/#concept",
   "issueTracker": "https://github.com/mpadge/gender-conscious-routing/issues"
 }

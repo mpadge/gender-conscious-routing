@@ -9,6 +9,8 @@
 #' @export
 get_gender <- function (text, country = NULL) {
 
+    text <- gsub ("[[:punct:]]", " ", text)
+
     if (is.null (country))
         country <- 0
     else
