@@ -5681,7 +5681,10 @@ int main (int argc, char *argv[])
 //' @noRd
 SEXP R_gender (SEXP x_, SEXP country_)
 {
-    size_t len = length (x_);
+    x_ = PROTECT (Rf_coerceVector (x_, STRSXP));
+    country_ = PROTECT (Rf_coerceVector (country_, INTSXP));
+
+    R_len_t len = Rf_length (x_);
     SEXP out = PROTECT (allocVector (INTSXP, len));
 
     int *rout;
@@ -5703,7 +5706,7 @@ SEXP R_gender (SEXP x_, SEXP country_)
 
     int ig = initialize_gender();
 
-    for (int i = 0; i < len; i++)
+    for (R_len_t i = 0; i < len; i++)
     {
         const char * xi = CHAR (STRING_ELT (x_, i));
         char * xi_c = (char*) (xi);
@@ -5712,8 +5715,7 @@ SEXP R_gender (SEXP x_, SEXP country_)
 
     cleanup_gender();
 
-    UNPROTECT (1);
+    UNPROTECT (3);
 
     return out;
 }
-
