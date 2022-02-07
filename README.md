@@ -1,4 +1,12 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check)
+[![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/master/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)
+[![Project Status:
+Concept](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
+<!-- badges: end -->
 
 # gender conscious routing
 
@@ -14,15 +22,6 @@ associations in a very wide variety of languages, far more than any
 other equivalent library, and so allows the functionality of this
 package to be applied to far greater regions of the world that would
 other, non-binary alternatives.
-
-<!-- badges: start -->
-
-[![R build
-status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check)
-[![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/master/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)
-[![Project Status:
-Concept](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
-<!-- badges: end -->
 
 ## Gender catogorizer
 
@@ -43,7 +42,7 @@ format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
 #>    user  system elapsed 
-#>   1.478   1.829   3.310
+#>   1.389   1.839   3.234
 knitr::kable (table (x$gender))
 ```
 
@@ -65,7 +64,7 @@ knitr::kable (table (n$sex))
 | boy  | 129000 |
 | girl | 129000 |
 
-Categorising 258,000 names took only 3.31 seconds, or around 100,000
+Categorising 258,000 names took only 3.234 seconds, or around 100,000
 names per second. The following code compares the accuracy, noting that
 many names are of course unisex, whereas the “baby-names” data are
 direct records of individual names and sex.
