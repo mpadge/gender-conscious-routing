@@ -1,20 +1,19 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0",
-    "http://schema.org"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "genderconsciousrouting",
-  "description": "Gender-conscious routing along streets named after women\n    rather than men.",
+  "description": "Gender-conscious routing along streets named after women rather than men.",
   "name": "genderconsciousrouting: Gender-Conscious Routing Along Streets Named After Women Rather\n    Than Men",
+  "codeRepository": "https://github.com/mpadge/gender-conscious-routing",
+  "issueTracker": "https://github.com/mpadge/gender-conscious-routing/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.1.020",
+  "version": "0.0.1.21",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
+  "runtimePlatform": "R version 4.1.2 (2021-11-01)",
   "author": [
     {
       "@type": "Person",
@@ -23,7 +22,6 @@
       "email": "mark.padgham@email.com"
     }
   ],
-  "contributor": {},
   "copyrightHolder": [
     {
       "@type": "Person",
@@ -31,7 +29,6 @@
       "familyName": "Michael"
     }
   ],
-  "funder": {},
   "maintainer": [
     {
       "@type": "Person",
@@ -54,8 +51,8 @@
       "sameAs": "https://CRAN.R-project.org/package=testthat"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
       "@type": "SoftwareApplication",
       "identifier": "dodgr",
       "name": "dodgr",
@@ -68,7 +65,7 @@
       },
       "sameAs": "https://github.com/atfutures/dodgr"
     },
-    {
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "sf",
       "name": "sf",
@@ -79,15 +76,11 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=sf"
-    }
-  ],
-  "codeRepository": "https://github.com/mpadge/gender-conscious-routing",
-  "readme": "https://github.com/mpadge/gender-conscious-routing/blob/main/README.md",
+    },
+    "SystemRequirements": null
+  },
   "fileSize": "0KB",
-  "contIntegration": [
-    "https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check",
-    "https://codecov.io/gh/mpadge/gender-conscious-routing"
-  ],
-  "developmentStatus": "http://www.repostatus.org/#concept",
-  "issueTracker": "https://github.com/mpadge/gender-conscious-routing/issues"
+  "readme": "https://github.com/mpadge/gender-conscious-routing/blob/main/README.md",
+  "contIntegration": ["https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check", "https://codecov.io/gh/mpadge/gender-conscious-routing"],
+  "developmentStatus": "http://www.repostatus.org/#concept"
 }
