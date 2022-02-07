@@ -15,6 +15,17 @@ knitr::opts_chunk$set(
 
 Routing along streets named after women rather than men.
 
+*Disclaimer*: This package presumes that gender is binary. Which it is not. The
+package and its developers neither endorse nor encourage viewing gender in
+binary terms. This binary distinction is nevertheless hard-coded in this
+package because it relies on a library included with the package but coded
+elsewhere to associate names with genders, and this library is itself binary.
+The library nevertheless allows gender associations in a very wide variety of
+languages, far more than any other equivalent library, and so allows these
+analyses to be applied to far greater regions of the world that would other,
+non-binary alternatives.
+
+
 <!-- badges: start -->
 [![R build status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check)
 [![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/master/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)

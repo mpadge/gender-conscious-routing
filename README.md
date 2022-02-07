@@ -4,6 +4,17 @@
 
 Routing along streets named after women rather than men.
 
+*Disclaimer*: This package presumes that gender is binary. Which it is
+not. The package and its developers neither endorse nor encourage
+viewing gender in binary terms. This binary distinction is nevertheless
+hard-coded in this package because it relies on a library included with
+the package but coded elsewhere to associate names with genders, and
+this library is itself binary. The library nevertheless allows gender
+associations in a very wide variety of languages, far more than any
+other equivalent library, and so allows these analyses to be applied to
+far greater regions of the world that would other, non-binary
+alternatives.
+
 <!-- badges: start -->
 
 [![R build
@@ -32,7 +43,7 @@ format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
 #>    user  system elapsed 
-#>   1.250   1.833   3.086
+#>   1.405   1.878   3.348
 knitr::kable (table (x$gender))
 ```
 
@@ -54,7 +65,7 @@ knitr::kable (table (n$sex))
 | boy  | 129000 |
 | girl | 129000 |
 
-Categorising 258,000 names took only 3.086 seconds, or around 100,000
+Categorising 258,000 names took only 3.348 seconds, or around 100,000
 names per second. The following code compares the accuracy, noting that
 many names are of course unisex, whereas the “baby-names” data are
 direct records of individual names and sex.
