@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/gender-conscious-routing",
   "issueTracker": "https://github.com/mpadge/gender-conscious-routing/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.1.30",
+  "version": "0.0.1.031",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -112,10 +112,13 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=sf"
     },
-    "SystemRequirements": null
+    "SystemRequirements": {}
   },
   "fileSize": "12107.981KB",
   "readme": "https://github.com/mpadge/gender-conscious-routing/blob/main/README.md",
-  "contIntegration": ["https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check", "https://codecov.io/gh/mpadge/gender-conscious-routing"],
+  "contIntegration": [
+    "https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check",
+    "https://codecov.io/gh/mpadge/gender-conscious-routing"
+  ],
   "developmentStatus": "http://www.repostatus.org/#concept"
 }
