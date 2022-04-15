@@ -1,7 +1,7 @@
 Package: genderconsciousrouting
 Title: Gender-Conscious Routing Along Streets Named After Women Rather
     Than Men
-Version: 0.0.1.028
+Version: 0.0.1.030
 Authors@R: c(
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre")),
     person("Jörg", "Michael", role = "cph",
@@ -13,14 +13,17 @@ License: GPL-3
 URL: https://github.com/mpadge/gender-conscious-routing
 BugReports: https://github.com/mpadge/gender-conscious-routing/issues
 Imports:
-    dodgr (>= 0.2.11),
+    dodgr,
     sf
 Suggests: 
+    dplyr,
+    knitr,
+    rmarkdown,
     testthat
-Remotes:
-    atfutures/dodgr
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.2
