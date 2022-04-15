@@ -3,7 +3,6 @@
 \docType{package}
 \name{genderconsciousrouting}
 \alias{genderconsciousrouting}
-\alias{genderconsciousrouting-package}
 \title{genderconsciousrouting}
 \description{
 Gender-Correct Routing Along Streets Named After Women Rather Than Men
