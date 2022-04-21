@@ -17,3 +17,4 @@ aaa\.Rmd*
 *.o
 *.so
 docs
+inst/WORDLIST
