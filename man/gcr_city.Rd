@@ -4,7 +4,7 @@
 \alias{gcr_city}
 \title{gcr_city}
 \usage{
-gcr_city(net, wt_profile = "foot", n = NULL)
+gcr_city(net, wt_profile = "foot", n = NULL, quiet = FALSE)
 }
 \arguments{
 \item{net}{Street network in \code{osmdata_sc} format.}
@@ -14,6 +14,8 @@ gcr_city(net, wt_profile = "foot", n = NULL)
 \item{n}{Number of pints used to calculate pair-wise routes along which to
 aggregate statistics. If no value specified, routes are calculated between
 all pairs for the entire network.}
+
+\item{quiet}{if \code{FALSE}, display progress information on screen.}
 }
 \description{
 Analyse entire properties of one city

@@ -7,11 +7,16 @@
 #' @param n Number of pints used to calculate pair-wise routes along which to
 #' aggregate statistics. If no value specified, routes are calculated between
 #' all pairs for the entire network.
+#' @param quiet if `FALSE`, display progress information on screen.
 #' @export
-gcr_city <- function (net, wt_profile = "foot", n = NULL) {
+gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
 
     dodgr::dodgr_cache_off ()
 
+    if (!quiet) {
+        message (cli::symbol$play,
+                 cli::col_green (" Contracting street network ... "))
+    }
     net <- readRDS (f) |>
         gender_streetnet (wt_profile = wt_profile) |>
         dodgr::dodgr_contract_graph ()
@@ -24,6 +29,11 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL) {
         from <- to <- v$id
     }
 
+    if (!quiet) {
+        message (cli::col_green (cli::symbol$tick, " Contracted street network"))
+        message (cli::symbol$play,
+                 cli::col_green (" Calculating routes (1/2) ... "))
+    }
     d0 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
                                           proportions_only = TRUE)
     d0 <- c (
@@ -67,8 +77,18 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL) {
     net$edge_type [net$edge_type != this_category &
                    !is.na (net$edge_type)] <- "vehicular"
 
+    if (!quiet) {
+        message (cli::symbol$play,
+                 cli::col_green (" Calculated routes (1/2) ... "))
+        message (cli::col_green (cli::symbol$tick, " Calculating routes (2/2) ..."))
+    }
     d1 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
                                           proportions_only = TRUE)
+    if (!quiet) {
+        message (cli::symbol$play,
+                 cli::col_green (" Calculated routes (1/2) ... "))
+    }
+
     d1 <- c (d1,
              length (which (net$edge_type == this_category)) / nrow (net),
              length (which (net$edge_type == "vehicular")) / nrow (net))
