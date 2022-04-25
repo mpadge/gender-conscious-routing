@@ -72,9 +72,9 @@ greatest proportional length along streets named after women:
 ``` r
 conscious_route (net, start = start, stop = stop)
 #> $p_stats
-#>         d_female    d_non       ratio
-#> default   0.0000 14253.97 0.000000000
-#> female  134.9585 14229.33 0.009484535
+#>         d_female  d_male    d_non  p_female     p_male     p_non path_length path_length_rel
+#> default    0.000 190.454 8277.046 0.0000000 0.02249235 0.9775076     8467.50        1.000000
+#> female  1826.583 335.371 8083.941 0.1782746 0.03273223 0.7889932    10245.89        1.210026
 #> 
 #> $paths
 #>      type                       geometry
@@ -90,7 +90,8 @@ conscious_route (net, start = start, stop = stop)
 The function returns a list of the following three items:
 
 1.  `p_stats` providing statistics on absolute and relative distances
-    along the types of ways.
+    along the types of ways (where “non” suffixes denote ways not named
+    after people).
 2.  `paths` providing the path geometries, both of the gender-conscious
     route, and the “default” route which does not follow gender
     conscious paths; and
