@@ -95,7 +95,7 @@ conscious_route (net, start = start, stop = stop)
 #>      type                       geometry
 #> 1 default LINESTRING (6.166698 50.812...
 #> 2  female LINESTRING (6.166698 50.812...
-#>
+#n>
 #> $points
 #>               x        y    colour
 #> 25722  6.166698 50.81288 #44FF22FF
@@ -111,3 +111,66 @@ The function returns a list of the following three items:
 3. `points` with locations of the specified start and end points, along with
    colour codes which can be used to clearly indicate those points on
    interactive maps.
+
+---
+
+## Aggregate statistics for a whole city
+
+Aggregate analyses of statistics on the gender of street names can be seen in
+[the EqualStreetNames project](https://equalstreetnames.org/), which currently
+provides interactive visualisations for 45 cities around the world. The results
+are, however, static, and only quantify overall proportions regardless of where
+streets are located. Many cities consciously name central avenues or boulevards
+after men, while streets named after women may be placed in peripheral
+locations very rarely traversed by the general population. A more appropriate
+way to quantify statistics on relative gender proportions is to weight gendered
+streets by their importance within the spatially-explicit context of the entire
+street network. The most direct way to do that is to weight each
+gender-specific street segment by the corresponding network centrality, so that
+central segments traversed by large numbers of people contribute more than
+peripheral segments. The `genderconsciousrouting` package has an additional
+function which performs these analyses for a given city.
+
+The function works by tracing routes between randomly sampled points in a
+network, with a default to calculate all possible paths between all pairs of
+vertices in the street network. This function takes considerably longer to
+calculate that the simple route function demonstrated above, and it is
+recommended to first specify a value for the number of sampled points of around
+1,000.
+
+```{r gcr_city, eval = FALSE}
+dat <- gcr_city (net, n = 1000)
+▶ Contracting street network ...
+✔ Contracted street network
+▶ Calculating routes (1/2) ...
+▶ Calculated routes (1/2)
+✔ Calculating routes (2/2) ...
+▶ Calculated routes (2/2)
+
+print (dat)
+#>    wt_profile           category  proportion
+#> 1        foot          IS_FEMALE 0.002963653
+#> 2        foot            IS_MALE 0.021652605
+#> 3        foot         NOT_A_NAME 0.975383742
+#> 4        foot          IS_A_NAME 0.024616258
+#> 5        foot      IS_FEMALE_RAW 0.006148932
+#> 6        foot        IS_MALE_RAW 0.025953586
+#> 7        foot     NOT_A_NAME_RAW 0.967897482
+#> 8        foot      IS_A_NAME_RAW 0.032102518
+#> 9        foot         pedestrian 0.447916183
+#> 10       foot     vehicular_foot 0.500669268
+#> 11       foot     pedestrian_RAW 0.255423713
+#> 12       foot vehicular_foot_RAW 0.697429330
+```
+
+The first 8 statistics (with capitalised values for `category`) are 
+divided between "raw" and weighted statistics, where the former are simple
+aggregate proportions of the type presented in
+[EqualStreetNames](https://equalstreetnames.org/), while those without the
+`_raw` suffix are weighted by network centrality, such that more central
+streets contribute more. The final four statistics quantify the proportions of
+journeys along dedicated infrastructure, and are primarily intended to quantify
+the relative prominence of dedicated pedestrian (`wt_profile = "foot"`) and bicycle
+(`wt_profile = "bicycle"`) infrastructure in cities. The `vehicular_foot` rows
+quantify the proportions of journeys or overall edge lengths (`_RAW`) for which
+pedestrian or bicycle infrastructure travels directly beside vehicular ways.
