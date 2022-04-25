@@ -22,16 +22,19 @@ knitr::opts_chunk$set(
 
 Routing along streets named after women rather than men.
 
-*Disclaimer*: This package presumes that gender is binary. Which it is not. The
-package and its developers neither endorse nor encourage viewing gender in
-binary terms. This binary distinction is nevertheless hard-coded here because
-the package relies on a library coded elsewhere to associate names with
-genders, and which provides only binary definitions of gender. The library
-nevertheless allows gender associations in a very wide variety of languages,
-far more than any other equivalent library, and so allows the functionality of
-this package to be applied to far greater regions of the world that would
-other, non-binary alternatives. See the vignette for further detail on the
-gender encoding system used here.
+## A note on gender
+
+Where possible, gender is identified through wikidata entries, which
+accommodate values of female, male, intersex, transgender female, and
+transgender male. Street names which are not associated in Open Street Map with
+wikidata entries are assigned genders using an internally-bundled library which
+presumes that gender is binary. Which it is not. This package and its
+developers neither endorse nor encourage viewing gender in binary terms. The
+library nevertheless allows gender associations in a very wide variety of
+languages, far more than any other equivalent library, and so allows the
+functionality of this package to be applied to far greater regions of the world
+that would other, non-binary alternatives. See the vignette for further detail
+on the gender encoding system used here.
 
 ---
 
