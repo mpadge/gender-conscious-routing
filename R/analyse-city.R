@@ -11,16 +11,16 @@
 #' @export
 gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
 
-    dodgr::dodgr_cache_off ()
+    if (!methods::is (net, "dodgr_streetnet")) {
+        stop ("'net' must be a 'dodgr_streetnet' object constructed with ",
+              "the 'gender_streetnet' function")
+    }
 
     if (!quiet) {
         message (cli::symbol$play,
                  cli::col_green (" Contracting street network ... "),
                  appendLF = FALSE)
     }
-    net <- readRDS (f) |>
-        gender_streetnet (wt_profile = wt_profile) |>
-        dodgr::dodgr_contract_graph ()
     net$edge_type <- net$gender
     v <- dodgr::dodgr_vertices (net)
 
