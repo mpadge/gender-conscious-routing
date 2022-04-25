@@ -27,8 +27,6 @@ the gender encoding system used here.
 
 ------------------------------------------------------------------------
 
-The package includes the following two main functions:
-
 ## Generating gender-conscious routes
 
 The function `conscious_route()` calculates routes which preferentially
