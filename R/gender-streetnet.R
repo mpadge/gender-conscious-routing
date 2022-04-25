@@ -12,7 +12,9 @@
 gender_streetnet <- function (net, wt_profile = "foot", country = "de") {
 
     netw <- dodgr::weight_streetnet (net, wt_profile = wt_profile,
-                                     keep_cols = "name")
+                                     keep_cols = c ("name",
+                                                    "name:etymology",
+                                                    "name:etymology:wikidata"))
 
     g <- get_gender (netw$name)
     g$gender [is.na (g$text)] <- NA_character_
