@@ -30,7 +30,7 @@
     
     <a class="navbar-brand me-2" href="index.html">genderconsciousrouting</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.052</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.055</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,8 +72,12 @@
 <div class="page-header"><h1 id="gender-conscious-routing">gender conscious routing<a class="anchor" aria-label="anchor" href="#gender-conscious-routing"></a>
 </h1></div>
 <p>Routing along streets named after women rather than men.</p>
-<p><em>Disclaimer</em>: This package presumes that gender is binary. Which it is not. The package and its developers neither endorse nor encourage viewing gender in binary terms. This binary distinction is nevertheless hard-coded here because the package relies on a library coded elsewhere to associate names with genders, and which provides only binary definitions of gender. The library nevertheless allows gender associations in a very wide variety of languages, far more than any other equivalent library, and so allows the functionality of this package to be applied to far greater regions of the world that would other, non-binary alternatives. See the vignette for further detail on the gender encoding system used here.</p>
+<div class="section level2">
+<h2 id="a-note-on-gender">A note on gender<a class="anchor" aria-label="anchor" href="#a-note-on-gender"></a>
+</h2>
+<p>Where possible, gender is identified through wikidata entries, which accommodate values of female, male, intersex, transgender female, and transgender male. Street names which are not associated in Open Street Map with wikidata entries are assigned genders using an internally-bundled library which presumes that gender is binary. Which it is not. This package and its developers neither endorse nor encourage viewing gender in binary terms. The library nevertheless allows gender associations in a very wide variety of languages, far more than any other equivalent library, and so allows the functionality of this package to be applied to far greater regions of the world that would other, non-binary alternatives. See the vignette for further detail on the gender encoding system used here.</p>
 <hr>
+</div>
 <div class="section level2">
 <h2 id="generating-gender-conscious-routes">Generating gender-conscious routes<a class="anchor" aria-label="anchor" href="#generating-gender-conscious-routes"></a>
 </h2>
