@@ -69,12 +69,16 @@ path_stats <- function (pmat, net) {
     ft_net <- paste0 (from_id, "-", to_id)
     ft_path <- paste0 (from, "-", to)
     index <- match (ft_path, ft_net)
-    index_out <- which (!net$female [index])
-    index_in <- which (net$female [index])
 
-    d_in <- sum (net$d [index] [index_in])
-    d_out <- sum (net$d [index] [index_out])
-    d_res <- c (d_in, d_out, d_in / d_out)
-    names (d_res) <- c ("d_female", "d_non", "ratio")
+    index_f <- which (net$gender [index] == "IS_FEMALE")
+    index_m <- which (net$gender [index] == "IS_MALE")
+    index_non <- which (net$gender [index] == "NAME_NOT_FOUND")
+
+    d_f <- sum (net$d [index] [index_f])
+    d_m <- sum (net$d [index] [index_m])
+    d_non <- sum (net$d [index] [index_non])
+    d_tot <- sum (net$d [index])
+    d_res <- c (d_f, d_m, d_non, d_f / d_tot, d_m / d_tot, d_non / d_tot)
+    names (d_res) <- c ("d_female", "d_male", "d_non",  "p_female", "p_male", "p_non")
     return (d_res)
 }
