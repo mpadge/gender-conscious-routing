@@ -34,6 +34,9 @@ conscious_route <- function (net, start = NULL, stop = NULL) {
     p_stats <- data.frame (rbind (p0_stats, pf_stats))
     rownames (p_stats) <- c ("default", "female")
 
+    p_stats$path_length <- rowSums (p_stats [, c ("d_female", "d_male", "d_non")])
+    p_stats$path_length_rel <- p_stats$path_length / p_stats$path_length [1]
+
     p0 <- as.matrix (pmat [, c ("x", "y")])
     p0 <- sf::st_linestring (p0)
     p0 <- sf::st_sfc (p0, crs = 4326)
@@ -78,7 +81,9 @@ path_stats <- function (pmat, net) {
     d_m <- sum (net$d [index] [index_m])
     d_non <- sum (net$d [index] [index_non])
     d_tot <- sum (net$d [index])
-    d_res <- c (d_f, d_m, d_non, d_f / d_tot, d_m / d_tot, d_non / d_tot)
-    names (d_res) <- c ("d_female", "d_male", "d_non",  "p_female", "p_male", "p_non")
-    return (d_res)
+
+    res <- c (d_f, d_m, d_non, d_f / d_tot, d_m / d_tot, d_non / d_tot)
+    names (res) <- c ("d_female", "d_male", "d_non",  "p_female", "p_male", "p_non")
+
+    return (res)
 }
