@@ -7,16 +7,27 @@
 #' \link{gender_streetnet} function.
 #' @param start Start point of route.
 #' @param stop End point of route.
+#' @param gender_weight A numeric factor >= 1 by which to preferentially route
+#' along streets named after women. Larger values will search larger distances 
+#' relative to the default (shortest) route to find routes with greatest
+#' proportional distances along streets named after women. Arbitrarily large
+#' values may be specified.
 #' @export
-conscious_route <- function (net, start = NULL, stop = NULL) {
+conscious_route <- function (net, start = NULL, stop = NULL,
+                             gender_weight = 10) {
 
     if (is.null (start) | is.null (stop)) {
         stop ("[start] and [stop] must be specified.")
     }
+    if (!is.numeric (gender_weight) | length (gender_weight) != 1L) {
+        stop ("[gender_weight] must be a single numeric value >= 1")
+    } else if (gender_weight < 1.0) {
+        stop ("[gender_weight] must be a single numeric value >= 1")
+    }
 
     net_f <- net
     index <- which (net_f$female)
-    net_f$d_weighted [index] <- net_f$d_weighted [index] / 10
+    net_f$d_weighted [index] <- net_f$d_weighted [index] / gender_weight
 
     v <- dodgr::dodgr_vertices (net)
     pmat <- dodgr::dodgr_paths (net, from = start, to = stop)
