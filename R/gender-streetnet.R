@@ -87,5 +87,7 @@ wikidata_gender <- function (net) {
     index2 <- match (net$`name:etymology:wikidata` [index], wiki)
     net$gender [index] <- gender [index2]
 
+    attr (net, "num_wikidata_entries") <- length (index)
+
     return (net)
 }
