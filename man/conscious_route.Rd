@@ -4,7 +4,7 @@
 \alias{conscious_route}
 \title{conscious_route}
 \usage{
-conscious_route(net, start, stop)
+conscious_route(net, start = NULL, stop = NULL)
 }
 \arguments{
 \item{net}{Street network with gender column, returned by

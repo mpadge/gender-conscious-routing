@@ -8,7 +8,11 @@
 #' @param start Start point of route.
 #' @param stop End point of route.
 #' @export
-conscious_route <- function (net, start, stop) {
+conscious_route <- function (net, start = NULL, stop = NULL) {
+
+    if (is.null (start) | is.null (stop)) {
+        stop ("[start] and [stop] must be specified.")
+    }
 
     net_f <- net
     index <- which (net_f$female)
