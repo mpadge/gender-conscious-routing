@@ -15,7 +15,8 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
 
     if (!quiet) {
         message (cli::symbol$play,
-                 cli::col_green (" Contracting street network ... "))
+                 cli::col_green (" Contracting street network ... "),
+                 appendLF = FALSE)
     }
     net <- readRDS (f) |>
         gender_streetnet (wt_profile = wt_profile) |>
@@ -30,9 +31,10 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
     }
 
     if (!quiet) {
-        message (cli::col_green (cli::symbol$tick, " Contracted street network"))
+        message ("\r", cli::col_green (cli::symbol$tick, " Contracted street network"))
         message (cli::symbol$play,
-                 cli::col_green (" Calculating routes (1/2) ... "))
+                 cli::col_green (" Calculating routes (1/2) ..."),
+                 appendLF = FALSE)
     }
     d0 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
                                           proportions_only = TRUE)
@@ -79,14 +81,14 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
 
     if (!quiet) {
         message (cli::symbol$play,
-                 cli::col_green (" Calculated routes (1/2) ... "))
+                 cli::col_green (" Calculated routes (1/2)"))
         message (cli::col_green (cli::symbol$tick, " Calculating routes (2/2) ..."))
     }
     d1 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
                                           proportions_only = TRUE)
     if (!quiet) {
         message (cli::symbol$play,
-                 cli::col_green (" Calculated routes (1/2) ... "))
+                 cli::col_green (" Calculated routes (2/2)"))
     }
 
     d1 <- c (d1,
