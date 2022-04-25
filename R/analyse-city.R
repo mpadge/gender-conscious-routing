@@ -18,8 +18,7 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
 
     if (!quiet) {
         message (cli::symbol$play,
-                 cli::col_green (" Contracting street network ... "),
-                 appendLF = FALSE)
+                 cli::col_green (" Contracting street network ... "))
     }
     net$edge_type <- net$gender
     v <- dodgr::dodgr_vertices (net)
@@ -31,10 +30,9 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
     }
 
     if (!quiet) {
-        message ("\r", cli::col_green (cli::symbol$tick, " Contracted street network"))
+        message (cli::col_green (cli::symbol$tick, " Contracted street network"))
         message (cli::symbol$play,
-                 cli::col_green (" Calculating routes (1/2) ..."),
-                 appendLF = FALSE)
+                 cli::col_green (" Calculating routes (1/2) ..."))
     }
     d0 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
                                           proportions_only = TRUE)
@@ -80,14 +78,14 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
                    !is.na (net$edge_type)] <- "vehicular"
 
     if (!quiet) {
-        message (cli::symbol$play,
+        message (cli::symbol$tick,
                  cli::col_green (" Calculated routes (1/2)"))
-        message (cli::col_green (cli::symbol$tick, " Calculating routes (2/2) ..."))
+        message (cli::col_green (cli::symbol$play, " Calculating routes (2/2) ..."))
     }
     d1 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
                                           proportions_only = TRUE)
     if (!quiet) {
-        message (cli::symbol$play,
+        message (cli::symbol$tick,
                  cli::col_green (" Calculated routes (2/2)"))
     }
 
