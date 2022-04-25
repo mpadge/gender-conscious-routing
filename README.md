@@ -112,12 +112,12 @@ which currently provides interactive visualisations for 45 cities around
 the world. The results are, however, static, and only quantify overall
 proportions regardless of where streets are located. Many cities
 consciously name central avenues or boulevards after men, while streets
-named after women may be placed in peripheral locations very rarely
-traversed by the general population. A more appropriate way to quantify
-statistics on relative gender proportions is to weight gendered streets
-by their importance within the spatially-explicit context of the entire
-street network. The most direct way to do that is to weight each
-gender-specific street segment by the corresponding network centrality,
+named after women may be placed in peripheral locations rarely traversed
+by the general population. A more appropriate way to quantify statistics
+on relative gender proportions is to weight gendered streets by their
+importance within the spatially-explicit context of the entire street
+network. The most direct way to do that is to weight each
+gender-specific street segment by its corresponding network centrality,
 so that central segments traversed by large numbers of people contribute
 more than peripheral segments. The `genderconsciousrouting` package has
 an additional function which performs these analyses for a given city.
@@ -125,9 +125,12 @@ an additional function which performs these analyses for a given city.
 The function works by tracing routes between randomly sampled points in
 a network, with a default to calculate all possible paths between all
 pairs of vertices in the street network. This function takes
-considerably longer to calculate that the simple route function
+considerably more time to calculate than the simple route function
 demonstrated above, and it is recommended to first specify a value for
-the number of sampled points of around 1,000.
+the number of sampled points of around 1,000. The time taken can then be
+scaled by the default total number of points, which is equal to
+`nrow(dodgr_vertices(net))`, to estimate how long a full calculation
+might take.
 
 ``` r
 dat <- gcr_city (net, n = 1000)
@@ -166,4 +169,5 @@ pedestrian (`wt_profile = "foot"`) and bicycle
 (`wt_profile = "bicycle"`) infrastructure in cities. The
 `vehicular_foot` rows quantify the proportions of journeys or overall
 edge lengths (`_RAW`) for which pedestrian or bicycle infrastructure
-travels directly beside vehicular ways.
+travels directly beside vehicular ways, rather than on dedicated
+infrastructure.
