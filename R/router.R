@@ -51,10 +51,18 @@ conscious_route <- function (net, start, stop) {
 
 path_stats <- function (pmat, net) {
 
+    if (all (c ("from_id", "to_id") %in% names (net))) {
+        from_id <- net$from_id
+        to_id <- net$to_id
+    } else if (all (c (".vx0", ".vx1") %in% names (net))) {
+        from_id <- net$.vx0
+        to_id <- net$.vx1
+    }
+
     # get edge IDs for the path
     from <- pmat$id [-nrow (pmat)]
     to <- pmat$id [-1]
-    ft_net <- paste0 (net$from_id, "-", net$to_id)
+    ft_net <- paste0 (from_id, "-", to_id)
     ft_path <- paste0 (from, "-", to)
     index <- match (ft_path, ft_net)
     index_out <- which (!net$female [index])
