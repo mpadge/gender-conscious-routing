@@ -12,7 +12,7 @@ length of streets named after women rather than men."><!-- mathjax --><script sr
     
     <a class="navbar-brand me-2" href="../index.html">genderconsciousrouting</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.045</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.049</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@ length of streets named after women rather than men.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">conscious_route</span><span class="op">(</span><span class="va">net</span>, start <span class="op">=</span> <span class="cn">NULL</span>, stop <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">conscious_route</span><span class="op">(</span><span class="va">net</span>, start <span class="op">=</span> <span class="cn">NULL</span>, stop <span class="op">=</span> <span class="cn">NULL</span>, gender_weight <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -69,6 +69,12 @@ length of streets named after women rather than men.</p>
 <dd><p>Start point of route.</p></dd>
 <dt>stop</dt>
 <dd><p>End point of route.</p></dd>
+<dt>gender_weight</dt>
+<dd><p>A numeric factor &gt;= 1 by which to preferentially route
+along streets named after women. Larger values will search larger distances
+relative to the default (shortest) route to find routes with greatest
+proportional distances along streets named after women. Arbitrarily large
+values may be specified.</p></dd>
 </dl></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
