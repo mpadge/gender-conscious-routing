@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">genderconsciousrouting</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.038</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.041</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@
       <img src="" class="logo" alt=""><h1>Gender Encoding</h1>
                         <h4 data-toc-skip class="author">Mark Padgham</h4>
             
-            <h4 data-toc-skip class="date">2022-04-24</h4>
+            <h4 data-toc-skip class="date">2022-04-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mpadge/gender-conscious-routing/blob/HEAD/vignettes/gender-encoding.Rmd" class="external-link"><code>vignettes/gender-encoding.Rmd</code></a></small>
       <div class="d-none name"><code>gender-encoding.Rmd</code></div>
@@ -92,7 +92,7 @@
 <span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gender.html">get_gender</a></span> <span class="op">(</span><span class="va">n</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
 <span class="va">st</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   3.229   2.112   5.341</span>
+<span class="co">#&gt;   3.356   2.304   5.661</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -144,7 +144,7 @@
 </tr>
 </tbody>
 </table>
-<p>Categorising 258,000 names took only 5.341 seconds, or around 100,000 names per second. The following code compares the accuracy, noting that many names are of course unisex, whereas the “baby-names” data are direct records of individual names and sex.</p>
+<p>Categorising 258,000 names took only 5.661 seconds, or around 100,000 names per second. The following code compares the accuracy, noting that many names are of course unisex, whereas the “baby-names” data are direct records of individual names and sex.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span>
 <span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span>
