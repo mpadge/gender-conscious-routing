@@ -76,8 +76,8 @@ wikidata_gender <- function (net) {
         c ("male", "Q6581097"),
         c ("female", "Q6581072"),
         c ("intersex", "Q1097630"),
-        c ("transgender", "emale: Q1052281"),
-        c ("transgender", "ale: Q2449503")
+        c ("transgender female", "Q1052281"),
+        c ("transgender male", "Q2449503")
         )
 
     gender <- gender_map [match (res, gender_map [, 2]), 1]
