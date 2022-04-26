@@ -16,34 +16,35 @@ gender_streetnet <- function (net, wt_profile = "foot", country = "de") {
                                                     "name:etymology",
                                                     "name:etymology:wikidata"))
 
-    g <- get_gender (netw$name)
+    netw <- wikidata_gender (netw)
+
+    index <- which (is.na (netw$gender)) # non-wikidata entries
+    g <- get_gender (netw$name [index])
     g$gender [is.na (g$text)] <- NA_character_
 
     if (tolower (country) == "de") {
 
         # These can not be personal names:
-        index <- which (substring (g$text, 1, 6) == "Alter" |
-                        substring (g$text, 1, 3) == "Am" |
-                        substring (g$text, 1, 3) == "An " |
-                        substring (g$text, 1, 4) == "Auf " |
-                        substring (g$text, 1, 3) == "Im " |
-                        substring (g$text, 1, 3) == "In " |
-                        substring (g$text, 1, 4) == "Zum " |
-                        substring (g$text, 1, 4) == "Zur " |
-                        substring (g$text, 1, 3) == "Zu " |
-                        !grepl ("-|\\s", g$text) |
-                        grepl ("[0-9]", g$text) |
-                        grepl ("Heide$", g$text))
-        g$gender [index] <- "NAME_NOT_FOUND"
+        index2 <- which (substring (g$text, 1, 6) == "Alter" |
+                         substring (g$text, 1, 3) == "Am" |
+                         substring (g$text, 1, 3) == "An " |
+                         substring (g$text, 1, 4) == "Auf " |
+                         substring (g$text, 1, 3) == "Im " |
+                         substring (g$text, 1, 3) == "In " |
+                         substring (g$text, 1, 4) == "Zum " |
+                         substring (g$text, 1, 4) == "Zur " |
+                         substring (g$text, 1, 3) == "Zu " |
+                         !grepl ("-|\\s", g$text) |
+                         grepl ("[0-9]", g$text) |
+                         grepl ("Heide$", g$text))
+        g$gender [index2] <- "NAME_NOT_FOUND"
     }
 
-    netw$gender <- "NAME_NOT_FOUND"
-    netw$gender [which (g$gender == "IS_MALE" |
-                        g$gender == "IS_MOSTLY_MALE")] <- "IS_MALE"
-    netw$gender [which (g$gender == "IS_FEMALE" |
-                        g$gender == "IS_MOSTLY_FEMALE")] <- "IS_FEMALE"
-
-    netw <- wikidata_gender (netw)
+    netw$gender [index] <- "NAME_NOT_FOUND"
+    netw$gender [index] [which (g$gender == "IS_MALE" |
+                                g$gender == "IS_MOSTLY_MALE")] <- "IS_MALE"
+    netw$gender [index] [which (g$gender == "IS_FEMALE" |
+                                g$gender == "IS_MOSTLY_FEMALE")] <- "IS_FEMALE"
 
     netw$female <- FALSE
     netw$female [which (netw$gender == "IS_FEMALE")] <- TRUE
@@ -85,6 +86,9 @@ wikidata_gender <- function (net) {
 
     index <- which (net$`name:etymology:wikidata` %in% wiki)
     index2 <- match (net$`name:etymology:wikidata` [index], wiki)
+    if (!"gender" %in% names (net)) {
+        net$gender <- NA_character_
+    }
     net$gender [index] <- gender [index2]
 
     attr (net, "num_wikidata_entries") <- length (index)
