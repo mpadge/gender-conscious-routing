@@ -63,26 +63,41 @@ wikidata_gender <- function (net) {
     # some have multiple wiki tags, for which choose the first
     wiki <- gsub (";.*$", "", wiki)
 
-    wd <- paste0 (paste0 ("wd:", wiki), collapse = " ")
-    qry <- paste0 ('
-        SELECT DISTINCT ?person ?personLabel ?genderLabel WHERE {
-          VALUES ?person {', wd, '
-          }
-        ?person wdt:P21 ?gender;
-        SERVICE wikibase:label {
-            bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
-    }')
-    qry <- gsub ("\\s+", "%20", gsub ("^\\s?", "", qry))
+    # requests are resticted to 500 objects
+    wiki_chunk <- function (wiki) {
 
-    u <- sprintf ("https://query.wikidata.org/sparql?format=json&query=%s", qry)
-    # calling fromJSON directly sometimes errors on wikidata calls:
-    #res <- jsonlite::fromJSON (u)
-    res <- httr::GET (u)
-    if (res$status != 200L) {
-        return (net)
+        wd <- paste0 (paste0 ("wd:", wiki), collapse = " ")
+        qry <- paste0 ('
+            SELECT DISTINCT ?person ?personLabel ?genderLabel WHERE {
+              VALUES ?person {', wd, '
+              }
+            ?person wdt:P21 ?gender;
+            SERVICE wikibase:label {
+                bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+        }')
+        qry <- gsub ("\\s+", "%20", gsub ("^\\s?", "", qry))
+
+        u <- sprintf ("https://query.wikidata.org/sparql?format=json&query=%s", qry)
+        # calling fromJSON directly sometimes errors on wikidata calls:
+        #res <- jsonlite::fromJSON (u)
+        res <- httr::GET (u)
+        if (res$status != 200L) {
+            return (NULL)
+        }
+        res <- jsonlite::fromJSON (httr::content (res, as = "text"))
+        res <- res$results$bindings
+
+        data.frame (personLabel = res$personLabel$value,
+                    genderLabel = res$genderLabel$value)
     }
-    res <- jsonlite::fromJSON (httr::content (res, as = "text"))
-    res <- res$results$bindings$genderLabel$value
+
+    chunk_size <- 500L
+    index <- seq (1, ceiling (length (wiki) / chunk_size))
+    index <- rep (index, each = chunk_size) [seq (wiki)]
+    wiki <- split (wiki, f = as.factor (index))
+    genders <- do.call (rbind, lapply (wiki, wiki_chunk))
+    rownames (genders) <- NULL
+    names (genders) <- c ("person", "gender")
 
     # https://www.wikidata.org/wiki/Property:P21
     gender_map <- rbind (
@@ -93,14 +108,14 @@ wikidata_gender <- function (net) {
         c ("transgender male", "Q2449503")
         )
 
-    gender <- gender_map [match (res, gender_map [, 2]), 1]
-    gender <- paste0 ("IS_", toupper (gender))
+    gender <- gender_map [match (genders$gender, gender_map [, 2]), 1]
+    genders$gender <- paste0 ("IS_", toupper (gender))
 
-    index <- which (net$`name:etymology:wikidata` %in% wiki)
-    index2 <- match (net$`name:etymology:wikidata` [index], wiki)
-    net$gender [index] <- gender [index2]
+    index <- which (net$`name:etymology:wikidata` %in% genders$person)
+    index2 <- match (net$`name:etymology:wikidata` [index], genders$person)
+    net$gender [index] <- genders$gender [index2]
 
-    attr (net, "num_wikidata_entries") <- length (index)
+    attr (net, "num_wikidata_entries") <- nrow (genders)
 
     return (net)
 }
