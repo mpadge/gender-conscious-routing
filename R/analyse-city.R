@@ -6,7 +6,8 @@
 #' @param wt_profile Type of weighting profile for street network routing,.
 #' @param n Number of pints used to calculate pair-wise routes along which to
 #' aggregate statistics. If no value specified, routes are calculated between
-#' all pairs for the entire network.
+#' all pairs for the entire network. If value exceeds total number of network
+#' nodes, that number is used instead.
 #' @param quiet if `FALSE`, display progress information on screen.
 #' @export
 gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
@@ -24,7 +25,11 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
     v <- dodgr::dodgr_vertices (net)
 
     if (!is.null (n)) {
-        from <- to <- sample (v$id, size = n)
+        if (n > nrow (v)) {
+            from <- to <- v$id
+        } else {
+            from <- to <- sample (v$id, size = n)
+        }
     } else {
         from <- to <- v$id
     }
