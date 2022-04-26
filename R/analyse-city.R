@@ -66,7 +66,7 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
             "steps",
             "pedestrian")
         this_category <- "pedestrian"
-    } else {
+    } else if (wt_profile == "bicycle") {
         types <- c (
             "bridleway",
             "track",
@@ -75,36 +75,59 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
             "pedestrian",
             "cycleway")
         this_category <- "bicycle"
+    } else if (wt_profile == "motorcar") {
+        types <- c (
+            "motorway",
+            "primary",
+            "secondary",
+            "tertiary",
+            "service",
+            "residential",
+            "trunk",
+            "unclassified")
+        this_category <- "motorcar"
     }
 
     types <- paste0 ("^", paste0 (types, collapse = "|^"))
     net$edge_type [grep (types, net$edge_type)] <- this_category
     net$edge_type [net$edge_type == "unclassified"] <- NA_character_
+    vtype <- ifelse (wt_profile == "motorcar",
+                     "motorcar", "vehicular")
     net$edge_type [net$edge_type != this_category &
-                   !is.na (net$edge_type)] <- "vehicular"
+                   !is.na (net$edge_type)] <- vtype
 
     if (!quiet) {
         message (cli::symbol$tick,
                  cli::col_green (" Calculated routes (1/2)"))
-        message (cli::col_green (cli::symbol$play,
-                                 " Calculating routes (2/2) ..."))
-    }
-    d1 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
-                                          proportions_only = TRUE)
-    if (!quiet) {
-        message (cli::symbol$tick,
-                 cli::col_green (" Calculated routes (2/2)"))
     }
 
-    d1 <- c (d1,
-             length (which (net$edge_type == this_category)) / nrow (net),
-             length (which (net$edge_type == "vehicular")) / nrow (net))
-    names (d1) [3:4] <- paste0 (c (this_category, "vehicular"), "_RAW")
+    ret <- d0
 
-    names (d1) <- gsub ("vehicular",
-                        paste0 ("vehicular_", wt_profile), names (d1))
+    if (this_category != "motorcar") {
 
-    ret <- c (d0, d1)
+        if (!quiet) {
+            message (cli::col_green (cli::symbol$play,
+                                     " Calculating routes (2/2) ..."))
+        }
+
+        d1 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
+                                              proportions_only = TRUE)
+        if (!quiet) {
+            message (cli::symbol$tick,
+                     cli::col_green (" Calculated routes (2/2)"))
+        }
+
+        d1 <- c (d1,
+                 length (which (net$edge_type == this_category)) / nrow (net),
+                 length (which (net$edge_type == vtype)) / nrow (net))
+        names (d1) [3:4] <- paste0 (c (this_category, "vehicular"), "_RAW")
+
+        names (d1) <- gsub ("vehicular",
+                            paste0 ("vehicular_", wt_profile), names (d1))
+
+        ret <- c (ret, d1)
+    }
+
     data.frame (wt_profile = wt_profile,
                 category = names (ret),
                 proportion = as.numeric (ret))
