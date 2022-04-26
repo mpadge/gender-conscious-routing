@@ -16,8 +16,11 @@ get_gender <- function (text, country = NULL) {
     else
         country <- get_country (country)
 
-    res <- .Call ("R_gender", as.character (text), as.integer (country))
-    map_gender_results (text, res)
+    values <- unique (text)
+    res <- .Call ("R_gender", as.character (values), as.integer (country))
+    res_expanded <- res [match (text, values)]
+
+    map_gender_results (text, res_expanded)
 }
 
 map_gender_results <- function (text, res) {
