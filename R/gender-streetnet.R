@@ -54,8 +54,14 @@ gender_streetnet <- function (net, wt_profile = "foot", country = "de") {
 
 wikidata_gender <- function (net) {
 
+    if (!"gender" %in% names (net)) {
+        net$gender <- NA_character_
+    }
+
     wiki <- unique (net$`name:etymology:wikidata`)
     wiki <- wiki [which (!is.na (wiki))]
+    # some have multiple wiki tags, for which choose the first
+    wiki <- gsub (";.*$", "", wiki)
 
     wd <- paste0 (paste0 ("wd:", wiki), collapse = " ")
     qry <- paste0 ('
@@ -69,7 +75,13 @@ wikidata_gender <- function (net) {
     qry <- gsub ("\\s+", "%20", gsub ("^\\s?", "", qry))
 
     u <- sprintf ("https://query.wikidata.org/sparql?format=json&query=%s", qry)
-    res <- jsonlite::fromJSON (u)
+    # calling fromJSON directly sometimes errors on wikidata calls:
+    #res <- jsonlite::fromJSON (u)
+    res <- httr::GET (u)
+    if (res$status != 200L) {
+        return (net)
+    }
+    res <- jsonlite::fromJSON (httr::content (res, as = "text"))
     res <- res$results$bindings$genderLabel$value
 
     # https://www.wikidata.org/wiki/Property:P21
@@ -86,9 +98,6 @@ wikidata_gender <- function (net) {
 
     index <- which (net$`name:etymology:wikidata` %in% wiki)
     index2 <- match (net$`name:etymology:wikidata` [index], wiki)
-    if (!"gender" %in% names (net)) {
-        net$gender <- NA_character_
-    }
     net$gender [index] <- gender [index2]
 
     attr (net, "num_wikidata_entries") <- length (index)
