@@ -35,7 +35,8 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
     }
 
     if (!quiet) {
-        message (cli::col_green (cli::symbol$tick, " Contracted street network"))
+        message (cli::col_green (cli::symbol$tick,
+                                 " Contracted street network"))
         message (cli::symbol$play,
                  cli::col_green (" Calculating routes (1/2) ..."))
     }
@@ -85,7 +86,8 @@ gcr_city <- function (net, wt_profile = "foot", n = NULL, quiet = FALSE) {
     if (!quiet) {
         message (cli::symbol$tick,
                  cli::col_green (" Calculated routes (1/2)"))
-        message (cli::col_green (cli::symbol$play, " Calculating routes (2/2) ..."))
+        message (cli::col_green (cli::symbol$play,
+                                 " Calculating routes (2/2) ..."))
     }
     d1 <- dodgr::dodgr_dists_categorical (net, from = from, to = to,
                                           proportions_only = TRUE)
