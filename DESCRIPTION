@@ -1,7 +1,7 @@
 Package: genderconsciousrouting
 Title: Gender-Conscious Routing Along Streets Named After Women Rather
     Than Men
-Version: 0.0.1.056
+Version: 0.0.1.057
 Authors@R: c(
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre")),
     person("Jörg", "Michael", role = "cph",
@@ -16,6 +16,8 @@ BugReports: https://github.com/mpadge/gender-conscious-routing/issues
 Imports:
     cli,
     dodgr,
+    jsonlite,
+    methods,
     sf
 Suggests: 
     dplyr,
