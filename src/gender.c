@@ -1086,7 +1086,12 @@ static void read_line (FILE *fr, char text[], int len)
   text[0] = '\0';
   // MP: text = necessary at start to avoid warn_unused_result on R CMD check
   text = fgets (text,len-2,fr);
-  text[len-1] = '\0';
+  // MP: 'if (text)' also necessary for words which return nothing from
+  // dictionary. That seems only to happen with "zz", which presumably reaches
+  // the end.
+  if (text) {
+      text[len-1] = '\0';
+  }
 }
 
 
