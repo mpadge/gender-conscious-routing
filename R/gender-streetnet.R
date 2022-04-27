@@ -91,6 +91,11 @@ wikidata_gender <- function (net) {
                     genderLabel = res$genderLabel$value)
     }
 
+    if (length (wiki) == 0L) {
+        attr (net, "num_wikidata_entries") <- 0L
+        return (net)
+    }
+
     chunk_size <- 500L
     index <- seq (1, ceiling (length (wiki) / chunk_size))
     index <- rep (index, each = chunk_size) [seq (wiki)]
