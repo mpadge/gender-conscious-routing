@@ -50,7 +50,7 @@ get_country <- function (country) {
     if (length (i) != 1) {
 
         i <- grep (paste0 ("^", tolower (country)), tolower (dat$country_text))
-        if (length (i != 1))
+        if (length (i) != 1)
             stop (paste0 ("Country not found; please enter either 2-letter ",
                           "ISO3166 abbreviation or full country name.\n",
                           "See 'list_countries' for details"))
