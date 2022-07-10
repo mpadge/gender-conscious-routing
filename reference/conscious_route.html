@@ -57,7 +57,7 @@ length of streets named after women rather than men.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">conscious_route</span><span class="op">(</span><span class="va">net</span>, start <span class="op">=</span> <span class="cn">NULL</span>, stop <span class="op">=</span> <span class="cn">NULL</span>, gender_weight <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">conscious_route</span><span class="op">(</span><span class="va">net</span>, start <span class="op">=</span> <span class="cn">NULL</span>, stop <span class="op">=</span> <span class="cn">NULL</span>, gender_weight <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -65,16 +65,23 @@ length of streets named after women rather than men.</p>
     <dl><dt>net</dt>
 <dd><p>Street network with gender column, returned by
 <a href="gender_streetnet.html">gender_streetnet</a> function.</p></dd>
+
+
 <dt>start</dt>
 <dd><p>Start point of route.</p></dd>
+
+
 <dt>stop</dt>
 <dd><p>End point of route.</p></dd>
+
+
 <dt>gender_weight</dt>
 <dd><p>A numeric factor &gt;= 1 by which to preferentially route
 along streets named after women. Larger values will search larger distances
 relative to the default (shortest) route to find routes with greatest
 proportional distances along streets named after women. Arbitrarily large
 values may be specified.</p></dd>
+
 </dl></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -86,7 +93,7 @@ values may be specified.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

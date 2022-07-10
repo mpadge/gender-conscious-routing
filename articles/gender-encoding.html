@@ -66,11 +66,11 @@
 
 
 <script src="gender-encoding_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Gender Encoding</h1>
                         <h4 data-toc-skip class="author">Mark Padgham</h4>
             
-            <h4 data-toc-skip class="date">2022-04-28</h4>
+            <h4 data-toc-skip class="date">2022-07-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mpadge/gender-conscious-routing/blob/HEAD/vignettes/gender-encoding.Rmd" class="external-link"><code>vignettes/gender-encoding.Rmd</code></a></small>
       <div class="d-none name"><code>gender-encoding.Rmd</code></div>
@@ -83,17 +83,17 @@
 </h2>
 <p>This <strong>R</strong> package includes an internally bundled C library for categorising the gender of first names, thanks to Michael Jörg (available <a href="https://www.heise.de/ct/ftp/07/17/182/" class="external-link">here</a>). The library is extremely fast and flexible; covers all European languages and a host of others, and categorises gender very accurately. Here’s a test run on a very large data set of names from the English-speaking world:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">u</span> <span class="op">&lt;-</span> <span class="st">"https://github.com/hadley/data-baby-names/raw/master/baby-names.csv"</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span> <span class="op">(</span><span class="st">"baby-names.csv"</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">chk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span> <span class="op">(</span><span class="va">u</span>, <span class="st">"baby-names.csv"</span><span class="op">)</span>
-<span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span> <span class="op">(</span><span class="st">"baby-names.csv"</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span> <span class="op">(</span><span class="va">n</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>
-<span class="co">#&gt; [1] "258,000"</span>
-<span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gender.html">get_gender</a></span> <span class="op">(</span><span class="va">n</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
-<span class="va">st</span>
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.180   0.068   0.249</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">u</span> <span class="op">&lt;-</span> <span class="st">"https://github.com/hadley/data-baby-names/raw/master/baby-names.csv"</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span> <span class="op">(</span><span class="st">"baby-names.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">chk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span> <span class="op">(</span><span class="va">u</span>, <span class="st">"baby-names.csv"</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span> <span class="op">(</span><span class="st">"baby-names.csv"</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span> <span class="op">(</span><span class="va">n</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "258,000"</span></span>
+<span><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gender.html">get_gender</a></span> <span class="op">(</span><span class="va">n</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">st</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;   0.198   0.056   0.254</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Var1</th>
@@ -127,7 +127,7 @@
 </tbody>
 </table>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">n</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">n</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Var1</th>
@@ -144,64 +144,64 @@
 </tr>
 </tbody>
 </table>
-<p>Categorising 258,000 names took only 0.249 seconds, or around 100,000 names per second. The following code compares the accuracy, noting that many names are of course unisex, whereas the “baby-names” data are direct records of individual names and sex.</p>
+<p>Categorising 258,000 names took only 0.254 seconds, or around 100,000 names per second. The following code compares the accuracy, noting that many names are of course unisex, whereas the “baby-names” data are direct records of individual names and sex.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span>
-<span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span>
-<span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"girl"</span>
-<span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"girl"</span>
-
-<span class="va">index_right</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="va">n</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">index_right</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>, <span class="st">" / "</span>,
-         <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span> <span class="op">(</span><span class="va">x</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>,
-         <span class="st">" of names correctly classified = "</span>,
-         <span class="fu"><a href="https://rdrr.io/r/base/formatc.html" class="external-link">formatC</a></span> <span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">index_right</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span> <span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-                  format <span class="op">=</span> <span class="st">"f"</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, <span class="st">"%"</span><span class="op">)</span>
-<span class="co">#&gt; 217,630 / 258,000 of names correctly classified = 84.4%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"girl"</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"girl"</span></span>
+<span></span>
+<span><span class="va">index_right</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="va">n</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">index_right</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>, <span class="st">" / "</span>,</span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span> <span class="op">(</span><span class="va">x</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>,</span>
+<span>         <span class="st">" of names correctly classified = "</span>,</span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/formatc.html" class="external-link">formatC</a></span> <span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">index_right</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span> <span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>                  format <span class="op">=</span> <span class="st">"f"</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, <span class="st">"%"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 217,630 / 258,000 of names correctly classified = 84.4%</span></span></code></pre></div>
 <p>Noting that the baby name records are structured over time, and include many repeats of the same names, we can try to create “mostly girl/boy” categories based on relative proportions.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-
-<span class="va">categorise_sex</span> <span class="op">&lt;-</span>  <span class="kw">function</span> <span class="op">(</span><span class="va">sex</span>, <span class="va">size</span><span class="op">)</span> <span class="op">{</span>
-    <span class="co"># define relative proportions:</span>
-    <span class="co"># if &gt; rel_props [2], then category is singular</span>
-    <span class="co"># else if &gt; rel_props [1], then category is "mostly" singular,</span>
-    <span class="co"># else category is unisex</span>
-    <span class="va">rel_props</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="fl">4</span>, <span class="fl">1000</span><span class="op">)</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">size</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="va">sex</span><span class="op">)</span>
-
-    <span class="va">bi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"boy"</span><span class="op">)</span>
-    <span class="va">gi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"girl"</span><span class="op">)</span>
-
-    <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"boy"</span><span class="op">)</span>
-    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"girl"</span><span class="op">)</span>
-    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"mostly boy"</span><span class="op">)</span>
-    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"mostly girl"</span><span class="op">)</span>
-    <span class="kw">else</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"unisex"</span><span class="op">)</span>
-    <span class="op">}</span>
-<span class="va">n2</span> <span class="op">&lt;-</span> <span class="va">n</span> |&gt;
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span> <span class="op">(</span><span class="va">name</span>, <span class="va">sex</span><span class="op">)</span> |&gt;
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span> <span class="op">(</span>size <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span> <span class="op">(</span><span class="op">)</span><span class="op">)</span> |&gt;
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span> <span class="op">(</span><span class="va">name</span><span class="op">)</span> |&gt;
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span> <span class="op">(</span>category <span class="op">=</span> <span class="fu">categorise_sex</span> <span class="op">(</span><span class="va">sex</span>, <span class="va">size</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; `summarise()` has grouped output by 'name'. You can override using the</span>
-<span class="co">#&gt; `.groups` argument.</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">n2</span><span class="op">$</span><span class="va">category</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span></span>
+<span><span class="va">categorise_sex</span> <span class="op">&lt;-</span>  <span class="kw">function</span> <span class="op">(</span><span class="va">sex</span>, <span class="va">size</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># define relative proportions:</span></span>
+<span>    <span class="co"># if &gt; rel_props [2], then category is singular</span></span>
+<span>    <span class="co"># else if &gt; rel_props [1], then category is "mostly" singular,</span></span>
+<span>    <span class="co"># else category is unisex</span></span>
+<span>    <span class="va">rel_props</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="fl">4</span>, <span class="fl">1000</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">size</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="va">sex</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">bi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"boy"</span><span class="op">)</span></span>
+<span>    <span class="va">gi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"girl"</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"boy"</span><span class="op">)</span></span>
+<span>    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"girl"</span><span class="op">)</span></span>
+<span>    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"mostly boy"</span><span class="op">)</span></span>
+<span>    <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">gi</span><span class="op">]</span> <span class="op">&gt;</span> <span class="op">(</span><span class="va">size</span> <span class="op">[</span><span class="va">bi</span><span class="op">]</span> <span class="op">*</span> <span class="va">rel_props</span> <span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"mostly girl"</span><span class="op">)</span></span>
+<span>    <span class="kw">else</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span> <span class="op">(</span><span class="st">"unisex"</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span><span class="va">n2</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span> <span class="op">(</span><span class="va">name</span>, <span class="va">sex</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span> <span class="op">(</span>size <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span> <span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span> <span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span> <span class="op">(</span>category <span class="op">=</span> <span class="fu">categorise_sex</span> <span class="op">(</span><span class="va">sex</span>, <span class="va">size</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `summarise()` has grouped output by 'name'. You can override using the</span></span>
+<span><span class="co">#&gt; `.groups` argument.</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">n2</span><span class="op">$</span><span class="va">category</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Var1</th>
@@ -232,16 +232,16 @@
 </table>
 <p>The above values for relative proportions were selected to give good agreement with the observed overall distribution of categories as determined by the internal library. These two more refined data sets can then be compared:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gender.html">get_gender</a></span> <span class="op">(</span><span class="va">n2</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">$</span><span class="va">gender</span>
-<span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"girl"</span>
-<span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span>
-<span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"mostly girl"</span>
-<span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"mostly boy"</span>
-<span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_UNISEX_NAME"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"unisex"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gender.html">get_gender</a></span> <span class="op">(</span><span class="va">n2</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">$</span><span class="va">gender</span></span>
+<span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"girl"</span></span>
+<span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"boy"</span></span>
+<span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_FEMALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"mostly girl"</span></span>
+<span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_MOSTLY_MALE"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"mostly boy"</span></span>
+<span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">[</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"IS_UNISEX_NAME"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"unisex"</span></span></code></pre></div>
 <p>Some names are simply not found, so we’ll remove those from the comparison before calculating final statistics.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">n2</span> <span class="op">&lt;-</span> <span class="va">n2</span> <span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="op">!</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"NAME_NOT_FOUND"</span><span class="op">)</span>, <span class="op">]</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">n2</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">category</span>, <span class="va">gender</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">n2</span> <span class="op">&lt;-</span> <span class="va">n2</span> <span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span> <span class="op">(</span><span class="op">!</span><span class="va">n2</span><span class="op">$</span><span class="va">gender</span> <span class="op">==</span> <span class="st">"NAME_NOT_FOUND"</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">n2</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">category</span>, <span class="va">gender</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -296,9 +296,9 @@
 </table>
 <p>The accuracy in that case is</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">n2</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">category</span>, <span class="va">gender</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span> <span class="op">(</span><span class="va">ct</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span> <span class="op">(</span><span class="va">ct</span><span class="op">)</span>
-<span class="co">#&gt; [1] 0.8196923</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">n2</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span> <span class="op">(</span><span class="va">category</span>, <span class="va">gender</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span> <span class="op">(</span><span class="va">ct</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span> <span class="op">(</span><span class="va">ct</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.8196923</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -313,7 +313,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>
