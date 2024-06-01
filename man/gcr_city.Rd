@@ -13,7 +13,8 @@ gcr_city(net, wt_profile = "foot", n = NULL, quiet = FALSE)
 
 \item{n}{Number of pints used to calculate pair-wise routes along which to
 aggregate statistics. If no value specified, routes are calculated between
-all pairs for the entire network.}
+all pairs for the entire network. If value exceeds total number of network
+nodes, that number is used instead.}
 
 \item{quiet}{if \code{FALSE}, display progress information on screen.}
 }

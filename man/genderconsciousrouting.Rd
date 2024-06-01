@@ -2,8 +2,27 @@
 % Please edit documentation in R/genderconsciousrouting.R
 \docType{package}
 \name{genderconsciousrouting}
+\alias{genderconsciousrouting-package}
 \alias{genderconsciousrouting}
 \title{genderconsciousrouting}
 \description{
 Gender-Correct Routing Along Streets Named After Women Rather Than Men
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/mpadge/gender-conscious-routing}
+  \item \url{https://mpadge.github.io/gender-conscious-routing/}
+  \item Report bugs at \url{https://github.com/mpadge/gender-conscious-routing/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Mark Padgham \email{mark.padgham@email.com}
+
+Other contributors:
+\itemize{
+  \item Jörg Michael (Original author of included gender code) [copyright holder]
+}
+
 }

@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/mpadge/gender-conscious-routing",
   "issueTracker": "https://github.com/mpadge/gender-conscious-routing/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.2.002",
+  "version": "0.0.2.003",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.3 (2022-03-10)",
+  "runtimePlatform": "R version 4.4.0 (2024-04-24)",
   "author": [
     {
       "@type": "Person",
@@ -156,7 +156,7 @@
     },
     "SystemRequirements": {}
   },
-  "fileSize": "12191.553KB",
+  "fileSize": "12192.441KB",
   "readme": "https://github.com/mpadge/gender-conscious-routing/blob/main/README.md",
   "contIntegration": [
     "https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check",
