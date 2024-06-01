@@ -629,7 +629,7 @@ static int initialize_gender (void)
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: %s  is not allowed\n",
+              Rprintf ("Error: %s  is not allowed\n",
                   "strlen (letters_a_to_z) != 26");
             }
           return (-1);
@@ -638,7 +638,7 @@ static int initialize_gender (void)
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: %s  is not allowed\n",
+              Rprintf ("Error: %s  is not allowed\n",
                   "strlen(letters_a_to_z) != strlen(letters_a_to_z)");
             }
           return (-1);
@@ -647,7 +647,7 @@ static int initialize_gender (void)
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: %s  is not allowed\n",
+              Rprintf ("Error: %s  is not allowed\n",
                   "strlen(umlaut_lower) != strlen(umlaut_upper)");
             }
           return (-1);
@@ -658,7 +658,7 @@ static int initialize_gender (void)
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: %s  is not allowed\n",
+              Rprintf ("Error: %s  is not allowed\n",
                   "strlen(umlaut_sort*) != strlen(umlaut_lower)");
             }
           return (-1);
@@ -1168,7 +1168,7 @@ static long binary_search (FILE *fr, char search_name[],
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: Could not position in dictionary file '%s'\n",
+              Rprintf ("Error: Could not position in dictionary file '%s'\n",
                   FIRST_NAME_FILE);
             }
           return (-10L);
@@ -1186,10 +1186,10 @@ static long binary_search (FILE *fr, char search_name[],
                 }
               text[i] = '\0';
 
-              printf ("Error: Invalid version of dictionary file '%s'.\n",
+              Rprintf ("Error: Invalid version of dictionary file '%s'.\n",
                    FIRST_NAME_FILE);
-              printf ("File header is:  \"%s\"\n", text);
-              printf ("(this should be:  \"%s\").\n", CHECK_STRING);
+              Rprintf ("File header is:  \"%s\"\n", text);
+              Rprintf ("(this should be:  \"%s\").\n", CHECK_STRING);
             }
           return (-10L);
         }
@@ -1203,7 +1203,7 @@ static long binary_search (FILE *fr, char search_name[],
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: Could not position in dictionary file '%s'.\n",
+              Rprintf ("Error: Could not position in dictionary file '%s'.\n",
                   FIRST_NAME_FILE);
             }
           return (-10L);
@@ -1244,7 +1244,7 @@ static long binary_search (FILE *fr, char search_name[],
             {
               if (internal_mode & TRACE_GENDER)
                 {
-                  printf ("Could not position in dictionary file '%s'.\n",
+                  Rprintf ("Could not position in dictionary file '%s'.\n",
                       FIRST_NAME_FILE);
                 }
               return (-1L);
@@ -1268,7 +1268,7 @@ static long binary_search (FILE *fr, char search_name[],
 
       if (internal_mode & TRACE_GENDER)
         {
-          printf ("Range = line %ld - %ld,  guess = %ld ('%s')\n",
+          Rprintf ("Range = line %ld - %ld,  guess = %ld ('%s')\n",
               p1+1L, p2+1L, p+1L, temp);
         }
 
@@ -1312,7 +1312,7 @@ static long binary_search (FILE *fr, char search_name[],
       /****  match has been found  ****/
       if (internal_mode & TRACE_GENDER)
         {
-          printf ("Result: name '%s' found\n", temp);
+          Rprintf ("Result: name '%s' found\n", temp);
         }
       return (line_size * p);
     }
@@ -1320,7 +1320,7 @@ static long binary_search (FILE *fr, char search_name[],
   /****  no match found  ****/
   if (internal_mode & TRACE_GENDER)
     {
-      printf ("Result: name '%s' not found\n", search_name);
+      Rprintf ("Result: name '%s' not found\n", search_name);
     }
   return (-1L);
 }
@@ -1881,7 +1881,7 @@ static void print_number_g (char *text, int number, int mode)
 
   if (mode >= 0  &&  number == MATCHES_ALL)
     {
-     printf ("%s = %s", text, "MATCHES_ALL");
+     Rprintf ("%s = %s", text, "MATCHES_ALL");
      return;
     }
 
@@ -1891,16 +1891,16 @@ static void print_number_g (char *text, int number, int mode)
      s = "-";
      number = -number;
     }
-  printf ("%s = %s%d", text,s, (int)(number/100));
+  Rprintf ("%s = %s%d", text,s, (int)(number/100));
 
   if (number % 100 != 0)
     {
      number = number % 100;
-     printf (".%d", (int)(number/10));
+     Rprintf (".%d", (int)(number/10));
      
      if (number % 10 != 0)
        {
-        printf ("%d", number % 10);
+        Rprintf ("%d", number % 10);
        }
     }
 }
@@ -1976,7 +1976,7 @@ static int lev_diff_g
        {
          if (internal_mode & TRACE_GENDER)
            {
-             printf ("Error: initialization failed\n");
+             Rprintf ("Error: initialization failed\n");
            }
          return (INTERNAL_ERROR_GENDER);
        }
@@ -2002,7 +2002,7 @@ static int lev_diff_g
          {
           if (run_mode & (TRACE_GENDER | TRACE_LEV_G))
             {
-             printf ("Error: \"malloc\" for %d Bytes failed.\n", lt);
+             Rprintf ("Error: \"malloc\" for %d Bytes failed.\n", lt);
             }
           return (10000);
          }
@@ -2018,7 +2018,7 @@ static int lev_diff_g
          {
           if (run_mode & (TRACE_GENDER | TRACE_LEV_G))
             {
-             printf ("Error: \"malloc\" for %d Bytes failed.\n", lp);
+             Rprintf ("Error: \"malloc\" for %d Bytes failed.\n", lp);
             }
           if (tt != t_string)
             {
@@ -2038,7 +2038,7 @@ static int lev_diff_g
      /****  internal error  ****/
      if (run_mode & (TRACE_GENDER | TRACE_LEV_G))
        {
-        printf ("Internal error: could not initialize conv strings.\n");
+        Rprintf ("Internal error: could not initialize conv strings.\n");
        }
      return (10000);
    }
@@ -2086,7 +2086,7 @@ static int lev_diff_g
       {
        if (run_mode & (TRACE_GENDER | TRACE_LEV_G))
          {
-          printf ("Error: \"malloc\" for %d Bytes failed.\n", (4*i));
+          Rprintf ("Error: \"malloc\" for %d Bytes failed.\n", (4*i));
          }
        if (tt != t_string  &&  tt != p_string)
          {
@@ -2106,15 +2106,15 @@ static int lev_diff_g
 
  if (run_mode & TRACE_LEV_G)
    {
-    printf ("\nLevenshtein:  Strings = '%s'%s'", pattern, text);
+    Rprintf ("\nLevenshtein:  Strings = '%s'%s'", pattern, text);
     print_number_g (",  Limit", limit,-1);
-    printf ("\n\n         ");
+    Rprintf ("\n\n         ");
 
     for (k=1; k<=lt; k++)
       {
-       printf ("   '%c'", text[k-1]);
+       Rprintf ("   '%c'", text[k-1]);
       }
-    printf ("\n");
+    Rprintf ("\n");
    }
 
  /****  calculate initial values ( = zero'th column)  ****/
@@ -2567,25 +2567,25 @@ static int lev_diff_g
       {
        if (i == 0)
          {
-          printf ("    ");
+          Rprintf ("    ");
          }
        else
          {
-          printf ("'%c' ",cp);
+          Rprintf ("'%c' ",cp);
          }
 
        for (k=0; k<=lt; k++)
          {
           if (d[k] <= limit)
             {
-             printf (" %2d.%02d", (int)(d[k]/100), d[k]%100);
+             Rprintf (" %2d.%02d", (int)(d[k]/100), d[k]%100);
             }
           else
             {
-             printf ("  ----");
+             Rprintf ("  ----");
             }
          }
-       printf ("\n");
+       Rprintf ("\n");
       }
 
     if (col_min > limit + tri[lt])
@@ -2632,7 +2632,7 @@ static int lev_diff_g
 
                  if (run_mode & TRACE_LEV_G)
                    {
-                     printf ("\nMultiple insert found (1):  lev = %d.%02d\n",
+                     Rprintf ("\nMultiple insert found (1):  lev = %d.%02d\n",
                          (int) (d[lt] / 100), d[lt] % 100);
                    }
                }
@@ -2647,7 +2647,7 @@ static int lev_diff_g
 
              if (run_mode & TRACE_LEV_G)
                {
-                 printf ("\nMultiple insert found (2):  lev = %d.%02d\n",
+                 Rprintf ("\nMultiple insert found (2):  lev = %d.%02d\n",
                      (int) (d[lt] / 100), d[lt] % 100);
                }
            }
@@ -2678,7 +2678,7 @@ static int lev_diff_g
 
                  if (run_mode & TRACE_LEV_G)
                    {
-                     printf ("\nBegin of string differ:  lev = %d.%02d\n",
+                     Rprintf ("\nBegin of string differ:  lev = %d.%02d\n",
                          (int) (d[lt] / 100), d[lt] % 100);
                    }
                }
@@ -2717,7 +2717,7 @@ static int lev_diff_g
 
      if (run_mode & TRACE_LEV_G)
        {
-         printf ("\nTrigams:  lev = %d.%02d\n",
+         Rprintf ("\nTrigams:  lev = %d.%02d\n",
              (int)(d[lt]/100), d[lt]%100);
        }
    }
@@ -2745,10 +2745,10 @@ static int lev_diff_g
 
  if (run_mode & TRACE_LEV_G)
    {
-    printf ("\n");
-    printf ("Levenshtein distance = %d.%02d\n", (int)(n/100), (n%100));
+    Rprintf ("\n");
+    Rprintf ("Levenshtein distance = %d.%02d\n", (int)(n/100), (n%100));
     print_number_g ("trigram count", k,-1);
-    printf ("\n\n");
+    Rprintf ("\n\n");
    }
 
  if (trigrams != NULL)
@@ -3040,7 +3040,7 @@ static void trace_info
 /****  output trace info  ****/
 {
   trace_info_into_buffer (text, name, name2, res, data);
-  printf ("%s\n", trace_buffer);
+  Rprintf ("%s\n", trace_buffer);
 }
 
 
@@ -3068,18 +3068,18 @@ static int internal_search
 
   if (internal_mode & TRACE_GENDER)
     {
-      printf ("Searching for name '%s'", search_name);
+      Rprintf ("Searching for name '%s'", search_name);
 
       /****  check for country  ****/
       for (i=0; gc_data[i].country_text != NULL; i++)
         {
           if (country == gc_data[i].gc_country)
             {
-              printf ("  (country = %s)", gc_data[i].country_text);
+              Rprintf ("  (country = %s)", gc_data[i].country_text);
               gc_data[i].n |= 1024;
             }
         }
-      printf ("\n");
+      Rprintf ("\n");
     }
 
   if (f_names == NULL)
@@ -3089,7 +3089,7 @@ static int internal_search
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: could not open dictionary file '%s'\n",
+              Rprintf ("Error: could not open dictionary file '%s'\n",
                   FIRST_NAME_FILE);
             }
           return (INTERNAL_ERROR_GENDER);
@@ -3420,7 +3420,7 @@ static int get_gender_internal
         {
           if (internal_mode & TRACE_GENDER)
             {
-             printf ("Error: initialization failed\n");
+             Rprintf ("Error: initialization failed\n");
             }
           return (INTERNAL_ERROR_GENDER);
         }
@@ -3496,7 +3496,7 @@ static int get_gender_internal
           /****  check this name  ****/
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("\n");
+              Rprintf ("\n");
             }
           if ((internal_mode & GENDER_GET_COUNTRY)
           &&  ! (compare_mode & SEARCH_FIRST))
@@ -3617,7 +3617,7 @@ static int check_nickname_internal (char first_name_1[],
         {
           if (internal_mode & TRACE_GENDER)
             {
-             printf ("Error: initialization failed\n");
+             Rprintf ("Error: initialization failed\n");
             }
           return (INTERNAL_ERROR_GENDER);
         }
@@ -3787,17 +3787,17 @@ static int find_similar_name_internal
 
   if (internal_mode & TRACE_GENDER)
     {
-      printf ("\n");
-      printf ("Searching for similar names and corrections to name '%s'\n",
+      Rprintf ("\n");
+      Rprintf ("Searching for similar names and corrections to name '%s'\n",
           first_name);
-      printf ("(country = '%s'):\n\n", s);
+      Rprintf ("(country = '%s'):\n\n", s);
     }
 
   if (strcmp (first_name,"") == 0)
     {
       if (internal_mode & TRACE_GENDER)
         {
-          printf ("Error: first name is empty.\n");
+          Rprintf ("Error: first name is empty.\n");
         }
       return (-1);
     }
@@ -3805,7 +3805,7 @@ static int find_similar_name_internal
     {
       if (internal_mode & TRACE_GENDER)
         {
-          printf ("Error: result string is too short.\n");
+          Rprintf ("Error: result string is too short.\n");
         }
       return (-1);
     }
@@ -3817,7 +3817,7 @@ static int find_similar_name_internal
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Error: could not open dictionary file '%s'\n",
+              Rprintf ("Error: could not open dictionary file '%s'\n",
                   FIRST_NAME_FILE);
             }
           return (-1);
@@ -3844,9 +3844,9 @@ static int find_similar_name_internal
         {
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("Notice: '%s' is a Russian name and should be '%s'.\n",
+              Rprintf ("Notice: '%s' is a Russian name and should be '%s'.\n",
                   russian_names[i+1], russian_names[i]);
-              printf ("Search will be continued with this name.\n\n");
+              Rprintf ("Search will be continued with this name.\n\n");
             }
 
           strncpy (nam_list[0], russian_names[i+1], DATA_NAME_LENGTH);
@@ -3956,10 +3956,10 @@ static int find_similar_name_internal
               /****  start second search  ****/
               if (internal_mode & TRACE_GENDER)
                 {
-                  printf ("\n");
-                  printf ("Fast search was not successful.\n");
-                  printf ("Starting extended search.\n");
-                  printf ("\n");
+                  Rprintf ("\n");
+                  Rprintf ("Fast search was not successful.\n");
+                  Rprintf ("Starting extended search.\n");
+                  Rprintf ("\n");
                 }
 
               first_char = '\0';
@@ -4158,14 +4158,14 @@ static int find_similar_name_internal
 
           if (internal_mode & TRACE_GENDER)
             {
-              printf ("\n");
-              printf ("Name '%s' found: points = %3d, diff = %3d\n",
+              Rprintf ("\n");
+              Rprintf ("Name '%s' found: points = %3d, diff = %3d\n",
                   this_name, p,k);
-              printf ("Current list of matches:\n");
+              Rprintf ("Current list of matches:\n");
 
               for (i=0; i<n; i++)
                 {
-                  printf ("   %2d. name: '%s'  (points = %3d,  diff = %3d)\n",
+                  Rprintf ("   %2d. name: '%s'  (points = %3d,  diff = %3d)\n",
                      i+1, nam_list[i], p_list[i], d_list[i]);
                 }
             }
@@ -4288,18 +4288,18 @@ static int find_similar_name_internal
 
   if (internal_mode & TRACE_GENDER)
     {
-      printf ("\n");
-      printf ("Final result:\n");
+      Rprintf ("\n");
+      Rprintf ("Final result:\n");
 
       if (x == 0)
         {
-          printf ("No names found.\n");
+          Rprintf ("No names found.\n");
         }
       else
         {
-          printf ("%d name(s) found:  '%s'\n", x, result_string);
+          Rprintf ("%d name(s) found:  '%s'\n", x, result_string);
         }
-      printf ("\n");
+      Rprintf ("\n");
     }
 
   return (x);
@@ -4557,7 +4557,7 @@ void get_gender_for_file (int charset, int country,
 
   if ((fr = fopen (input_file,"rb")) == NULL)
     {
-      printf ("error: cound not read file '%s'\n", input_file);
+      Rprintf ("error: cound not read file '%s'\n", input_file);
       return;
     }
 
@@ -4569,7 +4569,7 @@ void get_gender_for_file (int charset, int country,
     }
   if ((fw = fopen (output_file,s)) == NULL)
     {
-      printf ("error: cound not create file '%s'\n", output_file);
+      Rprintf ("error: cound not create file '%s'\n", output_file);
       fclose (fr);
       return;
     }
@@ -4745,16 +4745,16 @@ void check_consistency (void)
       f_names = fopen (FIRST_NAME_FILE,"rb");
       if (f_names == NULL)
         {
-          printf ("Error: could not open dictionary file '%s'\n",
+          Rprintf ("Error: could not open dictionary file '%s'\n",
               FIRST_NAME_FILE);
           return;
         }
     }
 
-  printf ("\n");
-  printf ("Checking consistency of program and dictionary file.\n");
-  printf ("This will take a few seconds. Please wait...\n");
-  printf ("\n");
+  Rprintf ("\n");
+  Rprintf ("Checking consistency of program and dictionary file.\n");
+  Rprintf ("This will take a few seconds. Please wait...\n");
+  Rprintf ("\n");
 
   /****  read entries in dictionary file  ****/
   fseek (f_names, 0L,SEEK_SET);
@@ -4771,10 +4771,10 @@ void check_consistency (void)
         }
       text[i] = '\0';
 
-      printf ("Error: Invalid version of dictionary file '%s'.\n",
+      Rprintf ("Error: Invalid version of dictionary file '%s'.\n",
          FIRST_NAME_FILE);
-      printf ("File header is:  \"%s\"\n", text);
-      printf ("(this should be:  \"%s\").\n", CHECK_STRING);
+      Rprintf ("File header is:  \"%s\"\n", text);
+      Rprintf ("(this should be:  \"%s\").\n", CHECK_STRING);
 
       return;
     }
@@ -4829,14 +4829,14 @@ void check_consistency (void)
 
           if (i == NAME_NOT_FOUND)
             {
-              printf ("Error: name '%s' not found\n", name);
+              Rprintf ("Error: name '%s' not found\n", name);
               errors++;
 
               internal_mode |= TRACE_GENDER;
               (void) internal_search (name, compare_mode,0);
               internal_mode &= ~TRACE_GENDER;
 
-              printf ("\n");
+              Rprintf ("\n");
             }
         }
 
@@ -4850,11 +4850,11 @@ void check_consistency (void)
 
   if (errors == 0)
     {
-      printf ("Result: No inconsistencies found\n");
+      Rprintf ("Result: No inconsistencies found\n");
     }
   else
     {
-      printf ("Result: %d errors found\n", errors);
+      Rprintf ("Result: %d errors found\n", errors);
     }
 }
 
@@ -4908,7 +4908,7 @@ void print_names_of_country (int charset, char *country_text,
       f_names = fopen (FIRST_NAME_FILE,"rb");
       if (f_names == NULL)
         {
-          printf ("Error: could not open dictionary file '%s'\n",
+          Rprintf ("Error: could not open dictionary file '%s'\n",
               FIRST_NAME_FILE);
           return;
         }
@@ -4922,7 +4922,7 @@ void print_names_of_country (int charset, char *country_text,
     }
   if ((fw = fopen (output_file,s)) == NULL)
     {
-      printf ("error: cound not create file '%s'\n", output_file);
+      Rprintf ("error: cound not create file '%s'\n", output_file);
       return;
     }
 
@@ -5098,7 +5098,7 @@ void print_statistics (int get_full_statistics)
       f_names = fopen (FIRST_NAME_FILE,"rb");
       if (f_names == NULL)
         {
-          printf ("Error: could not open dictionary file '%s'\n",
+          Rprintf ("Error: could not open dictionary file '%s'\n",
               FIRST_NAME_FILE);
           return;
         }
@@ -5222,30 +5222,30 @@ void print_statistics (int get_full_statistics)
       strcpy (last_name, this_name);
     }
 
-  printf ("Statistics of first names in dictionary\n");
-  printf ("=======================================\n");
-  printf ("\n");
-  printf ("Number of first names   :  %6u\n", count);
-  printf ("   girl's names         :  %6u\n", female);
-  printf ("   boy's  names         :  %6u\n", male);
-  printf ("   unisex names         :  %6u\n", unisex);
-  printf ("Equivalent name pairs   :  %6u\n", equiv);
-  printf ("\n");
+  Rprintf ("Statistics of first names in dictionary\n");
+  Rprintf ("=======================================\n");
+  Rprintf ("\n");
+  Rprintf ("Number of first names   :  %6u\n", count);
+  Rprintf ("   girl's names         :  %6u\n", female);
+  Rprintf ("   boy's  names         :  %6u\n", male);
+  Rprintf ("   unisex names         :  %6u\n", unisex);
+  Rprintf ("Equivalent name pairs   :  %6u\n", equiv);
+  Rprintf ("\n");
 
   if (unclass > 0)
     {
-      printf ("Names of unknown origin   : %5u\n", unclass);
-      printf ("\n");
+      Rprintf ("Names of unknown origin   : %5u\n", unclass);
+      Rprintf ("\n");
     }
   if (errors > 0)
     {
-      printf ("Errors (gender is missing): %5u\n", errors);
-      printf ("\n");
+      Rprintf ("Errors (gender is missing): %5u\n", errors);
+      Rprintf ("\n");
     }
 
   for (i=0; gc_data[i].country_text != NULL; i++)
     {
-      printf ("Names from %-15s: %5d\n",
+      Rprintf ("Names from %-15s: %5d\n",
           gc_data[i].country_text, gc_data[i].n);
     }
 
@@ -5254,7 +5254,7 @@ void print_statistics (int get_full_statistics)
   if (unclass > 0)
     {
       fseek (f_names, 0L,SEEK_SET);
-      printf ("\n");
+      Rprintf ("\n");
       while (! feof (f_names))
         {
           /****  read first names  ****/
@@ -5283,7 +5283,7 @@ void print_statistics (int get_full_statistics)
               if (n == 0)
                 {
                   text[POS_UMLAUT_INFO] = '\0';
-                  printf ("Unknown origin:  %s\n", text);
+                  Rprintf ("Unknown origin:  %s\n", text);
                 }
             }
         }
@@ -5296,7 +5296,7 @@ void print_statistics (int get_full_statistics)
 
 
   /****  print detailed statistics for all countries  ****/
-  printf ("\n");
+  Rprintf ("\n");
   for (i=0; gc_data[i].country_text != NULL; i++)
     {
       /****  read entries in dictionary file  ****/
@@ -5373,9 +5373,9 @@ void print_statistics (int get_full_statistics)
                    break;
         }
 
-      printf ("\n");
-      printf ("Statistics for %s  (statistics are %s):\n", gc_data[i].country_text, s);
-      printf ("                rare            medium          common         total\n");
+      Rprintf ("\n");
+      Rprintf ("Statistics for %s  (statistics are %s):\n", gc_data[i].country_text, s);
+      Rprintf ("                rare            medium          common         total\n");
 
       for (n=0; n<5; n++)
         {
@@ -5395,7 +5395,7 @@ void print_statistics (int get_full_statistics)
 
          if (n <= 3  ||  c_country[n][0] > 0)
            {
-             printf ("%s:  %4d %4d %3d %3d %3d %3d %3d %3d %2d %2d %2d %1d %1d  %5d\n", s,
+             Rprintf ("%s:  %4d %4d %3d %3d %3d %3d %3d %3d %2d %2d %2d %1d %1d  %5d\n", s,
                  c_country[n][1], c_country[n][2], c_country[n][3], c_country[n][4],
                  c_country[n][5], c_country[n][6], c_country[n][7], c_country[n][8],
                  c_country[n][9], c_country[n][10], c_country[n][11], c_country[n][12],
@@ -5419,57 +5419,57 @@ int main (int argc, char *argv[])
   ||  strcmp (argv[1], "-h") == 0
   ||  strcmp (argv[1], "-help") == 0)
     {
-     printf ("Usage:  gender  -get_gender      [ -country=<country> ]   <first_name>   [ -trace ]\n");
-     printf (" or  :  gender  -check_nickname  [ -country=<country> ]  <name_1>  <name_2>  [ -trace ]\n");
-     printf (" or  :  gender  -find_similar_name  [ -country=<country> ]  <first_name>   [ -trace ]\n");
-     printf ("\n");
-     printf (" or  :  gender  -get_gender_for_file  [ -country=<country> ]   [ -detail ]   [ -unicode | -utf8 ]   <input_file>   <output_file>\n");
-     printf (" or  :  gender  -check_consistency\n");
-     printf (" or  :  gender  -print_names_of_country  <country>  [ <min_frequency>   [ <max_frequency> ] ]   [ -detail ]   [ -unicode | -utf8 ]   <output_file>\n");
-     printf (" or  :  gender  -statistics  [ -detail ]\n");
-     printf ("\n");
-     printf ("Program for checking first name and gender (%s).\n\n", GENDER_VERSION);
-     printf ("\n");
-     printf ("Options:\n");
-     printf (" -get_gender             :  Determine the gender of a given first name.\n");
-     printf (" -check_nickname         :  Check, if two first names are \"equivalent\".\n");
-     printf (" -find_similar_name      :  Try to get a correction for a given first name.\n");
-     printf ("\n");
-     printf (" -get_gender_for_file    :  Determine the gender for all names from a text file.\n");
-     printf (" -check_consistency      :  Check consistency of program and dictionary file.\n");
-     printf (" -print_names_of_country :  Print all names of a given country.\n");
-     printf ("                            (if <country> = \"all\", the function will be\n");
-     printf ("                             called for all countries)\n");
-     printf (" -statistics             :  Print statistics of first names in dictionary file.\n");
-     printf ("\n");
-     printf (" -lev  <name1>  <name2>  :  Call the Levenshtein function (for diagnostics only).\n");
-     printf ("\n");
+     Rprintf ("Usage:  gender  -get_gender      [ -country=<country> ]   <first_name>   [ -trace ]\n");
+     Rprintf (" or  :  gender  -check_nickname  [ -country=<country> ]  <name_1>  <name_2>  [ -trace ]\n");
+     Rprintf (" or  :  gender  -find_similar_name  [ -country=<country> ]  <first_name>   [ -trace ]\n");
+     Rprintf ("\n");
+     Rprintf (" or  :  gender  -get_gender_for_file  [ -country=<country> ]   [ -detail ]   [ -unicode | -utf8 ]   <input_file>   <output_file>\n");
+     Rprintf (" or  :  gender  -check_consistency\n");
+     Rprintf (" or  :  gender  -print_names_of_country  <country>  [ <min_frequency>   [ <max_frequency> ] ]   [ -detail ]   [ -unicode | -utf8 ]   <output_file>\n");
+     Rprintf (" or  :  gender  -statistics  [ -detail ]\n");
+     Rprintf ("\n");
+     Rprintf ("Program for checking first name and gender (%s).\n\n", GENDER_VERSION);
+     Rprintf ("\n");
+     Rprintf ("Options:\n");
+     Rprintf (" -get_gender             :  Determine the gender of a given first name.\n");
+     Rprintf (" -check_nickname         :  Check, if two first names are \"equivalent\".\n");
+     Rprintf (" -find_similar_name      :  Try to get a correction for a given first name.\n");
+     Rprintf ("\n");
+     Rprintf (" -get_gender_for_file    :  Determine the gender for all names from a text file.\n");
+     Rprintf (" -check_consistency      :  Check consistency of program and dictionary file.\n");
+     Rprintf (" -print_names_of_country :  Print all names of a given country.\n");
+     Rprintf ("                            (if <country> = \"all\", the function will be\n");
+     Rprintf ("                             called for all countries)\n");
+     Rprintf (" -statistics             :  Print statistics of first names in dictionary file.\n");
+     Rprintf ("\n");
+     Rprintf (" -lev  <name1>  <name2>  :  Call the Levenshtein function (for diagnostics only).\n");
+     Rprintf ("\n");
 
      return (1);
     }
 
-  printf ("IS_FEMALE = %d\n", IS_FEMALE);
-  printf ("IS_MOSTLY_FEMALE = %d\n", IS_MOSTLY_FEMALE);
-  printf ("IS_MALE = %d\n", IS_MALE);
-  printf ("IS_MOSTLY_MALE = %d\n", IS_MOSTLY_FEMALE);
-  printf ("IS_UNISEX_NAME = %d\n", IS_UNISEX_NAME);
-  printf ("IS_A_COUPLE = %d\n", IS_A_COUPLE);
-  printf ("NAME_NOT_FOUND = %d\n", NAME_NOT_FOUND);
-  printf ("ERROR_IN_NAME = %d\n", ERROR_IN_NAME);
-  printf ("INTERNAL_ERROR_GENDER = %d\n", INTERNAL_ERROR_GENDER);
+  Rprintf ("IS_FEMALE = %d\n", IS_FEMALE);
+  Rprintf ("IS_MOSTLY_FEMALE = %d\n", IS_MOSTLY_FEMALE);
+  Rprintf ("IS_MALE = %d\n", IS_MALE);
+  Rprintf ("IS_MOSTLY_MALE = %d\n", IS_MOSTLY_FEMALE);
+  Rprintf ("IS_UNISEX_NAME = %d\n", IS_UNISEX_NAME);
+  Rprintf ("IS_A_COUPLE = %d\n", IS_A_COUPLE);
+  Rprintf ("NAME_NOT_FOUND = %d\n", NAME_NOT_FOUND);
+  Rprintf ("ERROR_IN_NAME = %d\n", ERROR_IN_NAME);
+  Rprintf ("INTERNAL_ERROR_GENDER = %d\n", INTERNAL_ERROR_GENDER);
 
-  printf ("\ninternal_mode = %d\n", internal_mode);
+  Rprintf ("\ninternal_mode = %d\n", internal_mode);
 
   if (! (internal_mode & GENDER_INITIALIZED))
     {
       i = initialize_gender();
-      printf ("gender initialized at %d\n", i);
+      Rprintf ("gender initialized at %d\n", i);
 
       if (i < 0  ||  ! (internal_mode & GENDER_INITIALIZED))
         {
           if (internal_mode & TRACE_GENDER)
             {
-             printf ("Error: initialization failed\n");
+             Rprintf ("Error: initialization failed\n");
             }
           return (INTERNAL_ERROR_GENDER);
         }
@@ -5493,7 +5493,7 @@ int main (int argc, char *argv[])
     {
       if (argc < 3)
         {
-          printf ("Wrong # of arguments.\n");
+          Rprintf ("Wrong # of arguments.\n");
           return (1);
         }
 
@@ -5527,7 +5527,7 @@ int main (int argc, char *argv[])
     {
       if (argc < 3)
         {
-          printf ("Wrong # of arguments.\n");
+          Rprintf ("Wrong # of arguments.\n");
           return (1);
         }
 
@@ -5540,7 +5540,7 @@ int main (int argc, char *argv[])
       i = get_gender (argv[2], 
               GENDER_COMPARE_EXPANDED_UMLAUTS, country);
 
-      printf ("i = %d\n", i);
+      Rprintf ("i = %d\n", i);
       trace_info ("final result for", argv[2], NULL,i, NULL);
     }
 
@@ -5548,7 +5548,7 @@ int main (int argc, char *argv[])
     {
       if (argc < 4)
         {
-          printf ("Wrong # of arguments.\n");
+          Rprintf ("Wrong # of arguments.\n");
           return (1);
         }
 
@@ -5568,7 +5568,7 @@ int main (int argc, char *argv[])
     {
       if (argc < 3)
         {
-          printf ("Wrong # of arguments.\n");
+          Rprintf ("Wrong # of arguments.\n");
           return (1);
         }
 
@@ -5581,11 +5581,11 @@ int main (int argc, char *argv[])
 
       if (i > 0)
         {
-          printf ("Result: %d name(s) found:  '%s'\n", i,text);
+          Rprintf ("Result: %d name(s) found:  '%s'\n", i,text);
         }
       else
         {
-          printf ("No names found.\n");
+          Rprintf ("No names found.\n");
         }
     }
 
@@ -5599,7 +5599,7 @@ int main (int argc, char *argv[])
     {
       if (argc < 4)
         {
-          printf ("Wrong # of arguments.\n");
+          Rprintf ("Wrong # of arguments.\n");
           return (1);
         }
 
