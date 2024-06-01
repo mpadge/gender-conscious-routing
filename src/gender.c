@@ -1455,7 +1455,7 @@ static void conv_from_unicode_line (char dest[], char src[], int len)
           if (x > 0)
             {
               /****  unknown unicode char  ****/
-              sprintf (text, "<#%03d>", x);
+              Rprintf (text, "<#%03d>", x);
               s = text;
               while (k < len-1  &&  *s != '\0')
                 {
@@ -1619,7 +1619,7 @@ static void conv_from_utf8_line (char dest[], char src[], int len)
           if (x > 0)
             {
               /****  unknown unicode char  ****/
-              sprintf (text, "<#%03d>", x);
+              Rprintf (text, "<#%03d>", x);
               s = text;
               while (k < len-1  &&  *s != '\0')
                 {
@@ -3675,13 +3675,13 @@ static int check_nickname_internal (char first_name_1[],
   i = NAME_NOT_FOUND;
   if (n <= k)
     {
-      sprintf (a_temp+n, " %s", a2_temp);
+      Rprintf (a_temp+n, " %s", a2_temp);
       i = internal_search (a_temp, compare_mode, country);
       a_temp[n] = '\0';
     }
   if (k <= n  &&  i == NAME_NOT_FOUND)
     {
-      sprintf (a2_temp+k, " %s", a_temp);
+      Rprintf (a2_temp+k, " %s", a_temp);
       i = internal_search (a2_temp, compare_mode, country);
       a2_temp[k] = '\0';
     }
@@ -3864,7 +3864,7 @@ static int find_similar_name_internal
     }
 
   /****  search first letter in dictionary file  ****/
-  sprintf (this_name, "%c", first_char);
+  Rprintf (this_name, "%c", first_char);
 
   pos_f = binary_search (f_names, this_name, DATA_NAME_POS,
             DATA_NAME_LENGTH+1, GET_MATCH_OR_NEXT_HIGHER);
@@ -4687,34 +4687,34 @@ void get_gender_for_file (int charset, int country,
   strcpy (text, "");
   print_line (fw, charset, text);
 
-  sprintf (text, "Girl's names  : %5d", count[0]);
+  Rprintf (text, "Girl's names  : %5d", count[0]);
   print_line (fw, charset, text);
 
-  sprintf (text, "Boy's names   : %5d", count[1]);
+  Rprintf (text, "Boy's names   : %5d", count[1]);
   print_line (fw, charset, text);
 
-  sprintf (text, "Mostly female : %5d", count[2]);
+  Rprintf (text, "Mostly female : %5d", count[2]);
   print_line (fw, charset, text);
 
-  sprintf (text, "Mostly male   : %5d", count[3]);
+  Rprintf (text, "Mostly male   : %5d", count[3]);
   print_line (fw, charset, text);
 
-  sprintf (text, "Unisex names  : %5d", count[4]);
+  Rprintf (text, "Unisex names  : %5d", count[4]);
   print_line (fw, charset, text);
 
-  sprintf (text, "Name not found: %5d", count[5]);
+  Rprintf (text, "Name not found: %5d", count[5]);
   print_line (fw, charset, text);
 
   if (count[6] > 0)
     {
-      sprintf (text, "Errors        : %5d", count[6]);
+      Rprintf (text, "Errors        : %5d", count[6]);
       print_line (fw, charset, text);
     }
 
   i = count[0] + count[1] + count[2] + count[3] + count[4]
      + count[5] + count[6];
 
-  sprintf (text, "  total       : %5d", i);
+  Rprintf (text, "  total       : %5d", i);
   print_line (fw, charset, text);
 
   if (uni_del)
@@ -4964,7 +4964,7 @@ void print_names_of_country (int charset, char *country_text,
           print_line (fw, charset, "");
           print_line (fw, charset, "");
 
-          sprintf (text, "%-*s", POS_UMLAUT_INFO+6, "");
+          Rprintf (text, "%-*s", POS_UMLAUT_INFO+6, "");
           for (k=0; text[k] != '\0'; k++)
             {
               text[k] = '=';
@@ -4981,7 +4981,7 @@ void print_names_of_country (int charset, char *country_text,
       uni_del = 0;
 
       /****  print header  ****/
-      sprintf (text, "Names from %s:", country_text);
+      Rprintf (text, "Names from %s:", country_text);
       print_line (fw, charset, text);
       print_line (fw, charset, "");
 
@@ -4989,7 +4989,7 @@ void print_names_of_country (int charset, char *country_text,
         {
           print_line (fw, charset, "");
 
-          sprintf (text, "%-*sfrequency", POS_UMLAUT_INFO-2, "gender name");
+          Rprintf (text, "%-*sfrequency", POS_UMLAUT_INFO-2, "gender name");
           print_line (fw, charset, text);
           for (k=0; text[k] != '\0'; k++)
             {
@@ -5024,7 +5024,7 @@ void print_names_of_country (int charset, char *country_text,
               if (internal_mode & DETAILS_FOR_COUNTRY)
                 {
                   text[POS_UMLAUT_INFO] = '\0';
-                  sprintf (text, "%s%2d", text,k);
+                  Rprintf (text, "%s%2d", text,k);
 
                   for (k= POS_UMLAUT_INFO+2; k >= 0; k--)
                     {
