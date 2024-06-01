@@ -5,4 +5,4 @@
 #' @name genderconsciousrouting
 #' @docType package
 #' @useDynLib genderconsciousrouting, .registration = TRUE
-NULL
+"_PACKAGE"
