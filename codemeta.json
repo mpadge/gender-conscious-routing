@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/mpadge/gender-conscious-routing",
   "issueTracker": "https://github.com/mpadge/gender-conscious-routing/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.2.007",
+  "version": "0.0.2.008",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
