@@ -5,10 +5,10 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  out.width = "100%"
+knitr::opts_chunk$set (
+    collapse = TRUE,
+    comment = "#>",
+    out.width = "100%"
 )
 ```
 
@@ -93,12 +93,12 @@ conscious_route (net, start = start, stop = stop)
 #>         d_female  d_male    d_non  p_female     p_male     p_non path_length path_length_rel
 #> default    0.000 190.454 8277.046 0.0000000 0.02249235 0.9775076     8467.50        1.000000
 #> female  1826.583 335.371 8083.941 0.1782746 0.03273223 0.7889932    10245.89        1.210026
-#> 
+#>
 #> $paths
 #>      type                       geometry
 #> 1 default LINESTRING (6.166698 50.812...
 #> 2  female LINESTRING (6.166698 50.812...
-#n>
+# n>
 #> $points
 #>               x        y    colour
 #> 25722  6.166698 50.81288 #44FF22FF
@@ -121,7 +121,7 @@ The function returns a list of the following three items:
 
 Aggregate analyses of statistics on the gender of street names can be seen in
 [the EqualStreetNames project](https://equalstreetnames.org/), which currently
-provides interactive visualisations for 45 cities around the world. The results
+provides interactive visualisations for 62 cities around the world. The results
 are, however, static, and only quantify overall proportions regardless of where
 streets are located. Many cities consciously name central avenues or boulevards
 after men, while streets named after women may be placed in peripheral
@@ -145,6 +145,9 @@ calculation might take.
 
 ```{r gcr_city, eval = FALSE}
 dat <- gcr_city (net, n = 1000)
+```
+
+```{bash gcr_city-results, eval = FALSE, echo = TRUE}
 ▶ Contracting street network ...
 ✔ Contracted street network
 ▶ Calculating routes (1/2) ...
@@ -154,18 +157,18 @@ dat <- gcr_city (net, n = 1000)
 
 print (dat)
 #>    wt_profile           category  proportion
-#> 1        foot          IS_FEMALE 0.002963653
-#> 2        foot            IS_MALE 0.021652605
-#> 3        foot         NOT_A_NAME 0.975383742
-#> 4        foot          IS_A_NAME 0.024616258
-#> 5        foot      IS_FEMALE_RAW 0.006148932
-#> 6        foot        IS_MALE_RAW 0.025953586
-#> 7        foot     NOT_A_NAME_RAW 0.967897482
-#> 8        foot      IS_A_NAME_RAW 0.032102518
-#> 9        foot         pedestrian 0.447916183
-#> 10       foot     vehicular_foot 0.500669268
-#> 11       foot     pedestrian_RAW 0.255423713
-#> 12       foot vehicular_foot_RAW 0.697429330
+#> 1        foot          IS_FEMALE 0.003105508
+#> 2        foot            IS_MALE 0.021219084
+#> 3        foot         NOT_A_NAME 0.975675408
+#> 4        foot          IS_A_NAME 0.024324592
+#> 5        foot      IS_FEMALE_RAW 0.005513113
+#> 6        foot        IS_MALE_RAW 0.021046446
+#> 7        foot     NOT_A_NAME_RAW 0.973440441
+#> 8        foot      IS_A_NAME_RAW 0.026559559
+#> 9        foot         pedestrian 0.477930169
+#> 10       foot     vehicular_foot 0.457210378
+#> 11       foot     pedestrian_RAW 0.354288475
+#> 12       foot vehicular_foot_RAW 0.584957718
 ```
 
 The first 8 statistics (with capitalised values for `category`) are 
@@ -173,10 +176,13 @@ divided between "raw" and weighted statistics, where the former are simple
 aggregate proportions of the type presented in
 [EqualStreetNames](https://equalstreetnames.org/), while those without the
 `_raw` suffix are weighted by network centrality, such that more central
-streets contribute more. The final four statistics quantify the proportions of
-journeys along dedicated infrastructure, and are primarily intended to quantify
-the relative prominence of dedicated pedestrian (`wt_profile = "foot"`) and bicycle
-(`wt_profile = "bicycle"`) infrastructure in cities. The `vehicular_foot` rows
-quantify the proportions of journeys or overall edge lengths (`_RAW`) for which
-pedestrian or bicycle infrastructure travels directly beside vehicular ways,
-rather than on dedicated infrastructure.
+streets contribute more.
+
+The final four statistics quantify the proportions of journeys along dedicated
+infrastructure, and are primarily intended to quantify the relative prominence
+of dedicated pedestrian (for networks weighted using `wt_profile = "foot"`) and
+bicycle (for networks weighted using `wt_profile = "bicycle"`) infrastructure
+in cities. The network here was weighted for pedestrian (`"foot"`) routing, and
+so `vehicular_foot` rows quantify the proportions of journeys or overall edge
+lengths (`_RAW`) for which pedestrian infrastructure travels directly beside
+vehicular ways, rather than on dedicated infrastructure.
