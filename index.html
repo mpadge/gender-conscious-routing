@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">genderconsciousrouting</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.008</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.009</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,12 +99,12 @@
 <span><span class="co">#&gt;         d_female  d_male    d_non  p_female     p_male     p_non path_length path_length_rel</span></span>
 <span><span class="co">#&gt; default    0.000 190.454 8277.046 0.0000000 0.02249235 0.9775076     8467.50        1.000000</span></span>
 <span><span class="co">#&gt; female  1826.583 335.371 8083.941 0.1782746 0.03273223 0.7889932    10245.89        1.210026</span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;</span></span>
 <span><span class="co">#&gt; $paths</span></span>
 <span><span class="co">#&gt;      type                       geometry</span></span>
 <span><span class="co">#&gt; 1 default LINESTRING (6.166698 50.812...</span></span>
 <span><span class="co">#&gt; 2  female LINESTRING (6.166698 50.812...</span></span>
-<span><span class="co">#n&gt;</span></span>
+<span><span class="co"># n&gt;</span></span>
 <span><span class="co">#&gt; $points</span></span>
 <span><span class="co">#&gt;               x        y    colour</span></span>
 <span><span class="co">#&gt; 25722  6.166698 50.81288 #44FF22FF</span></span>
@@ -123,31 +123,33 @@
 <div class="section level2">
 <h2 id="aggregate-statistics-for-a-whole-city">Aggregate statistics for a whole city<a class="anchor" aria-label="anchor" href="#aggregate-statistics-for-a-whole-city"></a>
 </h2>
-<p>Aggregate analyses of statistics on the gender of street names can be seen in <a href="https://equalstreetnames.org/" class="external-link">the EqualStreetNames project</a>, which currently provides interactive visualisations for 45 cities around the world. The results are, however, static, and only quantify overall proportions regardless of where streets are located. Many cities consciously name central avenues or boulevards after men, while streets named after women may be placed in peripheral locations rarely traversed by the general population. A more appropriate way to quantify statistics on relative gender proportions is to weight gendered streets by their importance within the spatially-explicit context of the entire street network. The most direct way to do that is to weight each gender-specific street segment by its corresponding network centrality, so that central segments traversed by large numbers of people contribute more than peripheral segments. The <code>genderconsciousrouting</code> package has an additional function which performs these analyses for a given city.</p>
+<p>Aggregate analyses of statistics on the gender of street names can be seen in <a href="https://equalstreetnames.org/" class="external-link">the EqualStreetNames project</a>, which currently provides interactive visualisations for 62 cities around the world. The results are, however, static, and only quantify overall proportions regardless of where streets are located. Many cities consciously name central avenues or boulevards after men, while streets named after women may be placed in peripheral locations rarely traversed by the general population. A more appropriate way to quantify statistics on relative gender proportions is to weight gendered streets by their importance within the spatially-explicit context of the entire street network. The most direct way to do that is to weight each gender-specific street segment by its corresponding network centrality, so that central segments traversed by large numbers of people contribute more than peripheral segments. The <code>genderconsciousrouting</code> package has an additional function which performs these analyses for a given city.</p>
 <p>The function works by tracing routes between randomly sampled points in a network, with a default to calculate all possible paths between all pairs of vertices in the street network. This function takes considerably more time to calculate than the simple route function demonstrated above, and it is recommended to first specify a value for the number of sampled points of around 1,000. The time taken can then be scaled by the default total number of points, which is equal to <code>nrow(dodgr_vertices(net))</code>, to estimate how long a full calculation might take.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">gcr_city</span> (net, <span class="at">n =</span> <span class="dv">1000</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>▶ Contracting street network ...</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>✔ Contracted street network</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>▶ Calculating <span class="fu">routes</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) ...</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>▶ Calculated <span class="fu">routes</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>✔ Calculating <span class="fu">routes</span> (<span class="dv">2</span><span class="sc">/</span><span class="dv">2</span>) ...</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>▶ Calculated <span class="fu">routes</span> (<span class="dv">2</span><span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">print</span> (dat)</span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt;    wt_profile           category  proportion</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 1        foot          IS_FEMALE 0.002963653</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 2        foot            IS_MALE 0.021652605</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 3        foot         NOT_A_NAME 0.975383742</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 4        foot          IS_A_NAME 0.024616258</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; 5        foot      IS_FEMALE_RAW 0.006148932</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; 6        foot        IS_MALE_RAW 0.025953586</span></span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; 7        foot     NOT_A_NAME_RAW 0.967897482</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; 8        foot      IS_A_NAME_RAW 0.032102518</span></span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; 9        foot         pedestrian 0.447916183</span></span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; 10       foot     vehicular_foot 0.500669268</span></span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; 11       foot     pedestrian_RAW 0.255423713</span></span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; 12       foot vehicular_foot_RAW 0.697429330</span></span></code></pre></div>
-<p>The first 8 statistics (with capitalised values for <code>category</code>) are divided between “raw” and weighted statistics, where the former are simple aggregate proportions of the type presented in <a href="https://equalstreetnames.org/" class="external-link">EqualStreetNames</a>, while those without the <code>_raw</code> suffix are weighted by network centrality, such that more central streets contribute more. The final four statistics quantify the proportions of journeys along dedicated infrastructure, and are primarily intended to quantify the relative prominence of dedicated pedestrian (<code>wt_profile = "foot"</code>) and bicycle (<code>wt_profile = "bicycle"</code>) infrastructure in cities. The <code>vehicular_foot</code> rows quantify the proportions of journeys or overall edge lengths (<code>_RAW</code>) for which pedestrian or bicycle infrastructure travels directly beside vehicular ways, rather than on dedicated infrastructure.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gcr_city.html">gcr_city</a></span> <span class="op">(</span><span class="va">net</span>, n <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">▶</span> Contracting street network ...</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">✔</span> Contracted street network</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="ex">▶</span> Calculating routes <span class="er">(</span><span class="ex">1/2</span><span class="kw">)</span> <span class="ex">...</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="ex">▶</span> Calculated routes <span class="er">(</span><span class="ex">1/2</span><span class="kw">)</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="ex">✔</span> Calculating routes <span class="er">(</span><span class="ex">2/2</span><span class="kw">)</span> <span class="ex">...</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="ex">▶</span> Calculated routes <span class="er">(</span><span class="ex">2/2</span><span class="kw">)</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="ex">print</span> <span class="er">(</span><span class="ex">dat</span><span class="kw">)</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;    wt_profile           category  proportion</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; 1        foot          IS_FEMALE 0.003105508</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 2        foot            IS_MALE 0.021219084</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; 3        foot         NOT_A_NAME 0.975675408</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; 4        foot          IS_A_NAME 0.024324592</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 5        foot      IS_FEMALE_RAW 0.005513113</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; 6        foot        IS_MALE_RAW 0.021046446</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; 7        foot     NOT_A_NAME_RAW 0.973440441</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 8        foot      IS_A_NAME_RAW 0.026559559</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; 9        foot         pedestrian 0.477930169</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 10       foot     vehicular_foot 0.457210378</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 11       foot     pedestrian_RAW 0.354288475</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 12       foot vehicular_foot_RAW 0.584957718</span></span></code></pre></div>
+<p>The first 8 statistics (with capitalised values for <code>category</code>) are divided between “raw” and weighted statistics, where the former are simple aggregate proportions of the type presented in <a href="https://equalstreetnames.org/" class="external-link">EqualStreetNames</a>, while those without the <code>_raw</code> suffix are weighted by network centrality, such that more central streets contribute more.</p>
+<p>The final four statistics quantify the proportions of journeys along dedicated infrastructure, and are primarily intended to quantify the relative prominence of dedicated pedestrian (for networks weighted using <code>wt_profile = "foot"</code>) and bicycle (for networks weighted using <code>wt_profile = "bicycle"</code>) infrastructure in cities. The network here was weighted for pedestrian (<code>"foot"</code>) routing, and so <code>vehicular_foot</code> rows quantify the proportions of journeys or overall edge lengths (<code>_RAW</code>) for which pedestrian infrastructure travels directly beside vehicular ways, rather than on dedicated infrastructure.</p>
 </div>
 </div>
 
