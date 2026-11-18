@@ -18,7 +18,7 @@
  * Functions for determining the gender of a given first name.
  *
  * Copyright (c):
- * 2007-2008:  Jörg MICHAEL, Adalbert-Stifter-Str. 11, 30655 Hannover, Germany
+ * 2007-2008:  Joerg MICHAEL, Adalbert-Stifter-Str. 11, 30655 Hannover, Germany
  *
  * SCCS: @(#) gender.c  1.2  2008-11-30
  *
@@ -88,7 +88,7 @@
 #define CHECK_STRING  "# DO NOT CHANGE:   FILE-FORMAT DEFINITION-DATE = 2008-11-16 "
 #define CACHE_LOOKBACK_COUNT       2
 
-#define CHARS_TO_IGNORE     "<>^,´'`~°/"
+#define CHARS_TO_IGNORE     "<>^,\264'`~\260/"
 #define IS_CHAR_TO_IGNORE      '\001'
 
 #define COMPRESSED_UMLAUTS_FOR_SORTING   '-'
@@ -117,7 +117,7 @@
 
 #define MATCHES_ALL   -1000
 
-#define WORD_SEPARATORS   "+-/*( )&,'´`.:"
+#define WORD_SEPARATORS   "+-/*( )&,'\264`.:"
 
 
 
@@ -211,39 +211,39 @@ static char *umlauts_unicode[]
        "256",  "<A/>",
        "257",  "<a/>",
        "258",  "<A^>",
-       "258",  "<Â>",   /** <A^> **/
+       "258",  "<\302>",   /** <A^> **/
        "259",  "<a^>",
-       "259",  "<â>",   /** <a^> **/
+       "259",  "<\342>",   /** <a^> **/
        "260",  "<A,>",
        "261",  "<a,>",
-       "262",  "<C´>",
-       "263",  "<c´>",
+       "262",  "<C\264>",
+       "263",  "<c\264>",
        "268",  "<C^>",
        "268",  "<CH>",
        "269",  "<c^>",
        "269",  "<ch>",
-       "271",  "<d´>",
-       "272",  "<Ð>",
+       "271",  "<d\264>",
+       "272",  "<\320>",
        "272",  "<DJ>",
-       "273",  "<ð>",
+       "273",  "<\360>",
        "273",  "<dj>",
        "274",  "<E/>",
        "275",  "<e/>",
-       "278",  "<E°>",
-       "279",  "<e°>",
+       "278",  "<E\260>",
+       "279",  "<e\260>",
        "280",  "<E,>",
        "281",  "<e,>",
        "282",  "<E^>",
-       "282",  "<Ê>",
+       "282",  "<\312>",
        "283",  "<e^>",
-       "283",  "<ê>",
+       "283",  "<\352>",
        "286",  "<G^>",
        "287",  "<g^>",
        "290",  "<G,>",
-       "291",  "<g´>",
+       "291",  "<g\264>",
        "298",  "<I/>",
        "299",  "<i/>",
-       "304",  "<I°>",
+       "304",  "<I\260>",
        "305",  "<i>",
        "306",  "<IJ>",
        "307",  "<ij>",
@@ -251,46 +251,46 @@ static char *umlauts_unicode[]
        "311",  "<k,>",
        "315",  "<L,>",
        "316",  "<l,>",
-       "317",  "<L´>",
-       "318",  "<l´>",
+       "317",  "<L\264>",
+       "318",  "<l\264>",
        "321",  "<L/>",
         "322",  "<l/>",
        "325",  "<N,>",
        "326",  "<n,>",
        "327",  "<N^>",
        "328",  "<n^>",
-       "336",  "<Ö>",
-       "337",  "<ö>",
+       "336",  "<\326>",
+       "337",  "<\366>",
        "338",  "<OE>",
-       "338",  "Œ",   /** <OE> **/
+       "338",  "\214",   /** <OE> **/
        "339",  "<oe>",
-       "339",  "œ",   /** <oe> **/
+       "339",  "\234",   /** <oe> **/
        "344",  "<R^>",
        "345",  "<r^>",
        "350",  "<S,>",
        "351",  "<s,>",
        "352",  "<S^>",
-       "352",  "Š",   /** <S^> **/
+       "352",  "\212",   /** <S^> **/
        "352",  "<SCH>",
        "352",  "<SH>",
        "353",  "<s^>",
-       "353",  "š",   /** <s^> **/
+       "353",  "\232",   /** <s^> **/
        "353",  "<sch>",
        "353",  "<sh>",
        "354",  "<T,>",
        "355",  "<t,>",
-       "357",  "<t´>",
+       "357",  "<t\264>",
        "362",  "<U/>",
        "363",  "<u/>",
-       "366",  "<U°>",
-       "367",  "<u°>",
+       "366",  "<U\260>",
+       "367",  "<u\260>",
        "370",  "<U,>",
        "371",  "<u,>",
-       "379",  "<Z°>",
-       "380",  "<z°>",
+       "379",  "<Z\260>",
+       "380",  "<z\260>",
        "381",  "<Z^>",
        "382",  "<z^>",
-       "7838", "<ß>",   /***  newly defined "Großes ß"  ***/
+       "7838", "<\337>",   /***  newly defined "Gro?es ?"  ***/
        NULL,    NULL
      };
 
@@ -349,13 +349,13 @@ static struct PHONETIC_RULES ph_rules_german[] =
 
     { "AH",  "A",   0, 0,    5,  3 },
     { "H",   "",    0, 0,   50,  3 },
-    { "Å",   "AA",  0, 0,    0,  3 },
-    { "Ä",   "AE",  0, 0,    0,  3 },
-    { "Ä",   "A",   0, 0,   40,  3 },
+    { "\305",   "AA",  0, 0,    0,  3 },
+    { "\304",   "AE",  0, 0,    0,  3 },
+    { "\304",   "A",   0, 0,   40,  3 },
     { "AE",  "A",   0, 0,   60,  3 },
 
-    { "Ä",   "E",   0, 0,   20,  4 },
-    { "Æ",   "E",   0, 0,   20,  4 },
+    { "\304",   "E",   0, 0,   20,  4 },
+    { "\306",   "E",   0, 0,   20,  4 },
     { "A",   "ER",  0, 0,   70,  4 },
     { "AE",  "E",   0, 0,   20,  4 },
     { "AE",  "",    0, 0,  110,  4 },
@@ -367,14 +367,14 @@ static struct PHONETIC_RULES ph_rules_german[] =
     { "AY",  "EY",  0, 0,    5,  4 },
     { "EI",  "EY",  0, 0,    5,  4 },
 
-    { "Å",   "O",   0, 0,   70,  5 },
-    { "Ö",   "OE",  0, 0,    0,  5 },
-    { "Ö",   "O",   0, 0,   40,  5 },
-    { "Ø",   "Ö",   0, 0,    0,  5 },
-    { "Ø",   "OE",  0, 0,   10,  5 },
-    { "Ø",   "O",   0, 0,   30,  5 },
-    { "Œ",   "Ö",   0, 0,    5,  5 },
-    { "Œ",   "OE",  0, 0,    0,  5 },
+    { "\305",   "O",   0, 0,   70,  5 },
+    { "\326",   "OE",  0, 0,    0,  5 },
+    { "\326",   "O",   0, 0,   40,  5 },
+    { "\330",   "\326",   0, 0,    0,  5 },
+    { "\330",   "OE",  0, 0,   10,  5 },
+    { "\330",   "O",   0, 0,   30,  5 },
+    { "\214",   "\326",   0, 0,    5,  5 },
+    { "\214",   "OE",  0, 0,    0,  5 },
     { "OE",  "O",   0, 0,   60,  5 },
     { "OE",  "",    0, 0,  110,  5 },
 
@@ -405,8 +405,8 @@ static struct PHONETIC_RULES ph_rules_german[] =
     { "NTX", "NSH", 0, 0,   20,  9 },
     { "NG",  "NK",  0, 0,   20,  9 },
 
-    { "ß",   "SS",  0, 0,    0, 10 },
-    { "ß",   "S",   0, 0,    5, 10 },
+    { "\337",   "SS",  0, 0,    0, 10 },
+    { "\337",   "S",   0, 0,    5, 10 },
     { "SCH", "SH",  0, 0,    5, 10 },
     { "SCH", "SZ",  0, 0,   20, 10 },
     { "SCH", "S",   0, 0,  100, 10 },
@@ -427,9 +427,9 @@ static struct PHONETIC_RULES ph_rules_german[] =
     { "F",   "V",   0, 0,   20, 14 },
     { "W",   "V",   0, 0,   20, 14 },
 
-    { "Ü",   "UE",  0, 0,    0, 15 },
-    { "Ü",   "U",   0, 0,   40, 15 },
-    { "Ü",   "Y",   0, 0,   30, 15 },
+    { "\334",   "UE",  0, 0,    0, 15 },
+    { "\334",   "U",   0, 0,   40, 15 },
+    { "\334",   "Y",   0, 0,   30, 15 },
     { "UE",  "U",   0, 0,   60, 15 },
     { "UE",  "",    0, 0,  110, 15 },
 
@@ -676,7 +676,7 @@ static int initialize_gender (void)
           upperchar[i] = (char) i;
         }
       sortchar [(unsigned char) '-'] = ' ';
-      sortchar [(unsigned char) '\''] = '´';
+      sortchar [(unsigned char) '\''] = '\264';
       up_and_conv [(unsigned char) '-'] = ' ';
 
       s = CHARS_TO_IGNORE;
@@ -849,7 +849,7 @@ static int strcmp_search (char text[], char text_2[],
 
 /****  This function converts "src" to upper case,      ****/
 /****  compresses successive blanks and (if necessary)  ****/
-/****  expands umlauts, i.e. "ä" is converted to "AE".  ****/
+/****  expands umlauts, i.e. "?" is converted to "AE".  ****/
 /****  The conversion is done "on demand" using the     ****/
 /****  arrays "sortchar" and "sortchar2". The second    ****/
 /****  array is needed only for umlauts and contains    ****/
@@ -1038,7 +1038,7 @@ static int strcmp_search (char text[], char text_2[],
               && ((compare_mode & EXPAND_PARAM_2)
               ||  ! (compare_mode & GENDER_ALLOW_COMPRESSED_UMLAUTS)))
                 {
-                  /****  strings don't match (e.g. "Káte" vs "Käte")  ****/
+                  /****  strings don't match (e.g. "K?te" vs "K?te")  ****/
                   k |= 1024;
                 }
             }
@@ -1049,7 +1049,7 @@ static int strcmp_search (char text[], char text_2[],
     {
       if (c != c2  ||  (k & (128+256)) == 128+256)
         {
-          /****  strings don't match (e.g. "Katé" vs "Käte")  ****/
+          /****  strings don't match (e.g. "Kat?" vs "K?te")  ****/
           k |= 1024;
         }
       *diff = k;
