@@ -20,7 +20,7 @@ format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
 #>    user  system elapsed 
-#>   0.084   0.087   0.171
+#>   0.131   0.064   0.196
 knitr::kable (table (x$gender))
 ```
 
@@ -43,7 +43,7 @@ knitr::kable (table (n$sex))
 | boy  | 129000 |
 | girl | 129000 |
 
-Categorising 258,000 names took only 0.171 seconds, or around 100,000
+Categorising 258,000 names took only 0.196 seconds, or around 100,000
 names per second. The following code compares the accuracy, noting that
 many names are of course unisex, whereas the “baby-names” data are
 direct records of individual names and sex.

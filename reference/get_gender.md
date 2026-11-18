@@ -23,4 +23,6 @@ get_gender(text, country = NULL)
 
 ## Value
 
-`data.frame` of text with gender attached
+`data.frame` of text with gender attached, and `rel_freq`, the relative
+frequency (between 0 and 1) of the assigned gender among all occurrences
+of that name; `NA` where the name was not found.
