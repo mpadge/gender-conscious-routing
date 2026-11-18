@@ -3078,6 +3078,10 @@ static void trace_info
 /************************************************************/
 
 
+/* Relative frequency (per mille) of the gender assigned by the most recent
+ * successful call to internal_search() */
+static int gcr_rel_freq = 0;
+
 static int internal_search
      (char search_name[], int compare_mode, int country)
 /****  This function searches a single given name  ****/
@@ -3341,6 +3345,18 @@ static int internal_search
           freq_2 = freq_x[x];
         }
     }
+          
+  /* At this point, `res` gives the identified gender, `count` the frequency of
+   * occurrence of that gender, and `count2` the frequency of the opposite
+   * gender. This allows relative frequencies or probabilities to calculated at
+   * this point.
+   */
+  int rel_freq = 1000;
+  if (count + count_2 > 0L)
+    {
+      rel_freq = (int) floor (1000.0 * (double) count /
+              (double) (count + count_2) + 0.5);
+    }
 
   if (freq_2 > 0)
     {
@@ -3388,6 +3404,9 @@ static int internal_search
             }
         }
     }
+
+  /* rel_freq is in [0, 1000]; stored in gcr_rel_freq */
+  gcr_rel_freq = rel_freq;
 
   if ((n & (1|2|16))  &&  (n & (4|8|16)))
     {
@@ -3459,6 +3478,7 @@ static int get_gender_internal
   compare_mode &= ~(SEARCH_EQUIV | SEARCH_FIRST);
   compare_mode |= SEARCH_GENDER;
 
+  gcr_rel_freq = 0;
   copycut (temp, first_name, LENGTH_FIRST_NAME+51);
 
   /****  reset statistics  ****/
@@ -3539,6 +3559,7 @@ static int get_gender_internal
             }
 
           gender = internal_search (temp+n, compare_mode, country);
+
           if (internal_mode & TRACE_GENDER)
             {
               trace_info ("result for", temp+n, NULL, gender, NULL);
@@ -5720,10 +5741,14 @@ SEXP R_gender (SEXP x_, SEXP country_)
     country_ = PROTECT (Rf_coerceVector (country_, INTSXP));
 
     R_len_t len = Rf_length (x_);
-    SEXP out = PROTECT (allocVector (INTSXP, len));
+    SEXP gender_out = PROTECT (allocVector (INTSXP, len));
+    SEXP freq_out = PROTECT (allocVector (INTSXP, len));
+    SEXP out = PROTECT (allocVector (VECSXP, 2));
+    SET_VECTOR_ELT (out, 0, gender_out);
+    SET_VECTOR_ELT (out, 1, freq_out);
 
-    int *rout;
-    rout = INTEGER (out);
+    int *rout = INTEGER (gender_out);
+    int *rfreq = INTEGER (freq_out);
 
     int country = asInteger (country_);
 
@@ -5746,11 +5771,12 @@ SEXP R_gender (SEXP x_, SEXP country_)
         const char * xi = CHAR (STRING_ELT (x_, i));
         char * xi_c = (char*) (xi);
         rout [i] = get_gender (xi_c, 0, country);
+        rfreq [i] = gcr_rel_freq;
     }
 
     cleanup_gender();
 
-    UNPROTECT (3);
+    UNPROTECT (5);
 
     return out;
 }

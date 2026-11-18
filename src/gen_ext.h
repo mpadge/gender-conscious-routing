@@ -68,7 +68,7 @@
 #define IS_FEMALE              'F' // = 70
 #define IS_MOSTLY_FEMALE       'f' // = 102
 #define IS_MALE                'M' // = 77
-#define IS_MOSTLY_MALE         'm' // = 102
+#define IS_MOSTLY_MALE         'm' // = 109
 #define IS_UNISEX_NAME         '?' // = 63
 #define IS_A_COUPLE            'C' // = 67
 
