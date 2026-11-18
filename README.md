@@ -1,4 +1,6 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![R build
@@ -79,9 +81,11 @@ conscious_route (net, start = start, stop = stop)
 #> female  1826.583 335.371 8083.941 0.1782746 0.03273223 0.7889932    10245.89        1.210026
 #>
 #> $paths
-#>      type                       geometry
-#> 1 default LINESTRING (6.166698 50.812...
-#> 2  female LINESTRING (6.166698 50.812...
+#>      type order        x        y
+#> 1 default     1 6.166698 50.81288
+#> 2 default     2 ...
+#> ...
+#> n  female     k 6.020574 50.75566
 # n>
 #> $points
 #>               x        y    colour
@@ -94,7 +98,10 @@ The function returns a list of the following three items:
 1.  `p_stats` providing statistics on absolute and relative distances
     along the types of ways (where “non” suffixes denote ways not named
     after people).
-2.  `paths` providing the path geometries, both of the gender-conscious
+2.  `paths` providing the path geometries as a single long-format
+    `data.frame` of route vertices, with columns `type` (“default” or
+    “female”), `order` (vertex sequence along each route), and
+    coordinates `x` and `y`. It contains both the gender-conscious
     route, and the “default” route which does not follow gender
     conscious paths; and
 3.  `points` with locations of the specified start and end points, along
