@@ -20,6 +20,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Mark Padgham \email{mark.padgham@email.com}
 
+Authors:
+\itemize{
+  \item Mark Padgham \email{mark.padgham@email.com}
+}
+
 Other contributors:
 \itemize{
   \item Jörg Michael (Original author of included gender code) [copyright holder]

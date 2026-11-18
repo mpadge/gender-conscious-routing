@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
+data-raw
 inst/doc
 aaa\.Rmd*
 # History files
