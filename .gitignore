@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
+data-raw
 inst/doc
 aaa\.Rmd*
 # History files
@@ -16,3 +17,5 @@ aaa\.Rmd*
 # compiled object files
 *.o
 *.so
+docs
+inst/WORDLIST

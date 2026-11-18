@@ -1,27 +1,28 @@
 ---
-output: github_document
+title: "Gender Encoding"
+author: 
+  - "Mark Padgham"
+date: "`r Sys.Date()`"
+vignette: >
+  %\VignetteIndexEntry{Gender Encoding}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  out.width = "100%"
+```{r setup, include=FALSE}
+knitr::opts_chunk$set (
+    collapse = TRUE,
+    warning = TRUE,
+    message = TRUE,
+    width = 120,
+    comment = "#>",
+    fig.retina = 2,
+    fig.path = "README-"
 )
+library (genderconsciousrouting)
 ```
-# gender conscious routing
 
-Routing along streets named after women rather than men.
-
-<!-- badges: start -->
-[![Travis build status](https://travis-ci.org/mpadge/gender-conscious-routing.svg?branch=master)](https://travis-ci.org/mpadge/gender-conscious-routing)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/mpadge/gender-conscious-routing?branch=master&svg=true)](https://ci.appveyor.com/project/mpadge/gender-conscious-routing)
-[![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/master/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing) [![Project Status: Concept](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept) <!-- badges: end -->
-
-
-## Gender catogorizer
+## Gender Encoding
 
 This **R** package includes an internally bundled C library for categorising
 the gender of first names, thanks to Michael Jörg (available
@@ -29,10 +30,6 @@ the gender of first names, thanks to Michael Jörg (available
 and flexible; covers all European languages and a host of others, and
 categorises gender very accurately. Here's a test run on a very large data set
 of names from the English-speaking world:
-
-```{r load, echo = FALSE, message = FALSE}
-devtools::load_all (".", export_all = FALSE)
-```
 
 
 
@@ -44,7 +41,7 @@ n <- read.csv ("baby-names.csv", stringsAsFactors = FALSE)
 format (nrow (n), big.mark = ",")
 st <- system.time (x <- get_gender (n$name))
 st
-knitr::kable (table (x$category))
+knitr::kable (table (x$gender))
 knitr::kable (table (n$sex))
 ```
 
@@ -54,12 +51,12 @@ accuracy, noting that many names are of course unisex, whereas the "baby-names"
 data are direct records of individual names and sex. 
 
 ```{r babyname-output}
-x$category [x$category == "IS_MALE"] <- "boy"
-x$category [x$category == "IS_MOSTLY_MALE"] <- "boy"
-x$category [x$category == "IS_FEMALE"] <- "girl"
-x$category [x$category == "IS_MOSTLY_FEMALE"] <- "girl"
+x$gender [x$gender == "IS_MALE"] <- "boy"
+x$gender [x$gender == "IS_MOSTLY_MALE"] <- "boy"
+x$gender [x$gender == "IS_FEMALE"] <- "girl"
+x$gender [x$gender == "IS_MOSTLY_FEMALE"] <- "girl"
 
-index_right <- which (x$category == n$sex)
+index_right <- which (x$gender == n$sex)
 message (format (length (index_right), big.mark = ","), " / ",
          format (nrow (x), big.mark = ","),
          " of names correctly classified = ",
@@ -100,10 +97,10 @@ categorise_sex <-  function (sex, size) {
     else
         return ("unisex")
     }
-n2 <- n %>%
-    group_by (name, sex) %>%
-    summarise (size = n ()) %>%
-    group_by (name) %>%
+n2 <- n |>
+    group_by (name, sex) |>
+    summarise (size = n ()) |>
+    group_by (name) |>
     summarise (category = categorise_sex (sex, size))
 knitr::kable (table (n2$category))
 ```
@@ -113,7 +110,7 @@ with the observed overall distribution of categories as determined by the
 internal library. These two more refined data sets can then be compared:
 
 ```{r}
-n2$gender <- get_gender (n2$name)$category
+n2$gender <- get_gender (n2$name)$gender
 n2$gender [n2$gender == "IS_FEMALE"] <- "girl"
 n2$gender [n2$gender == "IS_MALE"] <- "boy"
 n2$gender [n2$gender == "IS_MOSTLY_FEMALE"] <- "mostly girl"
@@ -131,8 +128,3 @@ The accuracy in that case is
 ct <- with (n2, table (category, gender))
 sum (diag (ct)) / sum (ct)
 ```
-
-
-
-
-

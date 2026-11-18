@@ -1,172 +1,184 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/main/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)
+[![Project Status:
+Concept](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
+<!-- badges: end -->
 
 # gender conscious routing
 
 Routing along streets named after women rather than men.
 
-<!-- badges: start -->
+## A note on gender
 
-[![Travis build
-status](https://travis-ci.org/mpadge/gender-conscious-routing.svg?branch=master)](https://travis-ci.org/mpadge/gender-conscious-routing)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/mpadge/gender-conscious-routing?branch=master&svg=true)](https://ci.appveyor.com/project/mpadge/gender-conscious-routing)
-[![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/master/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)
-[![Project Status:
-Concept](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
-<!-- badges: end -->
+Where possible, gender is identified through wikidata entries, which
+accommodate values of female, male, intersex, transgender female, and
+transgender male. Street names which are not associated in Open Street
+Map with wikidata entries are assigned genders using an
+internally-bundled library which presumes that gender is binary. Which
+it is not. This package and its developers neither endorse nor encourage
+viewing gender in binary terms. The library nevertheless allows gender
+associations in a very wide variety of languages, far more than any
+other equivalent library, and so allows the functionality of this
+package to be applied to far greater regions of the world that would
+other, non-binary alternatives. See the vignette for further detail on
+the gender encoding system used here.
 
-## Gender catogorizer
+------------------------------------------------------------------------
 
-This **R** package includes an internally bundled C library for
-categorising the gender of first names, thanks to Michael Jörg
-(available [here](https://www.heise.de/ct/ftp/07/17/182/)). The library
-is extremely fast and flexible; covers all European languages and a host
-of others, and categorises gender very accurately. Here’s a test run on
-a very large data set of names from the English-speaking world:
+## Generating gender-conscious routes
 
-``` r
-u <- "https://github.com/hadley/data-baby-names/raw/master/baby-names.csv"
-if (!file.exists ("baby-names.csv"))
-    chk <- download.file (u, "baby-names.csv")
-n <- read.csv ("baby-names.csv", stringsAsFactors = FALSE)
-format (nrow (n), big.mark = ",")
-#> [1] "258,000"
-st <- system.time (x <- get_gender (n$name))
-st
-#>    user  system elapsed 
-#>   1.155   1.463   2.619
-knitr::kable (table (x$category))
-```
-
-| Var1               |   Freq |
-| :----------------- | -----: |
-| IS\_FEMALE         | 103059 |
-| IS\_MALE           |  95751 |
-| IS\_MOSTLY\_FEMALE |  15919 |
-| IS\_MOSTLY\_MALE   |  17290 |
-| IS\_UNISEX\_NAME   |  11296 |
-| NAME\_NOT\_FOUND   |  14685 |
+The function `conscious_route()` calculates routes which preferentially
+traverse streets named after women. Usage requires downloading a street
+network, the simplest way of which is to use [the `dodgr`
+package](https://github.com/atfutures/dodgr). It is good practice to
+save networks locally, to avoid having to repeat calls to the Open
+Street Map servers which deliver the data.
 
 ``` r
-knitr::kable (table (n$sex))
+city <- "Aachen Germany"
+net <- dodgr::dodgr_streetnet_sc (city)
+saveRDS (net, "mynetwork.Rds")
 ```
 
-| Var1 |   Freq |
-| :--- | -----: |
-| boy  | 129000 |
-| girl | 129000 |
-
-Categorising 258,000 names took only 2.619 seconds, or around 100,000
-names per second. The following code compares the accuracy, noting that
-many names are of course unisex, whereas the “baby-names” data are
-direct records of individual names and sex.
+The gender of all streets can then be appended to the network data with
+the `gender_streetnet()` function, which also accepts an additional
+parameter, `wt_profile`, used to specify the weighting profile from [the
+profiles of the `dodgr`
+package](https://atfutures.github.io/dodgr/reference/weighting_profiles.html).
 
 ``` r
-x$category [x$category == "IS_MALE"] <- "boy"
-x$category [x$category == "IS_MOSTLY_MALE"] <- "boy"
-x$category [x$category == "IS_FEMALE"] <- "girl"
-x$category [x$category == "IS_MOSTLY_FEMALE"] <- "girl"
-
-index_right <- which (x$category == n$sex)
-message (format (length (index_right), big.mark = ","), " / ",
-         format (nrow (x), big.mark = ","),
-         " of names correctly classified = ",
-         formatC (100 * length (index_right) / nrow (x),
-                  format = "f", digits = 1), "%")
-#> 217,630 / 258,000 of names correctly classified = 84.4%
+library (genderconsciousrouting)
+net <- gender_streetnet (dat, wt_profile = "foot")
 ```
 
-Noting that the baby name records are structured over time, and include
-many repeats of the same names, we can try to create “mostly girl/boy”
-categories based on relative proportions.
+Gender-conscious routes can then be generated by specifying start and
+end points. The following example selects random points from the network
+vertices.
 
 ``` r
-library (dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following object is masked from 'package:testthat':
-#> 
-#>     matches
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-
-categorise_sex <-  function (sex, size) {
-    # define relative proportions:
-    # if > rel_props [2], then category is singular
-    # else if > rel_props [1], then category is "mostly" singular,
-    # else category is unisex
-    rel_props <- c (4, 1000)
-
-    if (length (size) == 1)
-      return (sex)
-
-    bi <- which (sex == "boy")
-    gi <- which (sex == "girl")
-
-    if (size [bi] > (size [gi] * rel_props [2]))
-        return ("boy")
-    else if (size [gi] > (size [bi] * rel_props [2]))
-        return ("girl")
-    else if (size [bi] > (size [gi] * rel_props [1]))
-        return ("mostly boy")
-    else if (size [gi] > (size [bi] * rel_props [1]))
-        return ("mostly girl")
-    else
-        return ("unisex")
-    }
-n2 <- n %>%
-    group_by (name, sex) %>%
-    summarise (size = n ()) %>%
-    group_by (name) %>%
-    summarise (category = categorise_sex (sex, size))
-knitr::kable (table (n2$category))
+v <- dodgr::dodgr_vertices (net)
+set.seed (1)
+start <- sample (v$id, size = 1L)
+stop <- sample (v$id, size = 1L)
 ```
 
-| Var1        | Freq |
-| :---------- | ---: |
-| boy         | 2764 |
-| girl        | 3345 |
-| mostly boy  |  147 |
-| mostly girl |  224 |
-| unisex      |  302 |
-
-The above values for relative proportions were selected to give good
-agreement with the observed overall distribution of categories as
-determined by the internal library. These two more refined data sets can
-then be compared:
+Those `id` values are the Open Street Map identifiers of two random
+vertices (or “nodes” in Open Street Map terms) of the network. Finally,
+the following code calculates the path between them which traverses the
+greatest proportional length along streets named after women:
 
 ``` r
-n2$gender <- get_gender (n2$name)$category
-n2$gender [n2$gender == "IS_FEMALE"] <- "girl"
-n2$gender [n2$gender == "IS_MALE"] <- "boy"
-n2$gender [n2$gender == "IS_MOSTLY_FEMALE"] <- "mostly girl"
-n2$gender [n2$gender == "IS_MOSTLY_MALE"] <- "mostly boy"
-n2$gender [n2$gender == "IS_UNISEX_NAME"] <- "unisex"
+conscious_route (net, start = start, stop = stop)
+#> $p_stats
+#>         d_female  d_male    d_non  p_female     p_male     p_non path_length path_length_rel
+#> default    0.000 190.454 8277.046 0.0000000 0.02249235 0.9775076     8467.50        1.000000
+#> female  1826.583 335.371 8083.941 0.1782746 0.03273223 0.7889932    10245.89        1.210026
+#>
+#> $paths
+#>      type order        x        y
+#> 1 default     1 6.166698 50.81288
+#> 2 default     2 ...
+#> ...
+#> n  female     k 6.020574 50.75566
+# n>
+#> $points
+#>               x        y    colour
+#> 25722  6.166698 50.81288 #44FF22FF
+#> 137140 6.020574 50.75566 #FF4422FF
 ```
 
-Some names are simply not found, so we’ll remove those from the
-comparison before calculating final statistics.
+The function returns a list of the following three items:
+
+1.  `p_stats` providing statistics on absolute and relative distances
+    along the types of ways (where “non” suffixes denote ways not named
+    after people).
+2.  `paths` providing the path geometries as a single long-format
+    `data.frame` of route vertices, with columns `type` (“default” or
+    “female”), `order` (vertex sequence along each route), and
+    coordinates `x` and `y`. It contains both the gender-conscious
+    route, and the “default” route which does not follow gender
+    conscious paths; and
+3.  `points` with locations of the specified start and end points, along
+    with colour codes which can be used to clearly indicate those points
+    on interactive maps.
+
+------------------------------------------------------------------------
+
+## Aggregate statistics for a whole city
+
+Aggregate analyses of statistics on the gender of street names can be
+seen in [the EqualStreetNames project](https://equalstreetnames.org/),
+which currently provides interactive visualisations for 62 cities around
+the world. The results are, however, static, and only quantify overall
+proportions regardless of where streets are located. Many cities
+consciously name central avenues or boulevards after men, while streets
+named after women may be placed in peripheral locations rarely traversed
+by the general population. A more appropriate way to quantify statistics
+on relative gender proportions is to weight gendered streets by their
+importance within the spatially-explicit context of the entire street
+network. The most direct way to do that is to weight each
+gender-specific street segment by its corresponding network centrality,
+so that central segments traversed by large numbers of people contribute
+more than peripheral segments. The `genderconsciousrouting` package has
+an additional function which performs these analyses for a given city.
+
+The function works by tracing routes between randomly sampled points in
+a network, with a default to calculate all possible paths between all
+pairs of vertices in the street network. This function takes
+considerably more time to calculate than the simple route function
+demonstrated above, and it is recommended to first specify a value for
+the number of sampled points of around 1,000. The time taken can then be
+scaled by the default total number of points, which is equal to
+`nrow(dodgr_vertices(net))`, to estimate how long a full calculation
+might take.
 
 ``` r
-n2 <- n2 [which (!n2$gender == "NAME_NOT_FOUND"), ]
-knitr::kable (with (n2, table (category, gender)))
+dat <- gcr_city (net, n = 1000)
 ```
 
-|                |    boy |    girl | mostly boy | mostly girl | unisex |
-| -------------- | -----: | ------: | ---------: | ----------: | -----: |
-| boy            |   1643 |      19 |         92 |          15 |     61 |
-| girl           |     19 |    2221 |         15 |          89 |     66 |
-| mostly boy     |     90 |       3 |         36 |           4 |      8 |
-| mostly girl    |      0 |     173 |          3 |          30 |      7 |
-| unisex         |     27 |      44 |         65 |          79 |     66 |
-| The accuracy i | n that | case is |            |             |        |
+``` bash
+▶ Contracting street network ...
+✔ Contracted street network
+▶ Calculating routes (1/2) ...
+▶ Calculated routes (1/2)
+✔ Calculating routes (2/2) ...
+▶ Calculated routes (2/2)
 
-``` r
-ct <- with (n2, table (category, gender))
-sum (diag (ct)) / sum (ct)
-#> [1] 0.8196923
+print (dat)
+#>    wt_profile           category  proportion
+#> 1        foot          IS_FEMALE 0.003105508
+#> 2        foot            IS_MALE 0.021219084
+#> 3        foot         NOT_A_NAME 0.975675408
+#> 4        foot          IS_A_NAME 0.024324592
+#> 5        foot      IS_FEMALE_RAW 0.005513113
+#> 6        foot        IS_MALE_RAW 0.021046446
+#> 7        foot     NOT_A_NAME_RAW 0.973440441
+#> 8        foot      IS_A_NAME_RAW 0.026559559
+#> 9        foot         pedestrian 0.477930169
+#> 10       foot     vehicular_foot 0.457210378
+#> 11       foot     pedestrian_RAW 0.354288475
+#> 12       foot vehicular_foot_RAW 0.584957718
 ```
+
+The first 8 statistics (with capitalised values for `category`) are
+divided between “raw” and weighted statistics, where the former are
+simple aggregate proportions of the type presented in
+[EqualStreetNames](https://equalstreetnames.org/), while those without
+the `_raw` suffix are weighted by network centrality, such that more
+central streets contribute more.
+
+The final four statistics quantify the proportions of journeys along
+dedicated infrastructure, and are primarily intended to quantify the
+relative prominence of dedicated pedestrian (for networks weighted using
+`wt_profile = "foot"`) and bicycle (for networks weighted using
+`wt_profile = "bicycle"`) infrastructure in cities. The network here was
+weighted for pedestrian (`"foot"`) routing, and so `vehicular_foot` rows
+quantify the proportions of journeys or overall edge lengths (`_RAW`)
+for which pedestrian infrastructure travels directly beside vehicular
+ways, rather than on dedicated infrastructure.

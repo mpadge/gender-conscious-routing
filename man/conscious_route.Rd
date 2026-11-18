@@ -4,7 +4,7 @@
 \alias{conscious_route}
 \title{conscious_route}
 \usage{
-conscious_route(net, start, stop)
+conscious_route(net, start = NULL, stop = NULL, gender_weight = 10)
 }
 \arguments{
 \item{net}{Street network with gender column, returned by
@@ -13,6 +13,25 @@ conscious_route(net, start, stop)
 \item{start}{Start point of route.}
 
 \item{stop}{End point of route.}
+
+\item{gender_weight}{A numeric factor >= 1 by which to preferentially route
+along streets named after women. Larger values will search larger distances
+relative to the default (shortest) route to find routes with greatest
+proportional distances along streets named after women. Arbitrarily large
+values may be specified.}
+}
+\value{
+A list with three components:
+\itemize{
+\item \code{p_stats}: A \code{data.frame} with rows for the "default" and "female"
+routes, giving distances and proportions along streets named after women,
+men, and non-names;
+\item \code{paths}: A single long-format \code{data.frame} of route vertices, with
+columns \code{type} ("default" or "female"), \code{order} (vertex sequence within each
+route), and coordinates \code{x} (longitude) and \code{y} (latitude); and
+\item \code{points}: A \code{data.frame} with coordinates and colours of the start and
+end points.
+}
 }
 \description{
 Route between nominated start and end points along greatest proportional
