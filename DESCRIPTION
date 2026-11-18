@@ -18,8 +18,7 @@ Imports:
     dodgr,
     httr,
     jsonlite,
-    methods,
-    sf
+    methods
 Suggests: 
     dplyr,
     knitr,

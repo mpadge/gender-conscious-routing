@@ -8,10 +8,21 @@
 #' @param start Start point of route.
 #' @param stop End point of route.
 #' @param gender_weight A numeric factor >= 1 by which to preferentially route
-#' along streets named after women. Larger values will search larger distances 
+#' along streets named after women. Larger values will search larger distances
 #' relative to the default (shortest) route to find routes with greatest
 #' proportional distances along streets named after women. Arbitrarily large
 #' values may be specified.
+#' @return A list with three components:
+#' \itemize{
+#' \item `p_stats`: A `data.frame` with rows for the "default" and "female"
+#' routes, giving distances and proportions along streets named after women,
+#' men, and non-names;
+#' \item `paths`: A single long-format `data.frame` of route vertices, with
+#' columns `type` ("default" or "female"), `order` (vertex sequence within each
+#' route), and coordinates `x` (longitude) and `y` (latitude); and
+#' \item `points`: A `data.frame` with coordinates and colours of the start and
+#' end points.
+#' }
 #' @export
 conscious_route <- function (net, start = NULL, stop = NULL,
                              gender_weight = 10) {
@@ -32,8 +43,10 @@ conscious_route <- function (net, start = NULL, stop = NULL,
     v <- dodgr::dodgr_vertices (net)
     pmat <- dodgr::dodgr_paths (net, from = start, to = stop)
     pmat <- v [match (pmat [[1]] [[1]], v$id), ]
-    start_end <- data.frame (rbind (pmat [1, c ("x", "y")],
-                                    pmat [nrow (pmat), c ("x", "y")]))
+    start_end <- data.frame (rbind (
+        pmat [1, c ("x", "y")],
+        pmat [nrow (pmat), c ("x", "y")]
+    ))
     start_end$colour <- c ("#44FF22FF", "#FF4422FF")
 
     p0_stats <- path_stats (pmat, net)
@@ -48,23 +61,22 @@ conscious_route <- function (net, start = NULL, stop = NULL,
     p_stats$path_length <- rowSums (p_stats [, c ("d_female", "d_male", "d_non")])
     p_stats$path_length_rel <- p_stats$path_length / p_stats$path_length [1]
 
-    p0 <- as.matrix (pmat [, c ("x", "y")])
-    p0 <- sf::st_linestring (p0)
-    p0 <- sf::st_sfc (p0, crs = 4326)
-    p0 <- sf::st_sf (geometry = p0)
+    make_path <- function (pm, type) {
+        data.frame (
+            type = type,
+            order = seq_len (nrow (pm)),
+            x = pm$x,
+            y = pm$y,
+            stringsAsFactors = FALSE
+        )
+    }
+    paths <- rbind (
+        make_path (pmat, "default"),
+        make_path (pmat_f, "female")
+    )
+    rownames (paths) <- NULL
 
-    pf <- as.matrix (pmat_f [, c ("x", "y")])
-    pf <- sf::st_linestring (pf)
-    pf <- sf::st_sfc (pf, crs = 4326)
-    pf <- sf::st_sf (geometry = pf)
-
-    psf <- rbind (p0, pf)
-    psf <- data.frame (type = c ("default", "female"),
-                       psf,
-                       stringsAsFactors = FALSE)
-
-
-    list (p_stats = p_stats, paths = psf, points = start_end)
+    list (p_stats = p_stats, paths = paths, points = start_end)
 }
 
 path_stats <- function (pmat, net) {
@@ -94,7 +106,7 @@ path_stats <- function (pmat, net) {
     d_tot <- sum (net$d [index])
 
     res <- c (d_f, d_m, d_non, d_f / d_tot, d_m / d_tot, d_non / d_tot)
-    names (res) <- c ("d_female", "d_male", "d_non",  "p_female", "p_male", "p_non")
+    names (res) <- c ("d_female", "d_male", "d_non", "p_female", "p_male", "p_non")
 
     return (res)
 }
