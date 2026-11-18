@@ -1097,6 +1097,7 @@ static void read_line (FILE *fr, char text[], int len)
 
 
 
+#ifdef GENDER_EXECUTABLE
 static void read_unicode_line (FILE *fr, char text[], int two_byte_len)
 {
   int i,k;
@@ -1143,6 +1144,7 @@ static void read_unicode_line (FILE *fr, char text[], int two_byte_len)
   text[i] = '\0';
   text[i+1] = '\0';
 }
+#endif /* GENDER_EXECUTABLE */
 
 
 
@@ -3083,7 +3085,7 @@ static int internal_search
   int  i,n,x;
   int  k,k0;
   int  freq,freq_2;
-  int  pos_0,pos_x[7];
+  int  pos_0;
   int  freq_x[7];
   int  len,res;
   long count,count_2,count_x[7];
@@ -3159,7 +3161,6 @@ static int internal_search
 
   for (x=0; x<7; x++)
     {
-      pos_x[x] = 0;
       freq_x[x] = 0;
       count_x[x] = 0L;
     }
@@ -3305,7 +3306,6 @@ static int internal_search
           n |= i;
           if (count > count_x[x])
             {
-              pos_x[x] = pos_0;
               freq_x[x] = freq;
               count_x[x] = count;
             }
@@ -5739,7 +5739,7 @@ SEXP R_gender (SEXP x_, SEXP country_)
     INTERNAL_ERROR_GENDER  'I' // = 73
     */
 
-    int ig = initialize_gender();
+    initialize_gender();
 
     for (R_len_t i = 0; i < len; i++)
     {
