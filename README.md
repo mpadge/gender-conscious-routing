@@ -4,8 +4,8 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check)
-[![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/master/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)
+status](https://github.com/mpadge/gender-conscious-routing/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mpadge/gender-conscious-routing/actions?query=workflow%3AR-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/mpadge/gender-conscious-routing/branch/main/graph/badge.svg)](https://codecov.io/gh/mpadge/gender-conscious-routing)
 [![Project Status:
 Concept](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
 <!-- badges: end -->
