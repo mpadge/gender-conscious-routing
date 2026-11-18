@@ -14,12 +14,12 @@ Source:
 
 Padgham M (2026). *genderconsciousrouting: Gender-Conscious Routing
 Along Streets Named After Women Rather Than Men*. R package version
-0.0.2.010, <https://github.com/mpadge/gender-conscious-routing>.
+0.0.2.016, <https://github.com/mpadge/gender-conscious-routing>.
 
     @Manual{,
       title = {genderconsciousrouting: Gender-Conscious Routing Along Streets Named After Women Rather Than Men},
       author = {Mark Padgham},
       year = {2026},
-      note = {R package version 0.0.2.010},
+      note = {R package version 0.0.2.016},
       url = {https://github.com/mpadge/gender-conscious-routing},
     }

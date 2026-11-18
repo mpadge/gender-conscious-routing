@@ -17,6 +17,10 @@ Useful links:
 
 **Maintainer**: Mark Padgham <mark.padgham@email.com>
 
+Authors:
+
+- Mark Padgham <mark.padgham@email.com>
+
 Other contributors:
 
 - Jörg Michael (Original author of included gender code) \[copyright

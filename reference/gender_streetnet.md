@@ -13,7 +13,10 @@ gender_streetnet(net, wt_profile = "foot", country = "de")
 
 - net:
 
-  Street network in sf or sc format
+  Street network in any format accepted by
+  [`dodgr::weight_streetnet`](https://UrbanAnalyst.github.io/dodgr/reference/weight_streetnet.html),
+  such as `osmdata_sc` objects returned from
+  [`dodgr::dodgr_streetnet_sc()`](https://UrbanAnalyst.github.io/dodgr/reference/dodgr_streetnet_sc.html).
 
 - wt_profile:
 

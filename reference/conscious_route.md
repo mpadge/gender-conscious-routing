@@ -32,3 +32,19 @@ conscious_route(net, start = NULL, stop = NULL, gender_weight = 10)
   to the default (shortest) route to find routes with greatest
   proportional distances along streets named after women. Arbitrarily
   large values may be specified.
+
+## Value
+
+A list with three components:
+
+- `p_stats`: A `data.frame` with rows for the "default" and "female"
+  routes, giving distances and proportions along streets named after
+  women, men, and non-names;
+
+- `paths`: A single long-format `data.frame` of route vertices, with
+  columns `type` ("default" or "female"), `order` (vertex sequence
+  within each route), and coordinates `x` (longitude) and `y`
+  (latitude); and
+
+- `points`: A `data.frame` with coordinates and colours of the start and
+  end points.
