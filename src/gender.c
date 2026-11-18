@@ -2,6 +2,7 @@
 #include <Rinternals.h>
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -1455,7 +1456,7 @@ static void conv_from_unicode_line (char dest[], char src[], int len)
           if (x > 0)
             {
               /****  unknown unicode char  ****/
-              Rprintf (text, "<#%03d>", x);
+              snprintf (text, sizeof (text), "<#%03d>", x);
               s = text;
               while (k < len-1  &&  *s != '\0')
                 {
@@ -1619,7 +1620,7 @@ static void conv_from_utf8_line (char dest[], char src[], int len)
           if (x > 0)
             {
               /****  unknown unicode char  ****/
-              Rprintf (text, "<#%03d>", x);
+              snprintf (text, sizeof (text), "<#%03d>", x);
               s = text;
               while (k < len-1  &&  *s != '\0')
                 {
@@ -2863,6 +2864,30 @@ static int multiply_frequency (int a, int b)
 
 static char trace_buffer[2001];
 
+/* bounded printf-style append to trace_buffer; returns new length */
+static int trace_append (int len, const char *fmt, ...)
+{
+  va_list ap;
+  int n;
+
+  if (len < 0 || len >= (int) sizeof (trace_buffer) - 1)
+    {
+      return (len);
+    }
+  va_start (ap, fmt);
+  n = vsnprintf (trace_buffer + len, sizeof (trace_buffer) - len, fmt, ap);
+  va_end (ap);
+  if (n < 0)
+    {
+      return (len);
+    }
+  if (len + n >= (int) sizeof (trace_buffer))
+    {
+      n = (int) sizeof (trace_buffer) - 1 - len;
+    }
+  return (len + n);
+}
+
 static void trace_info_into_buffer
     (char text[], char name[], char name2[], int res, char data[])
 /****  "calculate" trace info  ****/
@@ -2896,15 +2921,15 @@ static void trace_info_into_buffer
 
   if (name2 != NULL)
     {
-      len += sprintf (trace_buffer+len, "%s '%s'%s':  '%s'", text, name,name2, s);
+      len = trace_append (len, "%s '%s'%s':  '%s'", text, name,name2, s);
     }
   else if (text[0] != '\0')
     {
-      len += sprintf (trace_buffer+len, "%s '%s':  '%s'", text, name, s);
+      len = trace_append (len, "%s '%s':  '%s'", text, name, s);
     }
   else
     {
-      len += sprintf (trace_buffer+len, "%s:  '%s'", name, s);
+      len = trace_append (len, "%s:  '%s'", name, s);
     }
 
   if (data != NULL  ||  (internal_mode & GENDER_GET_COUNTRY))
@@ -2972,7 +2997,7 @@ static void trace_info_into_buffer
                     {
                       s2 = gc_data[i].country_text;
                     }
-                  len += sprintf (trace_buffer+len, " %s %s[%d]", s,s2,x);
+                  len = trace_append (len, " %s %s[%d]", s,s2,x);
                   s = "or";
                 }
 
@@ -3012,7 +3037,7 @@ static void trace_info_into_buffer
         {
           if (strcmp (s,"or") == 0)
             {
-              len += sprintf (trace_buffer+len, ")");
+              len = trace_append (len, ")");
             }
         }
       else
@@ -3027,7 +3052,7 @@ static void trace_info_into_buffer
                 {
                   s2 = gc_data[pos_0].country_text;
                 }
-              len += sprintf (trace_buffer+len, " (country=%s)", s2);
+              len = trace_append (len, " (country=%s)", s2);
             }
         }
     }
@@ -4687,34 +4712,34 @@ void get_gender_for_file (int charset, int country,
   strcpy (text, "");
   print_line (fw, charset, text);
 
-  Rprintf (text, "Girl's names  : %5d", count[0]);
+  snprintf (text, sizeof (text), "Girl's names  : %5d", count[0]);
   print_line (fw, charset, text);
 
-  Rprintf (text, "Boy's names   : %5d", count[1]);
+  snprintf (text, sizeof (text), "Boy's names   : %5d", count[1]);
   print_line (fw, charset, text);
 
-  Rprintf (text, "Mostly female : %5d", count[2]);
+  snprintf (text, sizeof (text), "Mostly female : %5d", count[2]);
   print_line (fw, charset, text);
 
-  Rprintf (text, "Mostly male   : %5d", count[3]);
+  snprintf (text, sizeof (text), "Mostly male   : %5d", count[3]);
   print_line (fw, charset, text);
 
-  Rprintf (text, "Unisex names  : %5d", count[4]);
+  snprintf (text, sizeof (text), "Unisex names  : %5d", count[4]);
   print_line (fw, charset, text);
 
-  Rprintf (text, "Name not found: %5d", count[5]);
+  snprintf (text, sizeof (text), "Name not found: %5d", count[5]);
   print_line (fw, charset, text);
 
   if (count[6] > 0)
     {
-      Rprintf (text, "Errors        : %5d", count[6]);
+      snprintf (text, sizeof (text), "Errors        : %5d", count[6]);
       print_line (fw, charset, text);
     }
 
   i = count[0] + count[1] + count[2] + count[3] + count[4]
      + count[5] + count[6];
 
-  Rprintf (text, "  total       : %5d", i);
+  snprintf (text, sizeof (text), "  total       : %5d", i);
   print_line (fw, charset, text);
 
   if (uni_del)
@@ -4964,7 +4989,7 @@ void print_names_of_country (int charset, char *country_text,
           print_line (fw, charset, "");
           print_line (fw, charset, "");
 
-          Rprintf (text, "%-*s", POS_UMLAUT_INFO+6, "");
+          snprintf (text, sizeof (text), "%-*s", POS_UMLAUT_INFO+6, "");
           for (k=0; text[k] != '\0'; k++)
             {
               text[k] = '=';
@@ -4981,7 +5006,7 @@ void print_names_of_country (int charset, char *country_text,
       uni_del = 0;
 
       /****  print header  ****/
-      Rprintf (text, "Names from %s:", country_text);
+      snprintf (text, sizeof (text), "Names from %s:", country_text);
       print_line (fw, charset, text);
       print_line (fw, charset, "");
 
@@ -4989,7 +5014,7 @@ void print_names_of_country (int charset, char *country_text,
         {
           print_line (fw, charset, "");
 
-          Rprintf (text, "%-*sfrequency", POS_UMLAUT_INFO-2, "gender name");
+          snprintf (text, sizeof (text), "%-*sfrequency", POS_UMLAUT_INFO-2, "gender name");
           print_line (fw, charset, text);
           for (k=0; text[k] != '\0'; k++)
             {
@@ -5024,7 +5049,12 @@ void print_names_of_country (int charset, char *country_text,
               if (internal_mode & DETAILS_FOR_COUNTRY)
                 {
                   text[POS_UMLAUT_INFO] = '\0';
-                  Rprintf (text, "%s%2d", text,k);
+                  {
+                    char tmp_text[MAX_LINE_SIZE+1];
+                    strncpy (tmp_text, text, sizeof (tmp_text) - 1);
+                    tmp_text[sizeof (tmp_text) - 1] = '\0';
+                    snprintf (text, sizeof (text), "%s%2d", tmp_text, k);
+                  }
 
                   for (k= POS_UMLAUT_INFO+2; k >= 0; k--)
                     {
