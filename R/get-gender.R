@@ -5,55 +5,74 @@
 #' @param country Country for which gender is to be determined, either as
 #' ISO3166 two-letter abbreviation, or full text. See \link{list_countries} for
 #' list of recognized countries.
-#' @return `data.frame` of text with gender attached
+#' @return `data.frame` of text with gender attached, and `rel_freq`, the
+#' relative frequency (between 0 and 1) of the assigned gender among all
+#' occurrences of that name; `NA` where the name was not found.
 #' @export
 get_gender <- function (text, country = NULL) {
 
     text <- gsub ("[[:punct:]]", " ", text)
 
-    if (is.null (country))
+    if (is.null (country)) {
         country <- 0
-    else
+    } else {
         country <- get_country (country)
+    }
 
     values <- unique (text)
     res <- .Call ("R_gender", as.character (values), as.integer (country))
-    res_expanded <- res [match (text, values)]
+    index <- match (text, values)
 
-    map_gender_results (text, res_expanded)
+    map_gender_results (text, res [[1]] [index], res [[2]] [index] / 1000)
 }
 
-map_gender_results <- function (text, res) {
+map_gender_results <- function (text, res, rel_freq) {
 
-    map <- data.frame (res = c (70, 102, 77, 109, 63, 67, 32, 69, 73),
-                       category = c ("IS_FEMALE", "IS_MOSTLY_FEMALE",
-                                     "IS_MALE", "IS_MOSTLY_MALE",
-                                     "IS_UNISEX_NAME", "IS_A_COUPLE",
-                                     "NAME_NOT_FOUND", "ERROR_IN_NAME",
-                                     "INTERNAL_ERROR_GENDER"),
-                       stringsAsFactors = FALSE)
+    map <- data.frame (
+        res = c (70, 102, 77, 109, 63, 67, 32, 69, 73),
+        category = c (
+            "IS_FEMALE", "IS_MOSTLY_FEMALE",
+            "IS_MALE", "IS_MOSTLY_MALE",
+            "IS_UNISEX_NAME", "IS_A_COUPLE",
+            "NAME_NOT_FOUND", "ERROR_IN_NAME",
+            "INTERNAL_ERROR_GENDER"
+        ),
+        stringsAsFactors = FALSE
+    )
 
-    data.frame (text = text,
-                gender = map$category [match (res, map$res)],
-                stringsAsFactors = FALSE)
+    gender <- map$category [match (res, map$res)]
+    rel_freq [gender %in% c (
+        "NAME_NOT_FOUND", "ERROR_IN_NAME",
+        "INTERNAL_ERROR_GENDER"
+    )] <- NA_real_
+
+    data.frame (
+        text = text,
+        gender = gender,
+        rel_freq = rel_freq,
+        stringsAsFactors = FALSE
+    )
 }
-
 
 
 get_country <- function (country) {
 
     dat <- country_data ()
     i <- NULL
-    if (nchar (country) == 2)
+    if (nchar (country) == 2) {
         i <- match (tolower (country), tolower (dat$iso3166))
+    }
 
     if (length (i) != 1) {
 
         i <- grep (paste0 ("^", tolower (country)), tolower (dat$country_text))
-        if (length (i) != 1)
-            stop (paste0 ("Country not found; please enter either 2-letter ",
-                          "ISO3166 abbreviation or full country name.\n",
-                          "See 'list_countries' for details"))
+        if (length (i) != 1) {
+            stop (paste0 (
+                "Country not found; please enter either 2-letter ",
+                "ISO3166 abbreviation or full country name.\n",
+                "See 'list_countries' for details"
+            ))
+        }
     }
     dat$gc_country [i]
 }
@@ -134,66 +153,69 @@ country_data <- function () {
     # nolint end
 
     dat <- rbind (
-        c (30, 0, VERY_GOOD,  60, GC_BRITAIN,    "UK",   "Great Britain"),
-        c (31, 0, GOOD,        4, GC_IRELAND,    "IRE",  "Ireland"),
-        c (32, 0, VERY_GOOD, 150, GC_USA,        "USA",  "U.S.A."),
-        c (33, 0, VERY_GOOD,  60, GC_ITALY,       "I",   "Italy"),
-        c (34, 0, MEDIUM,      1, GC_MALTA,       "M",   "Malta"),
-        c (35, 0, GOOD,       10, GC_PORTUGAL,    "P",   "Portugal"),
-        c (36, 0, VERY_GOOD,  40, GC_SPAIN,       "E",   "Spain"),
-        c (37, 0, VERY_GOOD,  60, GC_FRANCE,      "F",   "France"),
-        c (38, 0, VERY_GOOD,  10, GC_BELGIUM,     "B",   "Belgium"),
-        c (39, 0, VERY_GOOD,   1, GC_LUXEMBOURG,  "LUX", "Luxembourg"),
-        c (40, 0, VERY_GOOD,  14, GC_NETHERLANDS, "NL",  "the Netherlands"),
-        c (41, 0, GOOD,        1, GC_EAST_FRISIA, "FRI", "East Frisia"),
-        c (42, 0, VERY_GOOD,  80, GC_GERMANY,     "D",   "Germany"),
-        c (43, 0, VERY_GOOD,   8, GC_AUSTRIA,     "A",   "Austria"),
-        c (44, 0, VERY_GOOD,   7, GC_SWISS,       "CH",  "Swiss"),
-        c (45, 0, VERY_GOOD,   1, GC_ICELAND,     "ICE", "Iceland"),
-        c (46, 0, VERY_GOOD,   5, GC_DENMARK,     "DK",  "Denmark"),
-        c (47, 0, GOOD,        4, GC_NORWAY,      "N",   "Norway"),
-        c (48, 0, VERY_GOOD,   8, GC_SWEDEN,      "S",   "Sweden"),
-        c (49, 0, GOOD,        5, GC_FINLAND,     "FIN", "Finland"),
-        c (50, 0, GOOD,        2, GC_ESTONIA,     "EST", "Estonia"),
-        c (51, 0, GOOD,        2, GC_LATVIA,      "LTV", "Latvia"),
-        c (52, 0, GOOD,        3, GC_LITHUANIA,   "LIT", "Lithuania"),
-        c (53, 0, GOOD,       35, GC_POLAND,      "PL",  "Poland"),
-        c (54, 0, GOOD,        8, GC_CZECH_REP,   "CZ",  "Czech Republic"),
-        c (55, 0, GOOD,        7, GC_SLOVAKIA,    "SK",  "Slovakia"),
-        c (56, 0, GOOD,       11, GC_HUNGARY,     "H",   "Hungary"),
-        c (57, 0, VERY_GOOD,  22, GC_ROMANIA,     "RO",  "Romania"),
-        c (58, 0, GOOD,        9, GC_BULGARIA,    "BG",  "Bulgaria"),
-        c (59, 0, MEDIUM,      4, GC_BOSNIA,      "BIH","Bosnia and Herzegovina"), # nolint
-        c (60, 0, GOOD,        5, GC_CROATIA,     "CRO", "Croatia"),
-        c (61, 0, MEDIUM,      1, GC_KOSOVO,      "KOS", "Kosovo"),
-        c (62, 0, MEDIUM,      2, GC_MACEDONIA,   "MK",  "Macedonia"),
-        c (63, 0, MEDIUM,      1, GC_MONTENEGRO,  "MON", "Montenegro"),
-        c (64, 0, MEDIUM,      9, GC_SERBIA,      "SER", "Serbia"),
-        c (65, 0, MEDIUM,      2, GC_SLOVENIA,    "SLO", "Slovenia"),
-        c (66, 0, GOOD,        3, GC_ALBANIA,     "AL",  "Albania"),
-        c (67, 0, GOOD,       10, GC_GREECE,      "GR",  "Greece"),
-        c (68, 0, GOOD,      100, GC_RUSSIA,      "RUS", "Russia"),
-        c (69, 0, MEDIUM,     10, GC_BELARUS,     "BY",  "Belarus"),
-        c (70, 0, MEDIUM,      4, GC_MOLDOVA,     "MOL", "Moldova"),
-        c (71, 0, MEDIUM,     45, GC_UKRAINE,     "UKR", "Ukraine"),
-        c (72, 0, MEDIUM,      3, GC_ARMENIA,     "ARM", "Armenia"),
-        c (73, 0, MEDIUM,      4, GC_AZERBAIJAN,  "AZE", "Azerbaijan"),
-        c (74, 0, MEDIUM,      5, GC_GEORGIA,     "GEO", "Georgia"),
-        c (75, 0, MEDIUM,     15, GC_KAZAKH_UZBEK, "KAZ", "Kazakhstan/Uzbekistan,etc."), # nolint
-        c (76, 0, GOOD,       55, GC_TURKEY,      "TR",  "Turkey"),
-        c (77, 0, GOOD,       80, GC_ARABIA,      "AR",  "Arabia/Persia"),
-        c (78, 0, MEDIUM,      4, GC_ISRAEL,      "ISR", "Israel"),
-        c (79, 0, VERY_GOOD, 300, GC_CHINA,       "CHN", "China"),
-        c (80, 0, GOOD,      250, GC_INDIA,       "IND", "India/Sri Lanka"),
-        c (81, 0, GOOD,       35, GC_JAPAN,       "JAP", "Japan"),
-        c (82, 0, GOOD,       12, GC_KOREA,       "KOR", "Korea"),
-        c (83, 0, GOOD,       17, GC_VIETNAM,     "VN",  "Vietnam"),
-        c (84, 0, MEDIUM,      1,    -1L,         "XX",  "other countries"),
-        c (0,  0,  0,          0,    -1L,         "",    ""))
+        c (30, 0, VERY_GOOD, 60, GC_BRITAIN, "UK", "Great Britain"),
+        c (31, 0, GOOD, 4, GC_IRELAND, "IRE", "Ireland"),
+        c (32, 0, VERY_GOOD, 150, GC_USA, "USA", "U.S.A."),
+        c (33, 0, VERY_GOOD, 60, GC_ITALY, "I", "Italy"),
+        c (34, 0, MEDIUM, 1, GC_MALTA, "M", "Malta"),
+        c (35, 0, GOOD, 10, GC_PORTUGAL, "P", "Portugal"),
+        c (36, 0, VERY_GOOD, 40, GC_SPAIN, "E", "Spain"),
+        c (37, 0, VERY_GOOD, 60, GC_FRANCE, "F", "France"),
+        c (38, 0, VERY_GOOD, 10, GC_BELGIUM, "B", "Belgium"),
+        c (39, 0, VERY_GOOD, 1, GC_LUXEMBOURG, "LUX", "Luxembourg"),
+        c (40, 0, VERY_GOOD, 14, GC_NETHERLANDS, "NL", "the Netherlands"),
+        c (41, 0, GOOD, 1, GC_EAST_FRISIA, "FRI", "East Frisia"),
+        c (42, 0, VERY_GOOD, 80, GC_GERMANY, "D", "Germany"),
+        c (43, 0, VERY_GOOD, 8, GC_AUSTRIA, "A", "Austria"),
+        c (44, 0, VERY_GOOD, 7, GC_SWISS, "CH", "Swiss"),
+        c (45, 0, VERY_GOOD, 1, GC_ICELAND, "ICE", "Iceland"),
+        c (46, 0, VERY_GOOD, 5, GC_DENMARK, "DK", "Denmark"),
+        c (47, 0, GOOD, 4, GC_NORWAY, "N", "Norway"),
+        c (48, 0, VERY_GOOD, 8, GC_SWEDEN, "S", "Sweden"),
+        c (49, 0, GOOD, 5, GC_FINLAND, "FIN", "Finland"),
+        c (50, 0, GOOD, 2, GC_ESTONIA, "EST", "Estonia"),
+        c (51, 0, GOOD, 2, GC_LATVIA, "LTV", "Latvia"),
+        c (52, 0, GOOD, 3, GC_LITHUANIA, "LIT", "Lithuania"),
+        c (53, 0, GOOD, 35, GC_POLAND, "PL", "Poland"),
+        c (54, 0, GOOD, 8, GC_CZECH_REP, "CZ", "Czech Republic"),
+        c (55, 0, GOOD, 7, GC_SLOVAKIA, "SK", "Slovakia"),
+        c (56, 0, GOOD, 11, GC_HUNGARY, "H", "Hungary"),
+        c (57, 0, VERY_GOOD, 22, GC_ROMANIA, "RO", "Romania"),
+        c (58, 0, GOOD, 9, GC_BULGARIA, "BG", "Bulgaria"),
+        c (59, 0, MEDIUM, 4, GC_BOSNIA, "BIH", "Bosnia and Herzegovina"), # nolint
+        c (60, 0, GOOD, 5, GC_CROATIA, "CRO", "Croatia"),
+        c (61, 0, MEDIUM, 1, GC_KOSOVO, "KOS", "Kosovo"),
+        c (62, 0, MEDIUM, 2, GC_MACEDONIA, "MK", "Macedonia"),
+        c (63, 0, MEDIUM, 1, GC_MONTENEGRO, "MON", "Montenegro"),
+        c (64, 0, MEDIUM, 9, GC_SERBIA, "SER", "Serbia"),
+        c (65, 0, MEDIUM, 2, GC_SLOVENIA, "SLO", "Slovenia"),
+        c (66, 0, GOOD, 3, GC_ALBANIA, "AL", "Albania"),
+        c (67, 0, GOOD, 10, GC_GREECE, "GR", "Greece"),
+        c (68, 0, GOOD, 100, GC_RUSSIA, "RUS", "Russia"),
+        c (69, 0, MEDIUM, 10, GC_BELARUS, "BY", "Belarus"),
+        c (70, 0, MEDIUM, 4, GC_MOLDOVA, "MOL", "Moldova"),
+        c (71, 0, MEDIUM, 45, GC_UKRAINE, "UKR", "Ukraine"),
+        c (72, 0, MEDIUM, 3, GC_ARMENIA, "ARM", "Armenia"),
+        c (73, 0, MEDIUM, 4, GC_AZERBAIJAN, "AZE", "Azerbaijan"),
+        c (74, 0, MEDIUM, 5, GC_GEORGIA, "GEO", "Georgia"),
+        c (75, 0, MEDIUM, 15, GC_KAZAKH_UZBEK, "KAZ", "Kazakhstan/Uzbekistan,etc."), # nolint
+        c (76, 0, GOOD, 55, GC_TURKEY, "TR", "Turkey"),
+        c (77, 0, GOOD, 80, GC_ARABIA, "AR", "Arabia/Persia"),
+        c (78, 0, MEDIUM, 4, GC_ISRAEL, "ISR", "Israel"),
+        c (79, 0, VERY_GOOD, 300, GC_CHINA, "CHN", "China"),
+        c (80, 0, GOOD, 250, GC_INDIA, "IND", "India/Sri Lanka"),
+        c (81, 0, GOOD, 35, GC_JAPAN, "JAP", "Japan"),
+        c (82, 0, GOOD, 12, GC_KOREA, "KOR", "Korea"),
+        c (83, 0, GOOD, 17, GC_VIETNAM, "VN", "Vietnam"),
+        c (84, 0, MEDIUM, 1, -1L, "XX", "other countries"),
+        c (0, 0, 0, 0, -1L, "", "")
+    )
 
     dat <- data.frame (dat, stringsAsFactors = FALSE)
-    names (dat) <- c ("pos", "n", "quality_of_statistics", "weight",
-                      "gc_country", "country_short", "country_text")
+    names (dat) <- c (
+        "pos", "n", "quality_of_statistics", "weight",
+        "gc_country", "country_short", "country_text"
+    )
     dat$pos <- as.integer (dat$pos)
     dat$n <- as.integer (dat$n)
     dat$quality_of_statistics <- as.integer (dat$quality_of_statistics)
@@ -201,62 +223,64 @@ country_data <- function () {
     dat$gc_country <- as.integer (dat$gc_country)
 
     # match from country_short to iso3166 codes
-    iso3166 <- rbind (c ("UK", "gb"),
-                      c ("IRE", "ir"),
-                      c ("USA", "us"),
-                      c ("I", "it"),
-                      c ("M", "mt"),
-                      c ("P", "pt"),
-                      c ("E", "es"),
-                      c ("F", "fr"),
-                      c ("B", "be"),
-                      c ("LUX", "lu"),
-                      c ("NL", "nl"),
-                      c ("FRI", "ef"), # not an ISO 3166 country
-                      c ("D", "de"),
-                      c ("A", "at"),
-                      c ("CH", "ch"),
-                      c ("ICE", "is"),
-                      c ("DK", "dk"),
-                      c ("N", "no"),
-                      c ("S", "se"),
-                      c ("FIN", "fi"),
-                      c ("EST", "ee"),
-                      c ("LTV", "lv"),
-                      c ("LIT", "lt"),
-                      c ("PL", "pl"),
-                      c ("CZ", "cz"),
-                      c ("SK", "sk"),
-                      c ("H", "hu"),
-                      c ("RO", "ro"),
-                      c ("BG", "bg"),
-                      c ("BIH", "ba"),
-                      c ("CRO", "hr"),
-                      c ("KOS", "ko"), # not an ISO 3166 country
-                      c ("MK", "mk"),
-                      c ("MON", "me"),
-                      c ("SER", "rs"),
-                      c ("SLO", "si"),
-                      c ("AL", "al"),
-                      c ("GR", "gr"),
-                      c ("RUS", "ru"),
-                      c ("BY", "by"),
-                      c ("MOL", "md"),
-                      c ("UKR", "ua"),
-                      c ("ARM", "am"),
-                      c ("AZE", "az"),
-                      c ("GEO", "ge"),
-                      c ("KAZ", "kz"),
-                      c ("TR", "tr"),
-                      c ("AR", "ar"), # not an ISO 3166 country
-                      c ("ISR", "il"),
-                      c ("CHN", "cn"),
-                      c ("IND", "in"),
-                      c ("JAP", "jp"),
-                      c ("KOR", "kr"),
-                      c ("VN", "vn"),
-                      c ("XX", "xx"),
-                      c ("", ""))
+    iso3166 <- rbind (
+        c ("UK", "gb"),
+        c ("IRE", "ir"),
+        c ("USA", "us"),
+        c ("I", "it"),
+        c ("M", "mt"),
+        c ("P", "pt"),
+        c ("E", "es"),
+        c ("F", "fr"),
+        c ("B", "be"),
+        c ("LUX", "lu"),
+        c ("NL", "nl"),
+        c ("FRI", "ef"), # not an ISO 3166 country
+        c ("D", "de"),
+        c ("A", "at"),
+        c ("CH", "ch"),
+        c ("ICE", "is"),
+        c ("DK", "dk"),
+        c ("N", "no"),
+        c ("S", "se"),
+        c ("FIN", "fi"),
+        c ("EST", "ee"),
+        c ("LTV", "lv"),
+        c ("LIT", "lt"),
+        c ("PL", "pl"),
+        c ("CZ", "cz"),
+        c ("SK", "sk"),
+        c ("H", "hu"),
+        c ("RO", "ro"),
+        c ("BG", "bg"),
+        c ("BIH", "ba"),
+        c ("CRO", "hr"),
+        c ("KOS", "ko"), # not an ISO 3166 country
+        c ("MK", "mk"),
+        c ("MON", "me"),
+        c ("SER", "rs"),
+        c ("SLO", "si"),
+        c ("AL", "al"),
+        c ("GR", "gr"),
+        c ("RUS", "ru"),
+        c ("BY", "by"),
+        c ("MOL", "md"),
+        c ("UKR", "ua"),
+        c ("ARM", "am"),
+        c ("AZE", "az"),
+        c ("GEO", "ge"),
+        c ("KAZ", "kz"),
+        c ("TR", "tr"),
+        c ("AR", "ar"), # not an ISO 3166 country
+        c ("ISR", "il"),
+        c ("CHN", "cn"),
+        c ("IND", "in"),
+        c ("JAP", "jp"),
+        c ("KOR", "kr"),
+        c ("VN", "vn"),
+        c ("XX", "xx"),
+        c ("", "")
+    )
     index <- match (iso3166 [, 1], dat$country_short)
     dat$iso3166 <- iso3166 [index, 2]
 

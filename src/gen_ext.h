@@ -78,8 +78,6 @@
 #define ERROR_IN_NAME          'E' // = 69
 #define INTERNAL_ERROR_GENDER  'I' // = 73
 
-#define REL_FREQ_MULTIPLIER 1
-
 
 /****  File with list of first names and gender.  ****/
 /****  TO-DO:  Add full pathname  ****/

@@ -3078,6 +3078,10 @@ static void trace_info
 /************************************************************/
 
 
+/* Relative frequency (per mille) of the gender assigned by the most recent
+ * successful call to internal_search() */
+static int gcr_rel_freq = 0;
+
 static int internal_search
      (char search_name[], int compare_mode, int country)
 /****  This function searches a single given name  ****/
@@ -3348,11 +3352,14 @@ static int internal_search
    * this point.
    */
   int rel_freq = 1000;
+  if (count + count_2 > 0L)
+    {
+      rel_freq = (int) floor (1000.0 * (double) count /
+              (double) (count + count_2) + 0.5);
+    }
 
   if (freq_2 > 0)
     {
-      // MP: Inserted relative frequency calculation here:
-      rel_freq = round (1000.0 * count / (count + count_2));
       /****  calculate the (truncated) binary logarithm of (count/count_2)  ****/
       x = 5;
       if (count > 0L  &&  count < count_2)
@@ -3398,10 +3405,9 @@ static int internal_search
         }
     }
 
-  // set rel_freq \in [0, 1000] as the latter 4 digits, so
-  // res -> res * 10000 + rel_freq. The 2 can then be extracted as
-  // gender = floor (res / 10000)
-  // rel_freq = res - gender * 10000
+  /* rel_freq is in [0, 1000]; stored in gcr_rel_freq */
+  gcr_rel_freq = rel_freq;
+
   if ((n & (1|2|16))  &&  (n & (4|8|16)))
     {
       return (IS_UNISEX_NAME);
@@ -3472,6 +3478,7 @@ static int get_gender_internal
   compare_mode &= ~(SEARCH_EQUIV | SEARCH_FIRST);
   compare_mode |= SEARCH_GENDER;
 
+  gcr_rel_freq = 0;
   copycut (temp, first_name, LENGTH_FIRST_NAME+51);
 
   /****  reset statistics  ****/
@@ -3500,8 +3507,6 @@ static int get_gender_internal
     {
      /****  search whole name  ****/
      gender = internal_search (temp, compare_mode, country);
-     //int res = floor (gender / REL_FREQ_MULTIPLIER);
-     //int rel_freq = gender - res * REL_FREQ_MULTIPLIER;
 
      if (gender != NAME_NOT_FOUND)
        {
@@ -3554,8 +3559,6 @@ static int get_gender_internal
             }
 
           gender = internal_search (temp+n, compare_mode, country);
-          //int res = floor (gender / REL_FREQ_MULTIPLIER);
-          //int rel_freq = gender - res * REL_FREQ_MULTIPLIER;
 
           if (internal_mode & TRACE_GENDER)
             {
@@ -3720,18 +3723,12 @@ static int check_nickname_internal (char first_name_1[],
     {
       Rprintf (a_temp+n, " %s", a2_temp);
       i = internal_search (a_temp, compare_mode, country);
-      //int res = internal_search (a_temp, compare_mode, country);
-      //i = floor (res / REL_FREQ_MULTIPLIER);
-      //int rel_freq = res - gender * REL_FREQ_MULTIPLIER;
       a_temp[n] = '\0';
     }
   if (k <= n  &&  i == NAME_NOT_FOUND)
     {
       Rprintf (a2_temp+k, " %s", a_temp);
       i = internal_search (a2_temp, compare_mode, country);
-      //int res = internal_search (a2_temp, compare_mode, country);
-      //i = floor (res / REL_FREQ_MULTIPLIER);
-      //int rel_freq = res - gender * REL_FREQ_MULTIPLIER;
       a2_temp[k] = '\0';
     }
 
@@ -5744,10 +5741,14 @@ SEXP R_gender (SEXP x_, SEXP country_)
     country_ = PROTECT (Rf_coerceVector (country_, INTSXP));
 
     R_len_t len = Rf_length (x_);
-    SEXP out = PROTECT (allocVector (INTSXP, len));
+    SEXP gender_out = PROTECT (allocVector (INTSXP, len));
+    SEXP freq_out = PROTECT (allocVector (INTSXP, len));
+    SEXP out = PROTECT (allocVector (VECSXP, 2));
+    SET_VECTOR_ELT (out, 0, gender_out);
+    SET_VECTOR_ELT (out, 1, freq_out);
 
-    int *rout;
-    rout = INTEGER (out);
+    int *rout = INTEGER (gender_out);
+    int *rfreq = INTEGER (freq_out);
 
     int country = asInteger (country_);
 
@@ -5770,11 +5771,12 @@ SEXP R_gender (SEXP x_, SEXP country_)
         const char * xi = CHAR (STRING_ELT (x_, i));
         char * xi_c = (char*) (xi);
         rout [i] = get_gender (xi_c, 0, country);
+        rfreq [i] = gcr_rel_freq;
     }
 
     cleanup_gender();
 
-    UNPROTECT (3);
+    UNPROTECT (5);
 
     return out;
 }

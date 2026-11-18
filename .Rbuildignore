@@ -6,6 +6,7 @@
 ^README-src\.Rmd$
 ^README\.html$
 ^\.Rproj\.user$
+^\.ccls-cache$
 ^\.github$
 ^\.hooks$
 ^\.pre-commit-config\.yaml$

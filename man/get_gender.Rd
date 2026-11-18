@@ -14,7 +14,9 @@ ISO3166 two-letter abbreviation, or full text. See \link{list_countries} for
 list of recognized countries.}
 }
 \value{
-\code{data.frame} of text with gender attached
+\code{data.frame} of text with gender attached, and \code{rel_freq}, the
+relative frequency (between 0 and 1) of the assigned gender among all
+occurrences of that name; \code{NA} where the name was not found.
 }
 \description{
 Get the gender of a character vector
