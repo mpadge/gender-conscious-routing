@@ -7,7 +7,9 @@
 gender_streetnet(net, wt_profile = "foot", country = "de")
 }
 \arguments{
-\item{net}{Street network in \pkg{sf} or \pkg{sc} format}
+\item{net}{Street network in any format accepted by
+\code{dodgr::weight_streetnet}, such as \code{osmdata_sc} objects returned from
+\code{dodgr::dodgr_streetnet_sc()}.}
 
 \item{wt_profile}{Type of weighting to be used; see \code{dodgr::weight_streetnet}
 for details.}
