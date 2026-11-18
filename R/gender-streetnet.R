@@ -4,17 +4,23 @@
 #' additional information on gender of street names
 #'
 #' @inheritParams get_gender
-#' @param net Street network in \pkg{sf} or \pkg{sc} format
+#' @param net Street network in any format accepted by
+#' `dodgr::weight_streetnet`, such as `osmdata_sc` objects returned from
+#' `dodgr::dodgr_streetnet_sc()`.
 #' @param wt_profile Type of weighting to be used; see `dodgr::weight_streetnet`
 #' for details.
 #' @return A weighted street network in \pkg{dodgr} format.
 #' @export
 gender_streetnet <- function (net, wt_profile = "foot", country = "de") {
 
-    netw <- dodgr::weight_streetnet (net, wt_profile = wt_profile,
-                                     keep_cols = c ("name",
-                                                    "name:etymology",
-                                                    "name:etymology:wikidata"))
+    netw <- dodgr::weight_streetnet (net,
+        wt_profile = wt_profile,
+        keep_cols = c (
+            "name",
+            "name:etymology",
+            "name:etymology:wikidata"
+        )
+    )
 
     netw <- wikidata_gender (netw)
 
@@ -26,25 +32,25 @@ gender_streetnet <- function (net, wt_profile = "foot", country = "de") {
 
         # These can not be personal names:
         index2 <- which (substring (g$text, 1, 6) == "Alter" |
-                         substring (g$text, 1, 3) == "Am" |
-                         substring (g$text, 1, 3) == "An " |
-                         substring (g$text, 1, 4) == "Auf " |
-                         substring (g$text, 1, 3) == "Im " |
-                         substring (g$text, 1, 3) == "In " |
-                         substring (g$text, 1, 4) == "Zum " |
-                         substring (g$text, 1, 4) == "Zur " |
-                         substring (g$text, 1, 3) == "Zu " |
-                         !grepl ("-|\\s", g$text) |
-                         grepl ("[0-9]", g$text) |
-                         grepl ("Heide$", g$text))
+            substring (g$text, 1, 3) == "Am" |
+            substring (g$text, 1, 3) == "An " |
+            substring (g$text, 1, 4) == "Auf " |
+            substring (g$text, 1, 3) == "Im " |
+            substring (g$text, 1, 3) == "In " |
+            substring (g$text, 1, 4) == "Zum " |
+            substring (g$text, 1, 4) == "Zur " |
+            substring (g$text, 1, 3) == "Zu " |
+            !grepl ("-|\\s", g$text) |
+            grepl ("[0-9]", g$text) |
+            grepl ("Heide$", g$text))
         g$gender [index2] <- "NAME_NOT_FOUND"
     }
 
     netw$gender [index] <- "NAME_NOT_FOUND"
     netw$gender [index] [which (g$gender == "IS_MALE" |
-                                g$gender == "IS_MOSTLY_MALE")] <- "IS_MALE"
+        g$gender == "IS_MOSTLY_MALE")] <- "IS_MALE"
     netw$gender [index] [which (g$gender == "IS_FEMALE" |
-                                g$gender == "IS_MOSTLY_FEMALE")] <- "IS_FEMALE"
+        g$gender == "IS_MOSTLY_FEMALE")] <- "IS_FEMALE"
 
     netw$female <- FALSE
     netw$female [which (netw$gender == "IS_FEMALE")] <- TRUE
@@ -67,9 +73,9 @@ wikidata_gender <- function (net) {
     wiki_chunk <- function (wiki) {
 
         wd <- paste0 (paste0 ("wd:", wiki), collapse = " ")
-        qry <- paste0 ('
+        qry <- paste0 ("
             SELECT DISTINCT ?person ?personLabel ?genderLabel WHERE {
-              VALUES ?person {', wd, '
+              VALUES ?person {", wd, '
               }
             ?person wdt:P21 ?gender;
             SERVICE wikibase:label {
@@ -79,7 +85,7 @@ wikidata_gender <- function (net) {
 
         u <- sprintf ("https://query.wikidata.org/sparql?format=json&query=%s", qry)
         # calling fromJSON directly sometimes errors on wikidata calls:
-        #res <- jsonlite::fromJSON (u)
+        # res <- jsonlite::fromJSON (u)
         res <- httr::GET (u)
         if (res$status != 200L) {
             return (NULL)
@@ -87,8 +93,10 @@ wikidata_gender <- function (net) {
         res <- jsonlite::fromJSON (httr::content (res, as = "text"))
         res <- res$results$bindings
 
-        data.frame (personLabel = res$personLabel$value,
-                    genderLabel = res$genderLabel$value)
+        data.frame (
+            personLabel = res$personLabel$value,
+            genderLabel = res$genderLabel$value
+        )
     }
 
     if (length (wiki) == 0L) {
@@ -111,7 +119,7 @@ wikidata_gender <- function (net) {
         c ("intersex", "Q1097630"),
         c ("transgender female", "Q1052281"),
         c ("transgender male", "Q2449503")
-        )
+    )
 
     gender <- gender_map [match (genders$gender, gender_map [, 2]), 1]
     genders$gender <- paste0 ("IS_", toupper (gender))
